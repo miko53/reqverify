@@ -49,22 +49,26 @@ def parse_and_launch_action(project, options)
 
   case actions[0]
   when 'gen_traca'
-    # p 'GO'
-    if !actions[1].nil?
-      traca = Traca.new(project)
-      traca.generate_traceability(actions[1])
-      # pp traca
-    else
-      print "Error, no relationship given\n"
-      exit 1
-    end
+    generate_traceability(project, actions[1])
   else
-    p 'Unknown action'
+    print 'Unknown action\n'
+  end
+end
+
+def generate_traceability(project, arg)
+  # p 'GO'
+  if !arg.nil?
+    traca = Traca.new(project)
+    traca.generate_traceability(arg)
+    # pp traca
+  else
+    print "Error, no relationship given\n"
+    exit 1
   end
 end
 
 # load project according to +options+ hash
-def launch_action(options)
+def load_project(options)
   project = Project.new options[:project_file]
   if project.loaded?
     working_dir = project.working_dir
@@ -74,8 +78,7 @@ def launch_action(options)
     print "project file is not valid\n"
     exit 1
   end
-
-  parse_and_launch_action(project, options)
+  project
 end
 
 # main entry point function
@@ -85,7 +88,8 @@ end
 def main
   options = read_args
   check_options(options)
-  launch_action(options)
+  project = load_project(options)
+  parse_and_launch_action(project, options)
 end
 
 main
