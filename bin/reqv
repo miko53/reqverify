@@ -1,0 +1,91 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require 'optparse'
+require_relative '../lib/project'
+require_relative '../lib/traca'
+
+# This method read command-line arguments
+# and returns +options+ hash of argument
+def read_args
+  options = {}
+  OptionParser.new do |opts|
+    opts.banner = "Usage: #{$PROGRAM_NAME} "
+    opts.on('-pPROJECT_FILE', '--project-file=PROJECT_FILE', 'provide project file') do |n|
+      options[:project_file] = n
+    end
+    opts.on('-aACTION', '--action=ACTION', 'action to launch') do |n|
+      options[:action] = n
+    end
+    opts.on('-oOUTPUT_FILE', '--output-file=OUTPUT_FILE', 'arg') do |n|
+      options[:output_file] = n
+    end
+  end.parse!
+  # pp options
+  options
+end
+
+# check if given +options+ (hash data come from command-line)
+# are correct
+# return to shell if mandatory option are not given
+def check_options(options)
+  if options[:action].nil?
+    print "need to provide action, see help\n"
+    exit 1
+  end
+
+  return unless options[:project_file].nil?
+
+  print "need to provide project file, see help\n"
+  exit 1
+end
+
+# parse action argument
+# +options+ hash of option given in command line
+# +project+ Project class object
+def parse_and_launch_action(project, options)
+  actions = options[:action].split
+  # pp actions
+
+  case actions[0]
+  when 'gen_traca'
+    # p 'GO'
+    if !actions[1].nil?
+      traca = Traca.new(project)
+      traca.generate_traceability(actions[1])
+      # pp traca
+    else
+      print "Error, no relationship given\n"
+      exit 1
+    end
+  else
+    p 'Unknown action'
+  end
+end
+
+# load project according to +options+ hash
+def launch_action(options)
+  project = Project.new options[:project_file]
+  if project.loaded?
+    working_dir = project.working_dir
+    # p working_dir
+    Dir.chdir working_dir
+  else
+    print "project file is not valid\n"
+    exit 1
+  end
+
+  parse_and_launch_action(project, options)
+end
+
+# main entry point function
+# read the command-line argument
+# check them
+# and execute requested action
+def main
+  options = read_args
+  check_options(options)
+  launch_action(options)
+end
+
+main
