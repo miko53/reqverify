@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'byebug'
 # class for exporting data to file
 class ExportReq
   def initialize(project, filename, traca_result)

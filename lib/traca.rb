@@ -2,6 +2,7 @@
 
 require_relative 'export_req'
 require_relative 'stat_req'
+require_relative 'project'
 
 # class Traca
 class Traca
@@ -9,40 +10,24 @@ class Traca
     @project = project
   end
 
-  def generate_traceability(relationship)
+  def generate_traceability(relationship, _output_folder)
     upstream_docs = @project.upstream_docs(relationship)
     downstream_docs = @project.downstream_docs(relationship)
-    return if check_if_loaded(upstream_docs, downstream_docs) == false
+    return if check_if_loaded(upstream_docs + downstream_docs) == false
 
-    r = generate_traca_of_downstream_docs(downstream_docs, upstream_docs)
-    export_downstream_results(r)
-    r = generate_traca_of_upstream_docs(downstream_docs, upstream_docs)
-    export_upstream_results(r)
+    r = {}
+    r[:downstream] = generate_traca_of_downstream_docs(downstream_docs, upstream_docs)
+    r[:upstreams] = generate_traca_of_upstream_docs(downstream_docs, upstream_docs)
+    r
   end
 
   private
-
-  def export_downstream_results(traca_result)
-    export = ExportReq.new(@project, 'test', traca_result)
-    stat = StatReq.new
-    stat_report = stat.build_stat(traca_result)
-    export.write_traca_report(stat_report)
-    pp traca_result
-  end
-
-  def export_upstream_results(traca_result)
-    export = ExportReq.new(@project, 'test_2', traca_result)
-    stat = StatReq.new
-    stat_report = stat.build_up_stat(traca_result)
-    export.write_traca_up_report(stat_report)
-    pp traca_result
-  end
 
   def generate_traca_of_downstream_docs(downstream_docs, upstream_docs)
     traca_by_doc = []
     downstream_docs.each do |downstream_doc|
       traca_doc = {}
-      traca_doc['name'] = downstream_doc.docname
+      traca_doc['name'] = downstream_doc.doc_name
       traca_report = []
       req_list = downstream_doc.req_id_list
       req_list.each do |req_id|
@@ -82,7 +67,7 @@ class Traca
     traca_by_doc = []
     upstream_docs.each do |upstream_doc|
       traca_doc = {}
-      traca_doc['name'] = upstream_doc.docname
+      traca_doc['name'] = upstream_doc.doc_name
       traca_report = []
       req_list = upstream_doc.req_id_list
       req_list.each do |req_id|
@@ -105,19 +90,11 @@ class Traca
     line
   end
 
-  def check_if_loaded(upstream_docs, downstream_docs)
+  def check_if_loaded(docs)
     loaded = true
-
-    downstream_docs.each do |downstream_doc|
-      loaded = false unless downstream_doc.loaded?
+    docs.each do |doc|
+      loaded = false unless doc.loaded?
     end
-
-    if loaded
-      upstream_docs.each do |upstream_doc|
-        loaded = false unless upstream_doc.loaded?
-      end
-    end
-
     loaded
   end
 

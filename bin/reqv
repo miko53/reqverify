@@ -4,92 +4,130 @@
 require 'optparse'
 require_relative '../lib/project'
 require_relative '../lib/traca'
+require_relative '../lib/export'
 
-# This method read command-line arguments
-# and returns +options+ hash of argument
-def read_args
-  options = {}
-  OptionParser.new do |opts|
-    opts.banner = "Usage: #{$PROGRAM_NAME} "
-    opts.on('-pPROJECT_FILE', '--project-file=PROJECT_FILE', 'provide project file') do |n|
-      options[:project_file] = n
+# main application class
+class Main
+  EXIT_FAILURE = 1
+
+  def initialize
+    @working_dir = ''
+    @output_folder = ''
+    @project = nil
+  end
+
+  # This method read command-line arguments
+  # and returns +options+ hash of argument
+  def read_args # rubocop:disable Metrics/MethodLength
+    options = {}
+    OptionParser.new do |opts|
+      opts.banner = "Usage: #{$PROGRAM_NAME} "
+      opts.on('-pPROJECT_FILE', '--project-file=PROJECT_FILE', 'provide project file') do |n|
+        options[:project_file] = n
+      end
+      opts.on('-aACTION', '--action=ACTION', 'action to launch') do |n|
+        options[:action] = n
+      end
+      opts.on('-oOUTPUT_FOLDER', '--output-folder=OUTPUT_FOLDER', 'folder where stored result') do |n|
+        options[:output_folder] = n
+      end
+    end.parse!
+    # pp options
+    options
+  end
+
+  # check if given +options+ (hash data come from command-line)
+  # are correct
+  # return to shell if mandatory option are not given
+  def check_options(options)
+    if options[:action].nil?
+      print "need to provide action, see help\n"
+      exit EXIT_FAILURE
     end
-    opts.on('-aACTION', '--action=ACTION', 'action to launch') do |n|
-      options[:action] = n
+
+    return unless options[:project_file].nil?
+
+    print "need to provide project file, see help\n"
+    exit EXIT_FAILURE
+  end
+
+  # main entry point function
+  # read the command-line argument
+  # check them
+  # and execute requested action
+  def main
+    options = read_args
+    check_options(options)
+    @project = load_project(options)
+    parse_and_launch_action(options)
+  end
+
+  # load project according to +options+ hash
+  def load_project(options)
+    project = Project.new options[:project_file]
+    if project.loaded? && Dir.exist?(project.working_dir)
+      @working_dir = project.working_dir
+    else
+      print "project file is not valid or working dir doesn't exist\n"
+      exit EXIT_FAILURE
     end
-    opts.on('-oOUTPUT_FILE', '--output-file=OUTPUT_FILE', 'arg') do |n|
-      options[:output_file] = n
+    project
+  end
+
+  # parse action argument
+  # +options+ hash of option given in command line
+  # +project+ Project class object
+  def parse_and_launch_action(options)
+    actions = options[:action].split
+    # pp actions
+
+    case actions[0]
+    when 'gen_traca'
+      check_output(options)
+      generate_traceability(actions[1])
+    else
+      print "Unknown action\n"
     end
-  end.parse!
-  # pp options
-  options
-end
-
-# check if given +options+ (hash data come from command-line)
-# are correct
-# return to shell if mandatory option are not given
-def check_options(options)
-  if options[:action].nil?
-    print "need to provide action, see help\n"
-    exit 1
   end
 
-  return unless options[:project_file].nil?
-
-  print "need to provide project file, see help\n"
-  exit 1
-end
-
-# parse action argument
-# +options+ hash of option given in command line
-# +project+ Project class object
-def parse_and_launch_action(project, options)
-  actions = options[:action].split
-  # pp actions
-
-  case actions[0]
-  when 'gen_traca'
-    generate_traceability(project, actions[1])
-  else
-    print 'Unknown action\n'
+  # check if output is given
+  def check_output(options)
+    if options[:output_folder].nil?
+      print "no output folder given, see help\n"
+      exit EXIT_FAILURE
+    else
+      check_if_folder_or_create_it(options[:output_folder])
+    end
   end
-end
 
-def generate_traceability(project, arg)
-  # p 'GO'
-  if !arg.nil?
-    traca = Traca.new(project)
-    traca.generate_traceability(arg)
-    # pp traca
-  else
-    print "Error, no relationship given\n"
-    exit 1
+  def check_if_folder_or_create_it(folder_name)
+    return if Dir.exist?(folder_name)
+
+    begin
+      Dir.mkdir(folder_name)
+      @output_folder = folder_name
+    rescue StandardError => e
+      print "unable to create folder #{folder_name}, #{e}"
+      exit EXIT_FAILURE
+    end
+  end
+
+  # launch effectif traceablity action
+  def generate_traceability(relationship)
+    # p 'GO'
+    if !relationship.nil?
+      traca = Traca.new(@project)
+      r = traca.generate_traceability(relationship, @output_folder)
+      pp r
+      export = Export.new(r)
+      export.export_result
+      # pp traca
+    else
+      print "Error, no relationship given\n"
+      exit EXIT_FAILURE
+    end
   end
 end
 
-# load project according to +options+ hash
-def load_project(options)
-  project = Project.new options[:project_file]
-  if project.loaded?
-    working_dir = project.working_dir
-    # p working_dir
-    Dir.chdir working_dir
-  else
-    print "project file is not valid\n"
-    exit 1
-  end
-  project
-end
-
-# main entry point function
-# read the command-line argument
-# check them
-# and execute requested action
-def main
-  options = read_args
-  check_options(options)
-  project = load_project(options)
-  parse_and_launch_action(project, options)
-end
-
-main
+app = Main.new
+app.main

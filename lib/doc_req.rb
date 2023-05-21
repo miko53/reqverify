@@ -4,21 +4,22 @@ require 'yaml'
 
 # class DocReq
 class DocReq
-  def initialize(docname, docpath)
-    @path = docpath
-    @docname = docname
-    @doc = nil
+  def initialize(project, doc_name, doc_path)
+    @project = project
+    @path = doc_path
+    @doc_name = doc_name
+    @doc_file = nil
     read
   end
 
   def loaded?
-    !@doc.nil?
+    !@doc_file.nil?
   end
 
   # return list of req_id of the document
   def req_id_list
     r = []
-    @doc['reqs'].each do |req|
+    @doc_file['reqs'].each do |req|
       r.append req['req_id']
     end
     r
@@ -26,14 +27,14 @@ class DocReq
 
   def cov_reqs_list(req_id)
     r = []
-    @doc['reqs'].each do |req|
+    @doc_file['reqs'].each do |req|
       r = req['req_cov'] if req['req_id'] == req_id
     end
     r
   end
 
   def req_id_exist?(req_id)
-    @doc['reqs'].each do |req|
+    @doc_file['reqs'].each do |req|
       return true if req['req_id'] == req_id
     end
     false
@@ -41,7 +42,7 @@ class DocReq
 
   def req_list_of_covered_id(cov_id)
     r = []
-    @doc['reqs'].each do |req|
+    @doc_file['reqs'].each do |req|
       req_cov_list = req['req_cov']
       req_cov_list&.each do |req_cov|
         if cov_id == req_cov
@@ -55,24 +56,39 @@ class DocReq
     r
   end
 
-  attr_accessor :docname
+  attr_accessor :doc_name
 
   private
 
   def read
-    begin
-      f = File.open(@path, 'r')
-    rescue StandardError => e
-      puts "Can not open file #{@path}, #{e}"
-      f = nil
-    end
+    f = read_file
     return if f.nil?
 
+    decode_yaml_file f
+    f.close
+  end
+
+  def read_file
     begin
-      @doc = YAML.safe_load f
+      filename = File.join(@project.working_dir, @path)
+      f = File.open(filename, 'r')
     rescue StandardError => e
-      @doc = nil
-      puts "wrong file format, #{e}"
+      puts "Can not open file #{filename}, #{e}"
+      e.backtrace.each do |l|
+        p l
+      end
+      f = nil
+    end
+    f
+  end
+
+  def decode_yaml_file(f)
+    @doc_file = YAML.safe_load f
+  rescue StandardError => e
+    @doc_file = nil
+    puts "wrong file format, #{e}"
+    e.backtrace.each do |l|
+      p l
     end
   end
 end
