@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative 'export_req'
+require_relative 'export_csv_req'
 require_relative 'stat_req'
 
 # class Export
@@ -16,14 +16,14 @@ class Export
   end
 
   def export_downstream_results(traca_result)
-    export = ExportReq.new(@output_folder, traca_result)
+    export = ExportCsvReq.new(@output_folder, traca_result)
     stat = StatReq.new
     stat_report = stat.build_stat(traca_result)
     export.write_downstream_report(stat_report)
   end
 
   def export_upstream_results(traca_result)
-    export = ExportReq.new(@output_folder, traca_result)
+    export = ExportCsvReq.new(@output_folder, traca_result)
     stat = StatReq.new
     stat_report = stat.build_up_stat(traca_result)
     export.write_uptream_report(stat_report)

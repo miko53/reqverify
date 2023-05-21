@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # class for exporting data to file
-class ExportReq
+class ExportCsvReq
   def initialize(output_folder, traca_result)
     @output_folder = output_folder
     @traca_result = traca_result
@@ -9,6 +9,7 @@ class ExportReq
 
   def write_downstream_report(stat)
     stat_index = 0
+    p stat
     @traca_result.each do |traca|
       filename = File.join(@output_folder, "traca_#{traca['name']}.csv")
       f = File.open(filename, 'w')

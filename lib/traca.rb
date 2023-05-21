@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require_relative 'export_req'
-require_relative 'stat_req'
 require_relative 'project'
 
 # class Traca
