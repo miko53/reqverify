@@ -97,6 +97,7 @@ class Main
       exit EXIT_FAILURE
     else
       check_if_folder_or_create_it(options[:output_folder])
+      @output_folder = options[:output_folder]
     end
   end
 
@@ -105,7 +106,6 @@ class Main
 
     begin
       Dir.mkdir(folder_name)
-      @output_folder = folder_name
     rescue StandardError => e
       print "unable to create folder #{folder_name}, #{e}"
       exit EXIT_FAILURE
@@ -117,9 +117,9 @@ class Main
     # p 'GO'
     if !relationship.nil?
       traca = Traca.new(@project)
-      r = traca.generate_traceability(relationship, @output_folder)
+      r = traca.generate_traceability(relationship)
       pp r
-      export = Export.new(r)
+      export = Export.new(r, @output_folder)
       export.export_result
       # pp traca
     else

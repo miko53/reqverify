@@ -10,7 +10,7 @@ class Traca
     @project = project
   end
 
-  def generate_traceability(relationship, _output_folder)
+  def generate_traceability(relationship)
     upstream_docs = @project.upstream_docs(relationship)
     downstream_docs = @project.downstream_docs(relationship)
     return if check_if_loaded(upstream_docs + downstream_docs) == false

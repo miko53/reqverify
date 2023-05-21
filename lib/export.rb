@@ -5,8 +5,9 @@ require_relative 'stat_req'
 
 # class Export
 class Export
-  def initialize(result)
+  def initialize(result, output_folder)
     @result = result
+    @output_folder = output_folder
   end
 
   def export_result
@@ -15,16 +16,16 @@ class Export
   end
 
   def export_downstream_results(traca_result)
-    export = ExportReq.new(@project, 'test', traca_result)
+    export = ExportReq.new(@output_folder, traca_result)
     stat = StatReq.new
     stat_report = stat.build_stat(traca_result)
-    export.write_traca_report(stat_report)
+    export.write_downstream_report(stat_report)
   end
 
   def export_upstream_results(traca_result)
-    export = ExportReq.new(@project, 'test_2', traca_result)
+    export = ExportReq.new(@output_folder, traca_result)
     stat = StatReq.new
     stat_report = stat.build_up_stat(traca_result)
-    export.write_traca_up_report(stat_report)
+    export.write_uptream_report(stat_report)
   end
 end
