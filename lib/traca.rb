@@ -1,93 +1,74 @@
 # frozen_string_literal: true
 
 require_relative 'project'
+require_relative 'traca_report'
 
 # class Traca
 class Traca
+  # @param project[Project]
   def initialize(project)
     @project = project
   end
 
+  # @param relationship[String]
   def generate_traceability(relationship)
     upstream_docs = @project.upstream_docs(relationship)
     downstream_docs = @project.downstream_docs(relationship)
     return if check_if_loaded(upstream_docs + downstream_docs) == false
 
-    r = {}
-    r[:downstream] = generate_traca_of_downstream_docs(downstream_docs, upstream_docs)
-    r[:upstreams] = generate_traca_of_upstream_docs(downstream_docs, upstream_docs)
-    r
+    r = TracaReport.new
+    generate_traca_of_downstream_docs(r, downstream_docs, upstream_docs)
+    generate_traca_of_upstream_docs(r, downstream_docs, upstream_docs)
+    pp r
   end
 
   private
 
-  def generate_traca_of_downstream_docs(downstream_docs, upstream_docs)
-    traca_by_doc = []
+  def generate_traca_of_downstream_docs(traca_report, downstream_docs, upstream_docs) # rubocop:disable Metrics/MethodLength
     downstream_docs.each do |downstream_doc|
-      traca_doc = {}
-      traca_doc['name'] = downstream_doc.doc_name
-      traca_report = []
+      traca_doc = TracaReportByDownstreamDoc.new
+      traca_doc.doc_name = downstream_doc.doc_name
       req_list = downstream_doc.req_id_list
       req_list.each do |req_id|
-        line = downstream_setup_default_line(req_id)
+        line = TracaReportDownstreamLine.new(req_id: req_id)
         cov_req_list = downstream_doc.cov_reqs_list(req_id)
-        line = downstream_update_req_charact(req_id, cov_req_list, upstream_docs, line)
-        traca_report.append line
+        downstream_update_req_charact(req_id, cov_req_list, upstream_docs, line)
+        traca_doc.append line
       end
-      traca_doc['data'] = traca_report
-      traca_by_doc.append traca_doc
+      traca_report.append_downstream_doc(traca_doc)
     end
-    traca_by_doc
-  end
-
-  def downstream_setup_default_line(req_id)
-    line = {}
-    line['id'] = req_id
-    line['cov_list'] = []
-    line['derived'] = false
-    line
   end
 
   def downstream_update_req_charact(req_id, cov_req_list, upstream_docs, line)
+    # '&' => check if nil
     cov_req_list&.each do |cov_req|
       if @project.name_for_derived_req_id?(cov_req)
-        line['derived'] = true
+        line.derived = true
       elsif check_if_req_id_exists?(cov_req, upstream_docs)
-        line['cov_list'].append cov_req
+        line.append cov_req
       else
-        print "error: '#{req_id}' doesn't exist\n"
+        print "warning: '#{req_id}' doesn't exist\n"
       end
     end
-    line
   end
 
-  def generate_traca_of_upstream_docs(downstream_docs, upstream_docs)
-    traca_by_doc = []
+  def generate_traca_of_upstream_docs(traca_report, downstream_docs, upstream_docs) # rubocop:disable Metrics/MethodLength
     upstream_docs.each do |upstream_doc|
-      traca_doc = {}
-      traca_doc['name'] = upstream_doc.doc_name
-      traca_report = []
+      traca_doc = TracaReportByUpstreamDoc.new
+      traca_doc.doc_name = upstream_doc.doc_name
       req_list = upstream_doc.req_id_list
       req_list.each do |req_id|
-        line = upstream_setup_default_line(req_id)
+        line = TracaReportUpstreamLine.new(req_id: req_id)
         downstream_docs.each do |downstream_doc|
-          line['covered-by'].concat downstream_doc.req_list_of_covered_id(req_id)
+          line.concat downstream_doc.req_list_of_covered_id(req_id)
         end
-        traca_report.append line
+        traca_doc.append line
       end
-      traca_doc['data'] = traca_report
-      traca_by_doc.append traca_doc
+      traca_report.append_upstream_doc(traca_doc)
     end
-    traca_by_doc
   end
 
-  def upstream_setup_default_line(req_id)
-    line = {}
-    line['id'] = req_id
-    line['covered-by'] = []
-    line
-  end
-
+  # @param docs[Array(DocReq)]
   def check_if_loaded(docs)
     loaded = true
     docs.each do |doc|

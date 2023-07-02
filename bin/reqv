@@ -16,20 +16,40 @@ class Main
     @project = nil
   end
 
+  # main entry point function
+  # read the command-line argument
+  # check them
+  # and execute requested action
+  def main
+    options = read_args
+    check_options(options)
+    @project = load_project_check_working_dir(options)
+    parse_and_launch_action(options)
+  end
+
   # This method read command-line arguments
   # and returns +options+ hash of argument
-  def read_args # rubocop:disable Metrics/MethodLength
+  def read_args # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
     options = {}
     OptionParser.new do |opts|
       opts.banner = "Usage: #{$PROGRAM_NAME} "
-      opts.on('-pPROJECT_FILE', '--project-file=PROJECT_FILE', 'provide project file') do |n|
+      opts.on('-pPROJECT_FILE', '--project=PROJECT_FILE', 'provide project file') do |n|
         options[:project_file] = n
       end
-      opts.on('-aACTION', '--action=ACTION', 'action to launch') do |n|
+      opts.on('-rRELATIONSHIP', '--relationship=RELATIONSHIP', 'concerned traceability to check/export') do |n|
+        options[:relationship] = n
+      end
+      opts.on('-aACTION', '--action=ACTION', 'action to launch (check/export)') do |n|
         options[:action] = n
       end
       opts.on('-oOUTPUT_FOLDER', '--output-folder=OUTPUT_FOLDER', 'folder where stored result') do |n|
         options[:output_folder] = n
+      end
+      opts.on('-fOUTPUT_FILE', '--output-file=OUTPUT_FILE', 'file where stored result') do |n|
+        options[:output_file] = n
+      end
+      opts.on('-d', '--[no-]debug', 'Run with debug info') do |n|
+        options[:debug] = n
       end
     end.parse!
     # pp options
@@ -51,19 +71,8 @@ class Main
     exit EXIT_FAILURE
   end
 
-  # main entry point function
-  # read the command-line argument
-  # check them
-  # and execute requested action
-  def main
-    options = read_args
-    check_options(options)
-    @project = load_project(options)
-    parse_and_launch_action(options)
-  end
-
   # load project according to +options+ hash
-  def load_project(options)
+  def load_project_check_working_dir(options)
     project = Project.new options[:project_file]
     if project.loaded? && Dir.exist?(project.working_dir)
       @working_dir = project.working_dir
@@ -78,30 +87,32 @@ class Main
   # +options+ hash of option given in command line
   # +project+ Project class object
   def parse_and_launch_action(options)
-    actions = options[:action].split
+    action = options[:action]
     # pp actions
 
-    case actions[0]
-    when 'gen_traca'
-      check_output(options)
-      generate_traceability(actions[1])
+    case action
+    when 'export'
+      check_export_output_arg(options)
+      generate_traceability(options[:relationship])
+    when 'status'
+      p 'status'
     else
       print "Unknown action\n"
     end
   end
 
   # check if output is given
-  def check_output(options)
+  def check_export_output_arg(options)
     if options[:output_folder].nil?
       print "no output folder given, see help\n"
       exit EXIT_FAILURE
     else
-      check_if_folder_or_create_it(options[:output_folder])
+      check_if_folder_exist_or_create_it(options[:output_folder])
       @output_folder = options[:output_folder]
     end
   end
 
-  def check_if_folder_or_create_it(folder_name)
+  def check_if_folder_exist_or_create_it(folder_name)
     return if Dir.exist?(folder_name)
 
     begin
@@ -120,7 +131,7 @@ class Main
       r = traca.generate_traceability(relationship)
       pp r
       export = Export.new(r, @output_folder)
-      export.export_result
+      export.export_result r
       # pp traca
     else
       print "Error, no relationship given\n"

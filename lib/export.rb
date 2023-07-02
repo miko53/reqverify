@@ -2,6 +2,7 @@
 
 require_relative 'export_csv_req'
 require_relative 'stat_req'
+require_relative 'traca_report'
 
 # class Export
 class Export
@@ -10,22 +11,24 @@ class Export
     @output_folder = output_folder
   end
 
-  def export_result
-    export_downstream_results(@result[:downstream])
-    export_upstream_results(@result[:upstreams])
+  def export_result(traca_report)
+    export_downstream_results(traca_report)
+    export_upstream_results(traca_report)
   end
 
-  def export_downstream_results(traca_result)
-    export = ExportCsvReq.new(@output_folder, traca_result)
+  def export_downstream_results(traca_report)
+    export = ExportCsvReq.new(@output_folder, traca_report)
     stat = StatReq.new
-    stat_report = stat.build_stat(traca_result)
+    stat_report = stat.build_downstream_stat(traca_report)
     export.write_downstream_report(stat_report)
+    pp stat_report
   end
 
-  def export_upstream_results(traca_result)
-    export = ExportCsvReq.new(@output_folder, traca_result)
+  def export_upstream_results(traca_report)
+    export = ExportCsvReq.new(@output_folder, traca_report)
     stat = StatReq.new
-    stat_report = stat.build_up_stat(traca_result)
-    export.write_uptream_report(stat_report)
+    stat_report = stat.build_upstream_stat(traca_report)
+    export.write_upstream_report(stat_report)
+    pp stat_report
   end
 end

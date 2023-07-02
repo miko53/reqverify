@@ -26,13 +26,15 @@ class Project
   # provide the upstream documents (+docs_req_list+ DocReq object)
   # according to +relationship+ (String) which names the link
   # between document
+  # @param relationship[String]
+  # @return [Array(DocReq)]
   def upstream_docs(relationship)
     docname_list = search_upstream_docs(relationship)
     return nil if docname_list.nil?
 
     docs_req_list = []
     docname_list.each do |docname|
-      docs_req_list.append create_doc_req(docname)
+      docs_req_list.append(create_doc_req(docname))
     end
     docs_req_list
   end
@@ -114,6 +116,7 @@ class Project
 
   # create and return DocReq object  according to +docname+ (String)
   # DocReq read and load YAML document
+  # @return [DocReq]
   def create_doc_req(docname)
     @project_file['docs'].each do |item|
       return DocReq.new(self, item['name'], item['path']) if item['name'] == docname
