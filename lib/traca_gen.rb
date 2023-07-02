@@ -19,7 +19,7 @@ class TracaGenerator
     r = TracaReport.new
     generate_traca_of_downstream_docs(r, downstream_docs, upstream_docs)
     generate_traca_of_upstream_docs(r, downstream_docs, upstream_docs)
-    pp r
+    r
   end
 
   private

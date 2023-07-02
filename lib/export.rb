@@ -21,7 +21,7 @@ class Export
     stat = StatReq.new
     stat_report = stat.build_downstream_stat(traca_report)
     export.write_downstream_report(stat_report)
-    pp stat_report
+    Log.debug_pp stat_report
   end
 
   def export_upstream_results(traca_report)
@@ -29,6 +29,6 @@ class Export
     stat = StatReq.new
     stat_report = stat.build_upstream_stat(traca_report)
     export.write_upstream_report(stat_report)
-    pp stat_report
+    Log.debug_pp stat_report
   end
 end

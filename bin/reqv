@@ -5,6 +5,7 @@ require 'optparse'
 require_relative '../lib/project'
 require_relative '../lib/traca_gen'
 require_relative '../lib/export'
+require_relative '../lib/log'
 
 # main application class
 class Main
@@ -23,6 +24,7 @@ class Main
   def main
     options = read_args
     check_options(options)
+    initialize_log_level(options)
     @project = load_project_check_working_dir(options)
     parse_and_launch_action(options)
   end
@@ -51,9 +53,18 @@ class Main
       opts.on('-d', '--[no-]debug', 'Run with debug info') do |n|
         options[:debug] = n
       end
+      opts.on('-v', '--[no-]verbose', 'Run with verbose info') do |n|
+        options[:verbose] = n
+      end
     end.parse!
     # pp options
     options
+  end
+
+  def initialize_log_level(options)
+    Log.verbose_level = Log::LOG_LEVEL_NONE
+    Log.verbose_level = Log::LOG_LEVEL_INFO unless options[:verbose].nil?
+    Log.verbose_level = Log::LOG_LEVEL_DBG unless options[:debug].nil?
   end
 
   # check if given +options+ (hash data come from command-line)
@@ -61,13 +72,13 @@ class Main
   # return to shell if mandatory option are not given
   def check_options(options)
     if options[:action].nil?
-      print "need to provide action, see help\n"
+      Log.error 'need to provide action, see help'
       exit EXIT_FAILURE
     end
 
     return unless options[:project_file].nil?
 
-    print "need to provide project file, see help\n"
+    Log.error 'need to provide project file, see help'
     exit EXIT_FAILURE
   end
 
@@ -76,8 +87,9 @@ class Main
     project = Project.new options[:project_file]
     if project.loaded? && Dir.exist?(project.working_dir)
       @working_dir = project.working_dir
+      Log.info "project file: #{options[:project_file]}"
     else
-      print "project file is not valid or working dir doesn't exist\n"
+      Log.error "project file is not valid or working dir doesn't exist"
       exit EXIT_FAILURE
     end
     project
@@ -95,16 +107,16 @@ class Main
       check_export_output_arg(options)
       generate_traceability(options[:relationship])
     when 'status'
-      p 'status'
+      Log.info 'status'
     else
-      print "Unknown action\n"
+      Log.error 'Unknown action'
     end
   end
 
   # check if output is given
   def check_export_output_arg(options)
     if options[:output_folder].nil?
-      print "no output folder given, see help\n"
+      Log.error 'no output folder given, see help'
       exit EXIT_FAILURE
     else
       check_if_folder_exist_or_create_it(options[:output_folder])
@@ -118,7 +130,7 @@ class Main
     begin
       Dir.mkdir(folder_name)
     rescue StandardError => e
-      print "unable to create folder #{folder_name}, #{e}"
+      Log.error "unable to create folder #{folder_name}, #{e}"
       exit EXIT_FAILURE
     end
   end
@@ -129,12 +141,16 @@ class Main
     if !relationship.nil?
       traca = TracaGenerator.new(@project)
       r = traca.generate_traceability(relationship)
-      pp r
-      export = Export.new(r, @output_folder)
-      export.export_result r
+      # pp r
+      if r.nil?
+        Log.error 'Unable to create traceability data'
+      else
+        export = Export.new(r, @output_folder)
+        export.export_result r
+      end
       # pp traca
     else
-      print "Error, no relationship given\n"
+      Log.error 'Error, no relationship given'
       exit EXIT_FAILURE
     end
   end
