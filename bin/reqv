@@ -3,7 +3,7 @@
 
 require 'optparse'
 require_relative '../lib/project'
-require_relative '../lib/traca'
+require_relative '../lib/traca_gen'
 require_relative '../lib/export'
 
 # main application class
@@ -127,7 +127,7 @@ class Main
   def generate_traceability(relationship)
     # p 'GO'
     if !relationship.nil?
-      traca = Traca.new(@project)
+      traca = TracaGenerator.new(@project)
       r = traca.generate_traceability(relationship)
       pp r
       export = Export.new(r, @output_folder)

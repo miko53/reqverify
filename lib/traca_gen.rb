@@ -3,8 +3,8 @@
 require_relative 'project'
 require_relative 'traca_report'
 
-# class Traca
-class Traca
+# class TracaGenerator
+class TracaGenerator
   # @param project[Project]
   def initialize(project)
     @project = project
