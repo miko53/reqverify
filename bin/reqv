@@ -4,7 +4,7 @@
 require 'optparse'
 require_relative '../lib/project'
 require_relative '../lib/traca_gen'
-require_relative '../lib/export'
+require_relative '../lib/export_csv'
 require_relative '../lib/log'
 
 # main application class
@@ -50,6 +50,9 @@ class Main
       opts.on('-fOUTPUT_FILE', '--output-file=OUTPUT_FILE', 'file where stored result') do |n|
         options[:output_file] = n
       end
+      opts.on('-FFORMAT', '--format-export=FORMAT', 'export file format csv,xlsx') do |n|
+        options[:export_format] = n
+      end
       opts.on('-d', '--[no-]debug', 'Run with debug info') do |n|
         options[:debug] = n
       end
@@ -71,14 +74,25 @@ class Main
   # are correct
   # return to shell if mandatory option are not given
   def check_options(options)
+    failure = false
+
     if options[:action].nil?
       Log.error 'need to provide action, see help'
-      exit EXIT_FAILURE
+      failure = true
     end
 
-    return unless options[:project_file].nil?
+    if (options[:action] == 'export') && options[:export_format].nil?
+      Log.error 'format not provided'
+      failure = true
+    end
 
-    Log.error 'need to provide project file, see help'
+    if options[:project_file].nil?
+      Log.error 'need to provide project file, see help'
+      failure = true
+    end
+
+    return unless failure
+
     exit EXIT_FAILURE
   end
 
@@ -100,12 +114,11 @@ class Main
   # +project+ Project class object
   def parse_and_launch_action(options)
     action = options[:action]
-    # pp actions
 
     case action
     when 'export'
       check_export_output_arg(options)
-      generate_traceability(options[:relationship])
+      generate_traceability(options)
     when 'status'
       Log.info 'status'
     else
@@ -136,23 +149,39 @@ class Main
   end
 
   # launch effectif traceablity action
-  def generate_traceability(relationship)
-    # p 'GO'
-    if !relationship.nil?
-      traca = TracaGenerator.new(@project)
-      r = traca.generate_traceability(relationship)
-      # pp r
-      if r.nil?
-        Log.error 'Unable to create traceability data'
-      else
-        export = Export.new(r, @output_folder)
-        export.export_result r
-      end
-      # pp traca
+  def generate_traceability(options)
+    if !options[:relationship].nil?
+      Log.info "Generate traceability #{options[:relationship]}"
+      generate_traceability_and_export(options)
     else
       Log.error 'Error, no relationship given'
       exit EXIT_FAILURE
     end
+  end
+
+  def generate_traceability_and_export(options)
+    traca = TracaGenerator.new(@project)
+    traca_report = traca.generate_traceability(options[:relationship])
+    # pp r
+    if traca_report.nil?
+      Log.error 'Unable to create traceability data'
+    else
+      export = create_export(options[:export_format])
+      export.export_traca_report report: traca_report, output_folder: @output_folder, output_file: nil
+    end
+    # pp traca
+  end
+
+  def create_export(format)
+    export_gen = nil
+    case format
+    when 'xslx'
+      Log.info 'xlsx format'
+    when 'csv'
+      Log.info 'csv format'
+      export_gen = ExportCsv.new
+    end
+    export_gen
   end
 end
 
