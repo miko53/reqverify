@@ -5,6 +5,7 @@ require 'optparse'
 require_relative '../lib/project'
 require_relative '../lib/traca_gen'
 require_relative '../lib/export_csv'
+require_relative '../lib/export_xslx'
 require_relative '../lib/log'
 
 # main application class
@@ -135,6 +136,17 @@ class Main
       check_if_folder_exist_or_create_it(options[:output_folder])
       @output_folder = options[:output_folder]
     end
+
+    check_output_file(options)
+  end
+
+  def check_output_file(options)
+    if options[:export_format] == 'xlsx' && options[:output_file].nil?
+      Log.error 'for xlsx, provide a output file , see help'
+      exit EXIT_FAILURE
+    else
+      @output_file = options[:output_file]
+    end
   end
 
   def check_if_folder_exist_or_create_it(folder_name)
@@ -167,7 +179,7 @@ class Main
       Log.error 'Unable to create traceability data'
     else
       export = create_export(options[:export_format])
-      export.export_traca_report report: traca_report, output_folder: @output_folder, output_file: nil
+      export.export_traca_report report: traca_report, output_folder: @output_folder, output_file: @output_file
     end
     # pp traca
   end
@@ -177,6 +189,7 @@ class Main
     case format
     when 'xslx'
       Log.info 'xlsx format'
+      export_gen = ExportXslx.new
     when 'csv'
       Log.info 'csv format'
       export_gen = ExportCsv.new
