@@ -7,6 +7,7 @@ require_relative '../lib/traca_gen'
 require_relative '../lib/export_csv'
 require_relative '../lib/export_xslx'
 require_relative '../lib/log'
+require_relative '../lib/display_status_req'
 
 # main application class
 class Main
@@ -119,9 +120,11 @@ class Main
     case action
     when 'export'
       check_export_output_arg(options)
-      generate_traceability(options)
+      traca_report = generate_traceability(options)
+      generate_export(options, traca_report)
     when 'status'
-      Log.info 'status'
+      traca_report = generate_traceability(options)
+      display_status(traca_report)
     else
       Log.error 'Unknown action'
     end
@@ -162,18 +165,20 @@ class Main
 
   # launch effectif traceablity action
   def generate_traceability(options)
+    traca_report = nil
     if !options[:relationship].nil?
       Log.info "Generate traceability #{options[:relationship]}"
-      generate_traceability_and_export(options)
+      traca = TracaGenerator.new(@project)
+      # pp traca
+      traca_report = traca.generate_traceability(options[:relationship])
     else
       Log.error 'Error, no relationship given'
       exit EXIT_FAILURE
     end
+    traca_report
   end
 
-  def generate_traceability_and_export(options)
-    traca = TracaGenerator.new(@project)
-    traca_report = traca.generate_traceability(options[:relationship])
+  def generate_export(options, traca_report)
     # pp r
     if traca_report.nil?
       Log.error 'Unable to create traceability data'
@@ -181,7 +186,6 @@ class Main
       export = create_export(options[:export_format])
       export.export_traca_report report: traca_report, output_folder: @output_folder, output_file: @output_file
     end
-    # pp traca
   end
 
   def create_export(format)
@@ -195,6 +199,10 @@ class Main
       export_gen = ExportCsv.new
     end
     export_gen
+  end
+
+  def display_status(traca_report)
+    DisplayStatusReq.display(traca_report)
   end
 end
 
