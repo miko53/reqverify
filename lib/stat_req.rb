@@ -2,7 +2,7 @@
 
 # class StatDownstreamReq
 class StatDownstreamReq
-  attr_accessor :nb_req, :nb_uncovered_req, :uncovered_req_including_derived, :doc_name
+  attr_accessor :nb_req, :nb_uncovered_req, :uncovered_req_including_derived, :doc_name, :uncovered_req_list
 
   def coverage_percent
     100 - @nb_uncovered_req * 100 / @nb_req
@@ -19,7 +19,7 @@ end
 
 # class StatUpstreamReq
 class StatUpstreamReq
-  attr_accessor :nb_req, :nb_uncovered_req, :doc_name
+  attr_accessor :nb_req, :nb_uncovered_req, :doc_name, :uncovered_req_list
 
   def coverage_percent
     100 - nb_uncovered_req * 100 / nb_req
@@ -37,6 +37,8 @@ class StatReq
   def build
     build_downstream_stat
     build_upstream_stat
+    Log.debug_pp @downstream_stat
+    Log.debug_pp @upstream_stat
   end
 
   def search_downstream_stat(doc_name)
@@ -58,16 +60,21 @@ class StatReq
       nb_total_req = 0
       uncovered_req_including_derived = 0
       uncovered_req = 0
+      uncovered_req_list = []
       downstream_doc.each_req_line do |req|
         nb_total_req += 1
         uncovered_req_including_derived += 1 if req.covers_empty? && req.derived?
-        uncovered_req if req.covers_empty? && req.derived? == false
+        if req.covers_empty? && req.derived? == false
+          uncovered_req += 1
+          uncovered_req_list.append req.req_id
+        end
       end
       result = StatDownstreamReq.new
       result.doc_name = downstream_doc.name
       result.nb_req = nb_total_req
       result.nb_uncovered_req = uncovered_req
       result.uncovered_req_including_derived = uncovered_req_including_derived
+      result.uncovered_req_list = uncovered_req_list
       @downstream_stat << result
     end
   end
@@ -76,14 +83,19 @@ class StatReq
     @traca_report.each_upstream_doc do |upstream_doc|
       nb_total_req = 0
       uncovered_req = 0
+      uncovered_req_list = []
       upstream_doc.each_req_line do |req|
         nb_total_req += 1
-        uncovered_req if req.covered_empty?
+        if req.covered_empty?
+          uncovered_req += 1
+          uncovered_req_list.append req.req_id
+        end
       end
       result = StatUpstreamReq.new
       result.doc_name = upstream_doc.name
       result.nb_req = nb_total_req
       result.nb_uncovered_req = uncovered_req
+      result.uncovered_req_list = uncovered_req_list
       @upstream_stat << result
     end
   end

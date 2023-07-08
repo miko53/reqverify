@@ -169,8 +169,8 @@ class Main
     if !options[:relationship].nil?
       Log.info "Generate traceability #{options[:relationship]}"
       traca = TracaGenerator.new(@project)
-      # pp traca
       traca_report = traca.generate_traceability(options[:relationship])
+      Log.debug_pp traca_report
     else
       Log.error 'Error, no relationship given'
       exit EXIT_FAILURE
