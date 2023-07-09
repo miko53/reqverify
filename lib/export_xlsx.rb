@@ -4,8 +4,8 @@ require_relative 'export'
 require_relative 'stat_req'
 require 'axlsx'
 
-# class ExportXslx
-class ExportXslx
+# class ExportXlsx
+class ExportXlsx
   CELL_HEIGHT = 15
 
   def export_traca_report(report:, output_folder:, output_file:)

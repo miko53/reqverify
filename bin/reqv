@@ -5,7 +5,7 @@ require 'optparse'
 require_relative '../lib/project'
 require_relative '../lib/traca_gen'
 require_relative '../lib/export_csv'
-require_relative '../lib/export_xslx'
+require_relative '../lib/export_xlsx'
 require_relative '../lib/log'
 require_relative '../lib/display_status_req'
 
@@ -191,12 +191,15 @@ class Main
   def create_export(format)
     export_gen = nil
     case format
-    when 'xslx'
+    when 'xlsx'
       Log.info 'xlsx format'
-      export_gen = ExportXslx.new
+      export_gen = ExportXlsx.new
     when 'csv'
       Log.info 'csv format'
       export_gen = ExportCsv.new
+    else
+      Log.error "unknown format #{format}"
+      exit EXIT_FAILURE
     end
     export_gen
   end
