@@ -1,0 +1,23 @@
+---
+name: test_project
+version: 1.0
+docs:
+  - name: SRS
+    path: 'req_srs.yaml'
+  - name: SSS_1
+    path: 'req_sss_1.yaml'
+  - name: SSS_2
+    path: 'req_sss_2.yaml'
+relationships:
+  - name: 'SSS_all<->SRS'
+    doc: 
+      - SRS
+    covered-by:
+      - SSS_1
+      - SSS_2
+
+derived-name:
+  - "derived"
+  - "Derived"
+
+
