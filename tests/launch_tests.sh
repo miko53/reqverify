@@ -77,7 +77,23 @@ END
 #echo "$r"
 check_string_result "$r" "${EXPECTED_OUTPUT}" "${TEST_NAME}"
 
-#basic test 1 upstream doc and 1 downstream doc
+#basic test 1 upstream doc and 1 downstream doc output xlsx
 TEST_NAME="basic test - output xlsx"
 ${REQV} -p ${TESTS_PATH}/inputs/01_basic_1.SSS_1.SRS/project.yaml -a export -F xlsx -r "SSS<->SRS" -o ${TESTS_PATH}/outputs/03_basic_1.SSS_1.SRS -f 03.xlsx -v
 check_file_exists "${TESTS_PATH}/outputs/03_basic_1.SSS_1.SRS/03.xlsx" "${TEST_NAME}"
+
+#nominal 1 downstream, 2 upstream
+TEST_NAME="nominal 1 downstream, 2 upstream"
+${REQV} -p ${TESTS_PATH}/inputs/04_nominal_2.SSS_1.SRS/project.yaml -a export -F csv -r "SSS_all<->SRS" -o ${TESTS_PATH}/outputs/04_nominal_2.SSS_1.SRS -v
+${DIFF} -r ${TESTS_PATH}/outputs/04_nominal_2.SSS_1.SRS ${TESTS_PATH}/expected/04_nominal_2.SSS_1.SRS
+check_result $? "${TEST_NAME}"
+
+#nominal 2 downstream, 1 upstream
+TEST_NAME="nominal 2 downstream, 1 upstream"
+${REQV} -p ${TESTS_PATH}/inputs/05_nominal_1.SRS_2.STD/project.yaml -a export -F csv -r "SRS<->STD_all" -o ${TESTS_PATH}/outputs/05_nominal_1.SRS_2.STD -v
+${DIFF} -r ${TESTS_PATH}/outputs/05_nominal_1.SRS_2.STD ${TESTS_PATH}/expected/05_nominal_1.SRS_2.STD
+check_result $? "${TEST_NAME}"
+
+
+# ../bin/reqv -p ./inputs/04_nominal_2.SSS_1.SRS/project.yaml -a status -r "SSS_all<->SRS" -d
+# ../bin/reqv -p ./inputs/05_nominal_1.SRS_2.STD/project.yaml -a status -r "SRS<->STD_all" -d
