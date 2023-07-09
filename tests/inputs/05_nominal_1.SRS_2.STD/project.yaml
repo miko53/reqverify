@@ -1,0 +1,22 @@
+---
+name: test_project
+version: 1.0
+docs:
+  - name: SRS
+    path: 'req_srs.yaml'
+  - name: STD_1
+    path: 'req_std_1.yaml'
+  - name: STD_2
+    path: 'req_std_2.yaml'
+relationships:
+  - name: 'SRS<->STD_all'
+    doc: 
+      - STD_1
+      - STD_2
+    covered-by:
+      - SRS
+derived-name:
+  - "derived"
+  - "Derived"
+
+
