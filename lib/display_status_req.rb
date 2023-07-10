@@ -29,10 +29,17 @@ class DisplayStatusReq
                 color_uncovered(req_stat.nb_uncovered_req))
     display_uncovered_req(req_stat) unless req_stat.nb_uncovered_req.zero?
     Log.display("  derived requirement: #{req_stat.nb_derived_percent}%")
+    display_derived_req(req_stat) unless req_stat.nb_derived_req.zero?
   end
 
   def self.display_uncovered_req(req_stat)
     req_stat.uncovered_req_list.each do |req_id|
+      Log.display("    #{req_id}")
+    end
+  end
+
+  def self.display_derived_req(req_stat)
+    req_stat.derived_req_list.each do |req_id|
       Log.display("    #{req_id}")
     end
   end

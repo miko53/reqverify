@@ -43,6 +43,8 @@ check_file_exists()
 # remove all previous data
 rm -rf ${TESTS_PATH}/outputs/*
 
+#set -x
+
 #basic test 1 upstream doc and 1 downstream doc
 TEST_NAME="basic test - output csv"
 ${REQV} -p ${TESTS_PATH}/inputs/01_basic_1.SSS_1.SRS/project.yaml -a export -F csv -r "SSS<->SRS" -o ${TESTS_PATH}/outputs/01_basic_1.SSS_1.SRS  -v
@@ -65,7 +67,9 @@ document: SRS
   number of uncovered requirement: 2
     SRS_REQ_001.1
     SRS_REQ_002.1
-  derived requirement: 20%
+  derived requirement: 40%
+    SRS_REQ_003.1
+    SRS_REQ_005.1
 document: SSS
   coverage: 75%
   number of requirement: 4
