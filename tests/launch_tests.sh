@@ -98,6 +98,63 @@ ${REQV} -p ${TESTS_PATH}/inputs/05_nominal_1.SRS_2.STD/project.yaml -a export -F
 ${DIFF} -r ${TESTS_PATH}/outputs/05_nominal_1.SRS_2.STD ${TESTS_PATH}/expected/05_nominal_1.SRS_2.STD
 check_result $? "${TEST_NAME}"
 
+TEST_NAME="not found requirement 1 - check status ouput"
+# sed command => to remove the color
+# TODO put in file in expected folder
+r=`${REQV} -p ${TESTS_PATH}/inputs/06_not_found_1.SSS_1.SRS/project.yaml -a status -r "SSS<->SRS" | sed -r "s/\x1B\[([0-9]{1,3}(;[0-9]{1,2};?)?)?[mGK]//g"`
+EXPECTED_OUTPUT=$(cat <<-END
+warning: 'SSS_REQ_010.1' doesn't exist !
+warning: 'SSS_RSQ_003.1' doesn't exist !
+document: SRS
+  coverage: 80%
+  number of requirement: 5
+  number of uncovered requirement: 1
+    SRS_REQ_001.1
+  derived requirement: 40%
+    SRS_REQ_003.1
+    SRS_REQ_005.1
+document: SSS
+  coverage: 75%
+  number of requirement: 4
+  number of uncovered requirement: 1
+    SSS_REQ_003.1
+END
+)
+check_string_result "$r" "${EXPECTED_OUTPUT}" "${TEST_NAME}"
+
+TEST_NAME="not found requirement 2 - check status ouput"
+# sed command => to remove the color
+# TODO put in file in expected folder
+r=`${REQV} -p ${TESTS_PATH}/inputs/07_not_found_1.SRS_2.STD/project.yaml -a status -r "SRS<->STD_all" | sed -r "s/\x1B\[([0-9]{1,3}(;[0-9]{1,2};?)?)?[mGK]//g"`
+EXPECTED_OUTPUT=$(cat <<-END
+warning: 'SRS_REQ_010.1' doesn't exist !
+warning: 'SRS_REQ_020.1' doesn't exist !
+warning: 'SRS_REQ_101.1' doesn't exist !
+warning: 'SRT_REQ_002.1' doesn't exist !
+warning: 'SRS_REQ_03.1' doesn't exist !
+warning: 'SRS_REQ_02.1' doesn't exist !
+document: STD_1
+  coverage: 40%
+  number of requirement: 5
+  number of uncovered requirement: 3
+    STD_1_REQ_001.1
+    STD_1_REQ_002.1
+    STD_1_REQ_005.1
+  derived requirement: 0%
+document: STD_2
+  coverage: 100%
+  number of requirement: 6
+  number of uncovered requirement: 0
+  derived requirement: 0%
+document: SRS
+  coverage: 100%
+  number of requirement: 6
+  number of uncovered requirement: 0
+END
+)
+check_string_result "$r" "${EXPECTED_OUTPUT}" "${TEST_NAME}"
+
 
 # ../bin/reqv -p ./inputs/04_nominal_2.SSS_1.SRS/project.yaml -a status -r "SSS_all<->SRS" -d
 # ../bin/reqv -p ./inputs/05_nominal_1.SRS_2.STD/project.yaml -a status -r "SRS<->STD_all" -d
+

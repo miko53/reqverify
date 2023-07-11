@@ -32,14 +32,14 @@ class TracaGenerator
       req_list.each do |req_id|
         line = TracaReportDownstreamLine.new(req_id: req_id)
         cov_req_list = downstream_doc.cov_reqs_list(req_id)
-        downstream_update_req_charact(req_id, cov_req_list, upstream_docs, line)
+        downstream_update_req_charact(cov_req_list, upstream_docs, line)
         traca_doc.append line
       end
       traca_report.append_downstream_doc(traca_doc)
     end
   end
 
-  def downstream_update_req_charact(req_id, cov_req_list, upstream_docs, line)
+  def downstream_update_req_charact(cov_req_list, upstream_docs, line)
     # '&' => check if nil
     cov_req_list&.each do |cov_req|
       if @project.name_for_derived_req_id?(cov_req)
@@ -47,7 +47,7 @@ class TracaGenerator
       elsif check_if_req_id_exists?(cov_req, upstream_docs)
         line.append cov_req
       else
-        print "warning: '#{req_id}' doesn't exist\n"
+        Log.display "warning: '#{cov_req}' doesn't exist !\n", :magenta
       end
     end
   end
