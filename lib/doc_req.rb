@@ -82,8 +82,8 @@ class DocReq
     f
   end
 
-  def decode_yaml_file(f)
-    @doc_file = YAML.safe_load f
+  def decode_yaml_file(file)
+    @doc_file = YAML.safe_load file
   rescue StandardError => e
     @doc_file = nil
     puts "wrong file format, #{e}"

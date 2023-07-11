@@ -18,7 +18,7 @@ class DisplayStatusReq
     end
   end
 
-  def self.display_downstream_statistics(doc_name)
+  def self.display_downstream_statistics(doc_name) # rubocop:disable Metrics/AbcSize
     req_stat = @stat_req.search_downstream_stat(doc_name)
     return if req_stat.nil?
 
