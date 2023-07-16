@@ -63,6 +63,111 @@ class Project
     false
   end
 
+  def docs_of(relationship)
+    r = []
+    @project_file['relationships'].each do |item|
+      r = item['covered-by'] if item['name'] == relationship
+      r += item['doc'] if item['name'] == relationship
+    end
+    r
+  end
+
+  def import?(docname)
+    b = false
+    @project_file['docs'].each do |doc|
+      b = !doc['imported-from'].nil? if doc['name'] == docname
+    end
+    b
+  end
+
+  def input_file_exist?(docname)
+    r = false
+    @project_file['docs'].each do |doc|
+      next unless doc['name'] == docname
+
+      input_file = doc['imported-from']['input']
+      p input_file
+      p working_dir
+      filename = File.join(working_dir, input_file)
+      r = File.exist?(filename)
+    end
+    r
+  end
+
+  def get_input_file(docname)
+    @project_file['docs'].each do |doc|
+      next unless doc['name'] == docname
+
+      input_file = doc['imported-from']['input']
+      filename = File.join(working_dir, input_file)
+      return filename
+    end
+    nil
+  end
+
+  def output_file_exist?(docname)
+    r = false
+    @project_file['docs'].each do |doc|
+      next unless doc['name'] == docname
+
+      file = doc['path']
+      filename = File.join(working_dir, file)
+      r = File.exist?(filename)
+    end
+    r
+  end
+
+  def get_output_file(docname)
+    @project_file['docs'].each do |doc|
+      next unless doc['name'] == docname
+
+      file = doc['path']
+      filename = File.join(working_dir, file)
+      return filename
+    end
+    nil
+  end
+
+  def input_file_date(docname)
+    @project_file['docs'].each do |doc|
+      next unless doc['name'] == docname
+
+      input_file = doc['imported-from']['input']
+      filename = File.join(working_dir, input_file)
+      return File.mtime(filename)
+    end
+  end
+
+  def output_file_date(docname)
+    @project_file['docs'].each do |doc|
+      next unless doc['name'] == docname
+
+      file = doc['path']
+      filename = File.join(working_dir, file)
+      return File.mtime(filename)
+    end
+  end
+
+  def get_handler(docname)
+    @project_file['docs'].each do |doc|
+      next unless doc['name'] == docname
+
+      imported_data = doc['imported-from']
+      handler = imported_data['handler']
+      return handler
+    end
+  end
+
+  def get_handler_options(docname)
+    @project_file['docs'].each do |doc|
+      next unless doc['name'] == docname
+
+      imported_data = doc['imported-from']
+      handler_rules = imported_data['handler-rules']
+      return handler_rules
+    end
+  end
+
   private
 
   # read the project filename, decode the YAML format
@@ -89,8 +194,9 @@ class Project
   # decode the YAML format
   # +f+ => opened file
   # +@project_file+ => set to nil if not correctly decoded
-  def decode_yaml_file(f)
-    @project_file = YAML.safe_load f
+  def decode_yaml_file(file)
+    @project_file = YAML.safe_load file, permitted_classes: [Regexp]
+    pp @project_file
   rescue StandardError => e
     @project_file = nil
     puts "wrong file format, #{e}"

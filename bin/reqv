@@ -121,10 +121,10 @@ class Main
     when 'export'
       check_export_output_arg(options)
       traca_report = generate_traceability(options)
-      generate_export(options, traca_report)
+      generate_export(options, traca_report) unless traca_report.nil?
     when 'status'
       traca_report = generate_traceability(options)
-      display_status(traca_report)
+      display_status(traca_report) unless traca_report.nil?
     else
       Log.error 'Unknown action'
     end
@@ -170,7 +170,7 @@ class Main
       Log.info "Generate traceability #{options[:relationship]}"
       traca = TracaGenerator.new(@project)
       traca_report = traca.generate_traceability(options[:relationship])
-      Log.debug_pp traca_report
+      Log.debug_pp traca_report unless traca_report.nil?
     else
       Log.error 'Error, no relationship given'
       exit EXIT_FAILURE

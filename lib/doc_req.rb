@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'yaml'
+require_relative 'log'
 
 # class DocReq
 class DocReq
@@ -73,10 +74,10 @@ class DocReq
       filename = File.join(@project.working_dir, @path)
       f = File.open(filename, 'r')
     rescue StandardError => e
-      puts "Can not open file #{filename}, #{e}"
-      e.backtrace.each do |l|
-        p l
-      end
+      Log.error "Can not open file #{filename}, #{e}"
+      # e.backtrace.each do |l|
+      #  p l
+      # end
       f = nil
     end
     f
@@ -86,9 +87,9 @@ class DocReq
     @doc_file = YAML.safe_load file
   rescue StandardError => e
     @doc_file = nil
-    puts "wrong file format, #{e}"
-    e.backtrace.each do |l|
-      p l
-    end
+    Log.error "wrong file format, #{e}"
+    # e.backtrace.each do |l|
+    #  p l
+    # end
   end
 end

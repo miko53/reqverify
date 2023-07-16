@@ -2,6 +2,7 @@
 
 require_relative 'project'
 require_relative 'traca_report'
+require_relative 'import_controller'
 
 # class TracaGenerator
 class TracaGenerator
@@ -12,17 +13,25 @@ class TracaGenerator
 
   # @param relationship[String]
   def generate_traceability(relationship)
+    import_ctrl = ImportController.new(@project)
+    status = import_ctrl.check_and_import(@project.docs_of(relationship))
+    return if status == false
+
     upstream_docs = @project.upstream_docs(relationship)
     downstream_docs = @project.downstream_docs(relationship)
     return if check_if_loaded(upstream_docs + downstream_docs) == false
 
+    generate_report(downstream_docs, upstream_docs)
+  end
+
+  private
+
+  def generate_report(downstream_docs, upstream_docs)
     r = TracaReport.new
     generate_traca_of_downstream_docs(r, downstream_docs, upstream_docs)
     generate_traca_of_upstream_docs(r, downstream_docs, upstream_docs)
     r
   end
-
-  private
 
   def generate_traca_of_downstream_docs(traca_report, downstream_docs, upstream_docs) # rubocop:disable Metrics/MethodLength
     downstream_docs.each do |downstream_doc|

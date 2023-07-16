@@ -2,7 +2,7 @@
 
 require_relative 'export'
 require_relative 'stat_req'
-require 'axlsx'
+require 'caxlsx'
 
 # class ExportXlsx
 class ExportXlsx
