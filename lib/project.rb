@@ -86,8 +86,6 @@ class Project
       next unless doc['name'] == docname
 
       input_file = doc['imported-from']['input']
-      p input_file
-      p working_dir
       filename = File.join(working_dir, input_file)
       r = File.exist?(filename)
     end
@@ -196,7 +194,6 @@ class Project
   # +@project_file+ => set to nil if not correctly decoded
   def decode_yaml_file(file)
     @project_file = YAML.safe_load file, permitted_classes: [Regexp]
-    pp @project_file
   rescue StandardError => e
     @project_file = nil
     puts "wrong file format, #{e}"

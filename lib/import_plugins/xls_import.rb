@@ -22,7 +22,6 @@ class XlsImportRules
     @req_text_column = rules['req_text_column']
     @req_category_column = rules['req_category_column']
     @req_rational_column = rules['req_rational_column']
-    p rules.to_yaml.dump
   end
 
   attr_accessor :req_id_regexp, :req_id_column, :req_title_column, :req_text_column, :req_category_column,
@@ -93,24 +92,3 @@ class XlsImport < ImportPlugin
     end
   end
 end
-
-# xls_import_rules = XlsImportRules.new
-# xls_import_rules.req_id_regexp.append(/APP_*/)
-# xls_import_rules.req_id_column = 0
-# xls_import_rules.req_title_column = 1
-# xls_import_rules.req_text_column = 2
-# xls_import_rules.req_category_column = 6
-# xls_import_rules.req_rational_column = 3
-
-# import_rules = {}
-# import_rules['req_id_regexp'] = []
-# import_rules['req_id_regexp'].append(/APP_*/)
-# import_rules['req_id_column'] = 0
-# import_rules['req_title_column'] = 1
-# import_rules['req_text_column'] = 2
-# import_rules['req_category_column'] = 6
-# import_rules['req_rational_column'] = 3
-
-# xls = XlsImport.new
-# xls.rules = import_rules
-# xls.import('TEST.xls', 'test.yaml')
