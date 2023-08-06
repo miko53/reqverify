@@ -87,6 +87,9 @@ class XlsImport < ImportPlugin
   end
 
   def save_output_file(output_file)
+    dirname = File.dirname output_file
+    Dir.mkdir dirname unless Dir.exist? dirname
+
     File.open(output_file, 'w') do |file|
       file.write(YAML.dump(@yaml_doc))
     end
