@@ -6,83 +6,97 @@ require_relative 'import_plugin'
 
 # clasx DocStyleRules
 class DocxStyleRules
-  def initialize
-    @name = ''
-    @has_multiple_values = false
-    @is_array = false
+  def initialize(name)
+    @name = name
+    @is_begin = false
   end
+  attr_accessor :name, :is_begin
 end
 
 # class DocxImportRules
 class DocxImportRules
   def initialize
-    @req_id_style = 'REQ_ID'
-    @req_cov_style = 'REQ_COV'
+    @rules = []
+    @req_id_style = DocxStyleRules.new 'REQ_ID'
+    @req_id_style.is_begin = true
+    @req_title_style = DocxStyleRules.new 'REQ_TITLE'
+    @req_text_style = DocxStyleRules.new 'REQ_TEXT'
+    @req_cov_style = DocxStyleRules.new 'REQ_COV'
+    @req_attributes_style = DocxStyleRules.new 'REQ_ATTRIBUTES'
   end
 
   def set_rules(rules = {}); end
+
+  attr_accessor :req_id_style, :req_title_style, :req_text_style, :req_cov_style, :req_attributes_style
 end
 
 # class DocxImport
 class DocxImport < ImportPlugin
-  def initialize
-    super
-    @yaml_doc = {}
-    @yaml_doc['reqs'] = []
-    p 'docx import'
-  end
-
   def rules=(rule_set = {})
     @import_rules = DocxImportRules.new
     @import_rules.set_rules(rule_set)
   end
 
-  def import(input_file, _output_file)
+  def import(input_file, output_file)
     @docx = Docx::Document.open(input_file)
     return if @docx.nil?
 
     parse_doc
     pp @yaml_doc
-    # save_output_file(output_file)
+    save_output_file(output_file)
     true
   end
 
   def parse_doc
-    req = {}
-    req_attrs = {}
+    @current_req = {}
+    @current_req_attrs = {}
     @docx.each_paragraph do |p|
       puts "#{p.text} (#{p.style})"
-      if p.style == 'REQ_ID'
-        unless req['req_id'].nil?
-          p 'append'
-          req['req_attrs'] = req_attrs
-          @yaml_doc['reqs'].append req
-          req = {}
-          req_attrs = {}
-        end
-
-        req['req_id'] = p.text
+      case p.style
+      when @import_rules.req_id_style.name
+        insert_req_id(p.text)
+      when @import_rules.req_text_style.name
+        insert_req_text(p.text)
+      when @import_rules.req_title_style.name
+        insert_req_title(p.text)
+      when @import_rules.req_cov_style.name
+        insert_req_cov(p.text)
+      when @import_rules.req_attributes_style.name
+        insert_req_attributes(p.text)
       end
-      req['req_title'] = p.text if p.style == 'REQ_TITLE'
-      if p.style == 'REQ_TEXT'
-        if req['req_text'].nil?
-          req['req_text'] = p.text
-        else
-          req['req_text'].concat('\n', p.text)
-        end
-      end
-
-      if p.style == 'REQ_COV'
-        t = p.text.split(',')
-        t.map(&:strip!)
-        req['req_cov'] = t
-      end
-
-      next unless p.style == 'REQ_ATTRIBUTES'
-
-      t = p.text.split(/[:\t]/)
-      pp t
-      req_attrs[t[0].strip.downcase] = t[1].strip
     end
+  end
+
+  def insert_req_id(text)
+    if @import_rules.req_id_style.is_begin == true && !@current_req['req_id'].nil?
+      @current_req['req_attrs'] = @current_req_attrs
+      @yaml_doc['reqs'].append @current_req
+      @current_req = {}
+      @current_req_attrs = {}
+    end
+    @current_req['req_id'] = text
+  end
+
+  def insert_req_text(text)
+    if @current_req['req_text'].nil?
+      @current_req['req_text'] = text
+    else
+      @current_req['req_text'].concat('\n', text)
+    end
+  end
+
+  def insert_req_title(text)
+    @current_req['req_title'] = text
+  end
+
+  def insert_req_cov(text)
+    t = text.split(',')
+    t.map(&:strip!)
+    @current_req['req_cov'] = t
+  end
+
+  def insert_req_attributes(text)
+    t = text.split(/[:\t]/)
+    @current_req_attrs[t[0].strip.downcase] = t[1].strip
   end
 end

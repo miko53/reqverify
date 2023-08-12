@@ -2,7 +2,19 @@
 
 # class ImportPlugin
 class ImportPlugin
-  def initialize; end
+  def initialize
+    @yaml_doc = {}
+    @yaml_doc['reqs'] = []
+  end
+
+  def save_output_file(output_file)
+    dirname = File.dirname output_file
+    Dir.mkdir dirname unless Dir.exist? dirname
+
+    File.open(output_file, 'w') do |file|
+      file.write(YAML.dump(@yaml_doc))
+    end
+  end
 
   def rules=(rule_set = {}); end
 

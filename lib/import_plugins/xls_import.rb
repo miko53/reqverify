@@ -30,12 +30,6 @@ end
 
 # class XlsImport
 class XlsImport < ImportPlugin
-  def initialize
-    super
-    @yaml_doc = {}
-    @yaml_doc['reqs'] = []
-  end
-
   def rules=(rule_set = {})
     @import_rules = XlsImportRules.new
     @import_rules.set_rules(rule_set)
@@ -84,14 +78,5 @@ class XlsImport < ImportPlugin
     req_attrs['category'] = row[@import_rules.req_category_column]
     req_attrs['rational'] = row[@import_rules.req_rational_column]
     req['req_attrs'] = req_attrs
-  end
-
-  def save_output_file(output_file)
-    dirname = File.dirname output_file
-    Dir.mkdir dirname unless Dir.exist? dirname
-
-    File.open(output_file, 'w') do |file|
-      file.write(YAML.dump(@yaml_doc))
-    end
   end
 end
