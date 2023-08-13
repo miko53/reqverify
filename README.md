@@ -21,6 +21,26 @@ Requirement Specification)
 
 For each requirement that your write into your SRS you must ensure that it is relies to SSS requirement.
 
+![SSS_SRS](doc/SSS_SRS_link.png)
 
-## How use it ?
+
+## How tool works ?
+
+This tool works on intermediate data extracted for document. For example, documents are written with Excel or Word.
+
+The tool will extract the requirement according to given rules and build a internal model on this.
+
+Then you can request an export of the data, on the console to check in real time (when you write document) or
+to generate the traceability matrix
+
+Here we are a schema with involved files.
+
+![req-verify-process](doc/reqverify-ex1.png)
+
+
+## Example:
+
+The *Tests* folder contains a lot of examples. 
+
+
 
