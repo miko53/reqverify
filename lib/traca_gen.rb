@@ -14,8 +14,7 @@ class TracaGenerator
   # @param relationship[String]
   def generate_traceability(relationship, custom_plugins_path)
     import_ctrl = ImportController.new(@project)
-    status = import_ctrl.check_and_import(@project.docs_of(relationship), custom_plugins_path)
-    return if status == false
+    import_ctrl.check_and_import(@project.docs_of(relationship), custom_plugins_path)
 
     upstream_docs = @project.upstream_docs(relationship)
     downstream_docs = @project.downstream_docs(relationship)

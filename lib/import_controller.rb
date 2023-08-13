@@ -20,14 +20,12 @@ class ImportController
   end
 
   def check_and_import(doc_list, custom_plugins_path)
-    s = true
     doc_list.each do |doc_name|
       next unless @project.import?(doc_name)
 
       r = check_if_need_import?(doc_name)
-      s = do_import(doc_name, custom_plugins_path) if r == NEED_IMPORT && s == true
+      prepare_and_launch_import(doc_name, custom_plugins_path) if r == NEED_IMPORT
     end
-    s
   end
 
   def check_if_need_import?(doc_name)
@@ -56,29 +54,26 @@ class ImportController
     end
   end
 
-  def do_import(doc_name, custom_plugins_path)
-    r = true
+  def prepare_and_launch_import(doc_name, custom_plugins_path)
     Log.info "import #{doc_name} ongoing..."
-
     handler_class = @project.get_handler(doc_name)
-    handler_rules = @project.get_handler_options(doc_name)
-
     mod_path_list = build_plugins_path(handler_class, custom_plugins_path)
-    # p mod_path
 
     r = load_import_class(mod_path_list)
     return if r == false
 
+    launch_import(handler_class, doc_name)
+  end
+
+  def launch_import(handler_class, doc_name)
     t = Import.const_get(handler_class).new
-    t.rules = handler_rules
+    t.rules = @project.get_handler_options(doc_name)
     status = t.import(@project.get_input_file(doc_name), @project.get_output_file(doc_name))
-    if status
+    if status == true
       Log.info "import #{doc_name} successfull..."
     else
       Log.error "import #{doc_name} failed..."
-      r = false
     end
-    r
   end
 
   def build_plugins_path(class_name, custom_plugins_path)
