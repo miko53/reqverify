@@ -38,7 +38,7 @@ Here we are a schema with involved files.
 ![req-verify-process](doc/reqverify-ex1.png)
 
 
-## Example
+## Example
 
 The *Tests* folder contains a lot of examples. 
 Let's examine one in particular.
