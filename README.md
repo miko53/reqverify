@@ -41,7 +41,9 @@ Here we are a schema with involved files.
 ## Example
 
 The *Tests* folder contains a lot of examples. 
-Let's examine one in particular.
+Let's examine a common use case.
+
+
 
 
 
