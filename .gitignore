@@ -1,2 +1,5 @@
-tests/outputs/
 *.byebug_history
+*.gem
+.bundle
+Gemfile.lock
+tests/outputs/

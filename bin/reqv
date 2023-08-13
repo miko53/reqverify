@@ -55,6 +55,9 @@ class Main
       opts.on('-FFORMAT', '--format-export=FORMAT', 'export file format csv,xlsx') do |n|
         options[:export_format] = n
       end
+      opts.on('-LPLUGINS_PATH', '--plugins-path=PLUGINS_PATH', 'custom path of import plugins') do |n|
+        options[:plugins_path] = n
+      end
       opts.on('-d', '--[no-]debug', 'Run with debug info') do |n|
         options[:debug] = n
       end
@@ -169,7 +172,7 @@ class Main
     if !options[:relationship].nil?
       Log.info "Generate traceability #{options[:relationship]}"
       traca = TracaGenerator.new(@project)
-      traca_report = traca.generate_traceability(options[:relationship])
+      traca_report = traca.generate_traceability(options[:relationship], options[:plugins_path])
       Log.debug_pp traca_report unless traca_report.nil?
     else
       Log.error 'Error, no relationship given'

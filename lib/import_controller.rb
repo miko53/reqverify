@@ -19,13 +19,13 @@ class ImportController
     @project = project
   end
 
-  def check_and_import(doc_list)
+  def check_and_import(doc_list, custom_plugins_path)
     s = true
     doc_list.each do |doc_name|
       next unless @project.import?(doc_name)
 
       r = check_if_need_import?(doc_name)
-      s = do_import(doc_name) if r == NEED_IMPORT && s == true
+      s = do_import(doc_name, custom_plugins_path) if r == NEED_IMPORT && s == true
     end
     s
   end
@@ -56,20 +56,18 @@ class ImportController
     end
   end
 
-  def do_import(doc_name)
+  def do_import(doc_name, custom_plugins_path)
     r = true
     Log.info "import #{doc_name} ongoing..."
 
     handler_class = @project.get_handler(doc_name)
     handler_rules = @project.get_handler_options(doc_name)
 
-    mod_file = "#{handler_class.underscore}.rb"
-    mod_path = File.join(File.dirname(__FILE__), IMPORT_PATH)
-    mod_path = File.join(mod_path, mod_file)
-
+    mod_path_list = build_plugins_path(handler_class, custom_plugins_path)
     # p mod_path
 
-    load mod_path, Import
+    r = load_import_class(mod_path_list)
+    return if r == false
 
     t = Import.const_get(handler_class).new
     t.rules = handler_rules
@@ -79,6 +77,43 @@ class ImportController
     else
       Log.error "import #{doc_name} failed..."
       r = false
+    end
+    r
+  end
+
+  def build_plugins_path(class_name, custom_plugins_path)
+    mod_path_try_list = []
+    mod_file = "#{class_name.underscore}.rb"
+    mod_path = File.join(File.dirname(__FILE__), IMPORT_PATH)
+    mod_path = File.join(mod_path, mod_file)
+    mod_path_try_list.append(mod_path)
+
+    mod_path_try_list.append(build_custom_plugins_path(mod_file, custom_plugins_path)) unless custom_plugins_path.nil?
+    mod_path = File.join(Dir.getwd, mod_file)
+    mod_path_try_list.append(mod_path)
+    mod_path_try_list
+  end
+
+  def build_custom_plugins_path(mod_file, path)
+    if File.absolute_path?(path) == false
+      mod_path = File.join(Dir.getwd, path)
+      mod_path = File.join(mod_path, mod_file)
+    else
+      mod_path = File.join(path, mod_file)
+    end
+    mod_path
+  end
+
+  def load_import_class(mod_path_list)
+    r = false
+    mod_path_list.each do |mod_path|
+      begin
+        r = load mod_path, Import
+        Log.info "loading #{mod_path} successfull" if r == true
+      rescue LoadError
+        Log.warning "loading #{mod_path} failed"
+      end
+      break if r == true
     end
     r
   end
