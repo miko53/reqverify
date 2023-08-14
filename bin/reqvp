@@ -1,0 +1,44 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require_relative '../lib/project_helper/operation'
+
+# Main
+class Main
+  EXIT_FAILURE = 1
+
+  def main
+    operation = analyse_args(ARGV)
+    print_error_and_exit if operation.nil?
+
+    b = operation.check_args
+    if b == true
+      operation.exec
+    else
+      puts('wrong param, try help')
+    end
+  end
+
+  def analyse_args(argv)
+    return nil if argv.empty?
+
+    case argv[0].downcase
+    when 'help'
+      action = OperationHelp.new
+    when 'create_project'
+      action = OperationCreateProject.new(argv.drop(1))
+    else
+      print_error_and_exit
+    end
+    action
+  end
+
+  def print_error_and_exit
+    puts('error, unknown operation, try')
+    puts("#{exe_name} help")
+    exit EXIT_FAILURE
+  end
+end
+
+app = Main.new
+app.main

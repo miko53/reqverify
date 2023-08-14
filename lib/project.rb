@@ -5,12 +5,9 @@ require_relative 'doc_req'
 
 # read and parsing project
 class Project
-  #  attr_accessor :project_file
-
   def initialize(filename)
     @filename = filename
     @project_file = nil
-    read
   end
 
   # check if project is correctly loaded
@@ -166,8 +163,6 @@ class Project
     end
   end
 
-  private
-
   # read the project filename, decode the YAML format
   def read
     f = read_file
@@ -176,6 +171,24 @@ class Project
     decode_yaml_file f
     f.close
   end
+
+  # TODO: temporary to modify with loaded and initialize function
+  def build
+    @project_file = {}
+    @project_file['version'] = 1.0
+  end
+
+  def project_name=(arg)
+    @project_file['name'] = arg
+  end
+
+  def write
+    File.open(@filename, 'w') do |file|
+      file.write(YAML.dump(@project_file))
+    end
+  end
+
+  private
 
   # read the project filename, decode the YAML format
   # +@filename+ => String path of file

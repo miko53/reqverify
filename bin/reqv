@@ -104,6 +104,7 @@ class Main
   # load project according to +options+ hash
   def load_project_check_working_dir(options)
     project = Project.new options[:project_file]
+    project.read
     if project.loaded? && Dir.exist?(project.working_dir)
       @working_dir = project.working_dir
       Log.info "project file: #{options[:project_file]}"
