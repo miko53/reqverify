@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative '../project'
+require_relative '../log'
 
 def exe_name
   File.basename($PROGRAM_NAME)
@@ -29,7 +30,9 @@ class OperationHelp < Operation
 
   def print_help
     puts("#{exe_name} commands:")
-    puts("#{exe_name} create_project <project_name> <folder> <filename>\tcreate a new project in the given folder with the given filename")
+    puts("#{exe_name} create_project <project_name> <folder> <filename>\tcreate a new project in the given folder" \
+        ' with the given filename')
+    puts("#{exe_name} add_doc <project_file> raw <doc_name> <doc_filename>")
   end
 end
 
@@ -48,6 +51,36 @@ class OperationCreateProject < Operation
     d.build
     d.project_name = project_name
     d.write
-    puts('create project')
+    Log.info('create project')
+  end
+end
+
+# AddDoc operation
+class OperationAddDoc < Operation
+  def check_args
+    return false if @arg.size < 4
+
+    return false if (@arg[1] != 'raw') && (@arg[1] != 'import')
+
+    true
+  end
+
+  def exec
+    project = Project.new @arg[0]
+    project.read
+    if project.loaded?
+      @working_dir = project.working_dir
+      Log.info "project: '#{project.project_name}' loaded"
+    else
+      Log.error "project file is not valid or working dir doesn't exist"
+    end
+
+    return unless @arg[1] == 'raw'
+
+    docname = @arg[2]
+    filename = @arg[3]
+    project.insert_doc(docname, filename)
+    project.write
+    Log.info('doc inserted')
   end
 end

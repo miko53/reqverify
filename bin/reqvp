@@ -8,6 +8,7 @@ class Main
   EXIT_FAILURE = 1
 
   def main
+    Log.verbose_level = Log::LOG_LEVEL_INFO
     operation = analyse_args(ARGV)
     print_error_and_exit if operation.nil?
 
@@ -27,6 +28,8 @@ class Main
       action = OperationHelp.new
     when 'create_project'
       action = OperationCreateProject.new(argv.drop(1))
+    when 'add_doc'
+      action = OperationAddDoc.new(argv.drop(1))
     else
       print_error_and_exit
     end

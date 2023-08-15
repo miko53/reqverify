@@ -182,6 +182,18 @@ class Project
     @project_file['name'] = arg
   end
 
+  def project_name
+    @project_file['name']
+  end
+
+  def insert_doc(docname, filename)
+    @project_file['docs'] = [] if @project_file['docs'].nil?
+    doc = {}
+    doc['name'] = docname
+    doc['path'] = filename
+    @project_file['docs'].append doc
+  end
+
   def write
     File.open(@filename, 'w') do |file|
       file.write(YAML.dump(@project_file))
