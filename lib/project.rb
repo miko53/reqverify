@@ -186,12 +186,15 @@ class Project
     @project_file['name']
   end
 
-  def insert_doc(docname, filename)
+  def insert_doc_raw(docname, filename)
     @project_file['docs'] = [] if @project_file['docs'].nil?
+    return false if doc_exist?(docname)
+
     doc = {}
     doc['name'] = docname
     doc['path'] = filename
     @project_file['docs'].append doc
+    true
   end
 
   def write
@@ -201,6 +204,17 @@ class Project
   end
 
   private
+
+  def doc_exist?(docname)
+    r = false
+    @project_file['docs'].each do |doc|
+      if doc['name'] == docname
+        r = true
+        break
+      end
+    end
+    r
+  end
 
   # read the project filename, decode the YAML format
   # +@filename+ => String path of file

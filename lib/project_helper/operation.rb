@@ -33,6 +33,7 @@ class OperationHelp < Operation
     puts("#{exe_name} create_project <project_name> <folder> <filename>\tcreate a new project in the given folder" \
         ' with the given filename')
     puts("#{exe_name} add_doc <project_file> raw <doc_name> <doc_filename>")
+    puts("#{exe_name} add_doc <project_file> import <doc_name> handler <import_plugin> <doc_filename, optional>")
   end
 end
 
@@ -79,8 +80,12 @@ class OperationAddDoc < Operation
 
     docname = @arg[2]
     filename = @arg[3]
-    project.insert_doc(docname, filename)
-    project.write
-    Log.info('doc inserted')
+    b = project.insert_doc_raw(docname, filename)
+    if b
+      project.write
+      Log.info('doc inserted')
+    else
+      Log.warning('not inserted - already exists')
+    end
   end
 end
