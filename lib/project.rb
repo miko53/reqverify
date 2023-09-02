@@ -197,6 +197,29 @@ class Project
     true
   end
 
+  def insert_doc_with_plugin(docname, pluginname, filename, filename_yaml)
+    @project_file['docs'] = [] if @project_file['docs'].nil?
+    return false if doc_exist?(docname)
+
+    doc = {}
+    doc['name'] = docname
+    doc['path'] = if filename_yaml.nil?
+                    default_yaml_filename(filename)
+                  else
+                    filename_yaml
+                  end
+    handler = {}
+
+    handler['handler'] = pluginname
+    handler['input'] = filename
+    hander_rules = {}
+
+    handler['handler-rules'] = hander_rules
+    doc['imported-from'] = handler
+    @project_file['docs'].append doc
+    true
+  end
+
   def write
     File.open(@filename, 'w') do |file|
       file.write(YAML.dump(@project_file))
@@ -204,6 +227,10 @@ class Project
   end
 
   private
+
+  def default_yaml_filename(filename)
+    "#{filename.chomp(File.extname(filename))}.yaml"
+  end
 
   def doc_exist?(docname)
     r = false

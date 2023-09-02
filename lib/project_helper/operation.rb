@@ -33,7 +33,8 @@ class OperationHelp < Operation
     puts("#{exe_name} create_project <project_name> <folder> <filename>\tcreate a new project in the given folder" \
         ' with the given filename')
     puts("#{exe_name} add_doc <project_file> raw <doc_name> <doc_filename>")
-    puts("#{exe_name} add_doc <project_file> import <doc_name> handler <import_plugin> <doc_filename, optional>")
+    puts("#{exe_name} add_doc <project_file> import <doc_name> handler <import_plugin> <doc_filename>" \
+       ' <doc_yaml_file,optional>')
   end
 end
 
@@ -63,29 +64,57 @@ class OperationAddDoc < Operation
 
     return false if (@arg[1] != 'raw') && (@arg[1] != 'import')
 
+    return false if @arg[1] == 'import' && (@arg.size < 6 || @arg[3] != 'handler')
+
     true
   end
 
   def exec
-    project = Project.new @arg[0]
-    project.read
-    if project.loaded?
-      @working_dir = project.working_dir
-      Log.info "project: '#{project.project_name}' loaded"
+    @project = Project.new @arg[0]
+    @project.read
+    if @project.loaded?
+      @working_dir = @project.working_dir
+      Log.info "project: '#{@project.project_name}' loaded"
     else
       Log.error "project file is not valid or working dir doesn't exist"
+      return
     end
 
-    return unless @arg[1] == 'raw'
+    execute
+  end
 
+  def execute
+    case @arg[1]
+    when 'raw'
+      exec_raw
+    when 'import'
+      exec_import
+    end
+  end
+
+  def exec_raw
     docname = @arg[2]
     filename = @arg[3]
-    b = project.insert_doc_raw(docname, filename)
+    b = @project.insert_doc_raw(docname, filename)
     if b
-      project.write
-      Log.info('doc inserted')
+      @project.write
+      Log.info("doc: '#{docname}' inserted")
     else
       Log.warning('not inserted - already exists')
+    end
+  end
+
+  def exec_import
+    docname = @arg[2]
+    pluginname = @arg[4]
+    filename = @arg[5]
+    filename_yaml = @arg[6]
+    b = @project.insert_doc_with_plugin(docname, pluginname, filename, filename_yaml)
+    if b
+      @project.write
+      Log.info("doc: '#{docname}' inserted")
+    else
+      Log.warning('not inserted')
     end
   end
 end
