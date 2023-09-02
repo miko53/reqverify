@@ -2,6 +2,7 @@
 
 require 'yaml'
 require_relative 'doc_req'
+require_relative 'string_compl'
 
 # read and parsing project
 class Project
@@ -220,6 +221,23 @@ class Project
     true
   end
 
+  def insert_plugin_rule(docname, rulename, rulevalue, ruletype)
+    return false if @project_file['docs'].nil?
+
+    plugin_rule = get_handler_options(docname)
+    return false if plugin_rule.nil?
+
+    plugin_rule[rulename] = if ruletype.nil?
+                              if rulevalue.integer?
+                                rulevalue.to_i
+                              else
+                                rulevalue
+                              end
+                            else
+                              insert_plugin_value_according_type(rulevalue, ruletype)
+                            end
+  end
+
   def write
     File.open(@filename, 'w') do |file|
       file.write(YAML.dump(@project_file))
@@ -227,6 +245,19 @@ class Project
   end
 
   private
+
+  def insert_plugin_value_according_type(rulevalue, ruletype)
+    case ruletype
+    when 'Integer'
+      rulevalue.to_i
+    when 'String'
+      rulevalue
+    when 'RegExp'
+      Regexp.new(rulevalue)
+    else
+      Log.error('unknown type given')
+    end
+  end
 
   def default_yaml_filename(filename)
     "#{filename.chomp(File.extname(filename))}.yaml"

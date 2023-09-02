@@ -13,6 +13,19 @@ class Operation
     @arg = arg
   end
 
+  def load_project(filename)
+    @project = Project.new filename
+    @project.read
+    if @project.loaded?
+      @working_dir = @project.working_dir
+      Log.info "project: '#{@project.project_name}' loaded"
+      true
+    else
+      Log.error "project file is not valid or working dir doesn't exist"
+      false
+    end
+  end
+
   def check_args; end
 
   def exec; end
@@ -35,6 +48,8 @@ class OperationHelp < Operation
     puts("#{exe_name} add_doc <project_file> raw <doc_name> <doc_filename>")
     puts("#{exe_name} add_doc <project_file> import <doc_name> handler <import_plugin> <doc_filename>" \
        ' <doc_yaml_file,optional>')
+    puts("#{exe_name} add_plugin_rule <project_file> <doc_name> <rule_name> <rule_value> <rule_type, optional>")
+    # puts("#{exe_name} append_plugin_rule <project_file> <rule_name> <rule_value> <rule_type, optional>")
   end
 end
 
@@ -70,20 +85,14 @@ class OperationAddDoc < Operation
   end
 
   def exec
-    @project = Project.new @arg[0]
-    @project.read
-    if @project.loaded?
-      @working_dir = @project.working_dir
-      Log.info "project: '#{@project.project_name}' loaded"
-    else
-      Log.error "project file is not valid or working dir doesn't exist"
-      return
-    end
+    return if load_project(@arg[0]) == false
 
-    execute
+    select_and_execute
   end
 
-  def execute
+  private
+
+  def select_and_execute
     case @arg[1]
     when 'raw'
       exec_raw
@@ -113,6 +122,30 @@ class OperationAddDoc < Operation
     if b
       @project.write
       Log.info("doc: '#{docname}' inserted")
+    else
+      Log.warning('not inserted')
+    end
+  end
+end
+
+# class OperationAddPluginRule
+class OperationAddPluginRule < Operation
+  def check_args
+    (@arg.size >= 4)
+  end
+
+  def exec
+    return if load_project(@arg[0]) == false
+
+    docname = @arg[1]
+    rulename = @arg[2]
+    rulevalue = @arg[3]
+    ruletype = @arg[4]
+
+    b = @project.insert_plugin_rule(docname, rulename, rulevalue, ruletype)
+    if b
+      @project.write
+      Log.info("rule: '#{rulename} for '#{docname}' inserted")
     else
       Log.warning('not inserted')
     end

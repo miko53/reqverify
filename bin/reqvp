@@ -20,7 +20,7 @@ class Main
     end
   end
 
-  def analyse_args(argv)
+  def analyse_args(argv) # rubocop:disable Metrics/MethodLength
     return nil if argv.empty?
 
     case argv[0].downcase
@@ -30,6 +30,8 @@ class Main
       action = OperationCreateProject.new(argv.drop(1))
     when 'add_doc'
       action = OperationAddDoc.new(argv.drop(1))
+    when 'add_plugin_rule'
+      action = OperationAddPluginRule.new(argv.drop(1))
     else
       print_error_and_exit
     end
