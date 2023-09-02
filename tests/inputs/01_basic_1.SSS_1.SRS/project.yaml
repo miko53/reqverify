@@ -12,8 +12,6 @@ relationships:
       - SRS
     covered-by:
       - SSS
-derived-name:
-  - "derived"
-  - "Derived"
+derived-name: !ruby/regexp /[D|d]erived/
 
 

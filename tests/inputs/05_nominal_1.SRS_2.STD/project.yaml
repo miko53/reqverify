@@ -15,8 +15,6 @@ relationships:
       - STD_2
     covered-by:
       - SRS
-derived-name:
-  - "derived"
-  - "Derived"
+derived-name: !ruby/regexp /[D|d]erived/
 
 

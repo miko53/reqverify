@@ -16,8 +16,6 @@ relationships:
       - SSS_1
       - SSS_2
 
-derived-name:
-  - "derived"
-  - "Derived"
+derived-name: !ruby/regexp /[D|d]erived/
 
 

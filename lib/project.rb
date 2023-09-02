@@ -55,10 +55,7 @@ class Project
   # for derived requirement
   # +req_id+ String arg. to check
   def name_for_derived_req_id?(req_id)
-    @project_file['derived-name'].each do |name|
-      return true if name == req_id
-    end
-    false
+    @project_file['derived-name'].match(req_id)
   end
 
   def docs_of(relationship)
