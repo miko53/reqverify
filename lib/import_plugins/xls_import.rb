@@ -7,7 +7,7 @@ require_relative 'import_plugin'
 # class XlsImportRules
 class XlsImportRules
   def initialize
-    @req_id_regexp = []
+    @req_id_regexp = nil
     @req_id_column = 0
     @req_title_column = 0
     @req_text_column = 0
@@ -55,12 +55,7 @@ class XlsImport < ImportPlugin
 
   def parse_sheet(sheet)
     sheet.each do |row|
-      @import_rules.req_id_regexp.each do |req_id_rule|
-        if row[@import_rules.req_id_column] =~ req_id_rule
-          insert_req(row)
-          break
-        end
-      end
+      insert_req(row) if @import_rules.req_id_regexp.match(row[@import_rules.req_id_column])
     end
   end
 
