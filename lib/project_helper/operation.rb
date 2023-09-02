@@ -49,7 +49,8 @@ class OperationHelp < Operation
     puts("#{exe_name} add_doc <project_file> import <doc_name> handler <import_plugin> <doc_filename>" \
        ' <doc_yaml_file,optional>')
     puts("#{exe_name} add_plugin_rule <project_file> <doc_name> <rule_name> <rule_value> <rule_type, optional>")
-    # puts("#{exe_name} append_plugin_rule <project_file> <rule_name> <rule_value> <rule_type, optional>")
+    puts("#{exe_name} add_relationships <project_file> <doc_list> covered-by <doc_list>")
+    puts("#{exe_name} add_derived_name <project_file> <derived_reqexp")
   end
 end
 
