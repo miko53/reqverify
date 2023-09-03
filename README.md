@@ -43,7 +43,9 @@ Here we are a schema with involved files.
 The *Tests* folder contains a lot of examples. 
 Let's examine a common use case.
 
+## TODO
 
-
-
-
+[] Add complete example with doc import
+[] Add delete part in reqvp executable
+[] create a GUI to explore requirement traceability
+[] add customization output

@@ -55,7 +55,7 @@ class OperationHelp < Operation
        ' <doc_yaml_file,optional>')
     puts("#{exe_name} add_plugin_rule <project_file> <doc_name> <rule_name> <rule_value> <rule_type, optional>")
     puts("#{exe_name} add_relationships <project_file> <relation name> <doc_list> covered-by <doc_list>")
-    puts("#{exe_name} add_derived_name <project_file> <derived_reqexp")
+    puts("#{exe_name} add_derived_name <project_file> <derived_regular exp>")
   end
 end
 
