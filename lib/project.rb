@@ -235,6 +235,22 @@ class Project
                             end
   end
 
+  def insert_relationships(name, up_docs, down_docs)
+    @project_file['relationships'] = [] if @project_file['relationships'].nil?
+
+    relationship = {}
+    relationship['name'] = name
+    relationship['doc'] = up_docs
+    relationship['covered-by'] = down_docs
+
+    found, i = relationship_exist?(name)
+    if found == false
+      @project_file['relationships'].append relationship
+    else
+      @project_file['relationships'][i] = relationship
+    end
+  end
+
   def write
     File.open(@filename, 'w') do |file|
       file.write(YAML.dump(@project_file))
@@ -242,6 +258,19 @@ class Project
   end
 
   private
+
+  def relationship_exist?(name)
+    found = false
+    i = 0
+    @project_file['relationships'].each do |r|
+      if r['name'] == name
+        found = true
+        break
+      end
+      i += 1
+    end
+    [found, i]
+  end
 
   def insert_plugin_value_according_type(rulevalue, ruletype)
     case ruletype

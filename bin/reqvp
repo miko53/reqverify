@@ -32,6 +32,10 @@ class Main
       action = OperationAddDoc.new(argv.drop(1))
     when 'add_plugin_rule'
       action = OperationAddPluginRule.new(argv.drop(1))
+    when 'add_relationships'
+      action = OperationAddRelationships.new(argv.drop(1))
+    when 'add_derived_name'
+      action = OperationAddDerivedName.new(argv.drop(1))
     else
       print_error_and_exit
     end

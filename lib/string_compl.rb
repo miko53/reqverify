@@ -24,3 +24,23 @@ class String
     false
   end
 end
+
+# class Array
+# complement part
+class Array
+  def split(entry)
+    r = []
+    b = 0
+    r[0] = []
+    r[1] = []
+    each do |i|
+      b = 1 if i == entry
+      if b.zero?
+        r[0] << i
+      else
+        r[1] << i
+      end
+    end
+    r
+  end
+end

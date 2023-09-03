@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require_relative '../string_compl'
 require_relative '../project'
 require_relative '../log'
 
@@ -26,9 +27,13 @@ class Operation
     end
   end
 
-  def check_args; end
+  def check_args
+    raise NoMethodError
+  end
 
-  def exec; end
+  def exec
+    raise NoMethodError
+  end
 end
 
 # OperationHelp
@@ -49,7 +54,7 @@ class OperationHelp < Operation
     puts("#{exe_name} add_doc <project_file> import <doc_name> handler <import_plugin> <doc_filename>" \
        ' <doc_yaml_file,optional>')
     puts("#{exe_name} add_plugin_rule <project_file> <doc_name> <rule_name> <rule_value> <rule_type, optional>")
-    puts("#{exe_name} add_relationships <project_file> <doc_list> covered-by <doc_list>")
+    puts("#{exe_name} add_relationships <project_file> <relation name> <doc_list> covered-by <doc_list>")
     puts("#{exe_name} add_derived_name <project_file> <derived_reqexp")
   end
 end
@@ -69,7 +74,7 @@ class OperationCreateProject < Operation
     d.build
     d.project_name = project_name
     d.write
-    Log.info('create project')
+    Log.info("create project '#{project_name}'")
   end
 end
 
@@ -151,4 +156,39 @@ class OperationAddPluginRule < Operation
       Log.warning('not inserted')
     end
   end
+end
+
+# class OperationAddRelationships
+class OperationAddRelationships < Operation
+  def check_args
+    return false if @arg.size < 5
+
+    array_list_docs = @arg.split('covered-by')
+    return false if array_list_docs[0].nil? || array_list_docs[0].size < 3
+
+    return false if array_list_docs[1].nil? || array_list_docs[1].size < 2
+
+    @project_file = array_list_docs[0].first
+    @relationship_name = array_list_docs[0].at(1)
+    @up_docs = array_list_docs[0].drop(2)
+    @down_docs = array_list_docs[1].drop(1)
+
+    true
+  end
+
+  def exec
+    return if load_project(@project_file) == false
+
+    b = @project.insert_relationships(@relationship_name, @up_docs, @down_docs)
+    if b
+      @project.write
+      Log.info("relationships #{@up_docs} --> #{@down_docs} added")
+    else
+      Log.warning('relationships not inserted')
+    end
+  end
+end
+
+# class OperationAddDerivedName
+class OperationAddDerivedName < Operation
 end
