@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative '../string_compl'
+require_relative '../misc'
 require_relative '../project'
 require_relative '../log'
 

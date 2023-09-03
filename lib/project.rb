@@ -2,7 +2,7 @@
 
 require 'yaml'
 require_relative 'doc_req'
-require_relative 'string_compl'
+require_relative 'misc'
 
 # read and parsing project
 class Project
