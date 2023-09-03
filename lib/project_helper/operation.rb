@@ -191,4 +191,21 @@ end
 
 # class OperationAddDerivedName
 class OperationAddDerivedName < Operation
+  def check_args
+    return false if @arg.size < 2
+
+    true
+  end
+
+  def exec
+    return if load_project(@arg[0]) == false
+
+    b = @project.insert_derived_name(@arg[1])
+    if b
+      @project.write
+      Log.info('inserted')
+    else
+      Log.warning('not inserted')
+    end
+  end
 end

@@ -251,6 +251,10 @@ class Project
     end
   end
 
+  def insert_derived_name(regexpression)
+    @project_file['derived-name'] = Regexp.new(regexpression)
+  end
+
   def write
     File.open(@filename, 'w') do |file|
       file.write(YAML.dump(@project_file))
