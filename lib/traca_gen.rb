@@ -23,6 +23,12 @@ class TracaGenerator
     generate_report(downstream_docs, upstream_docs)
   end
 
+  def generate_doc_req_list(doc, custom_plugins_path)
+    import_ctrl = ImportController.new(@project)
+    import_ctrl.check_and_import(Array(doc), custom_plugins_path)
+    @project.doc_req(doc)
+  end
+
   private
 
   def generate_report(downstream_docs, upstream_docs)

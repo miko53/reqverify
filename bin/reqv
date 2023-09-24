@@ -35,7 +35,7 @@ class Main
   # and returns +options+ hash of argument
   def read_args # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
     options = {}
-    OptionParser.new do |opts|
+    OptionParser.new do |opts| # rubocop:disable Metrics/BlockLength
       opts.banner = "Usage: #{$PROGRAM_NAME} "
       opts.on('-pPROJECT_FILE', '--project=PROJECT_FILE', 'provide project file') do |n|
         options[:project_file] = n
@@ -43,8 +43,11 @@ class Main
       opts.on('-rRELATIONSHIP', '--relationship=RELATIONSHIP', 'concerned traceability to check/export') do |n|
         options[:relationship] = n
       end
-      opts.on('-aACTION', '--action=ACTION', 'action to launch (check/export)') do |n|
+      opts.on('-aACTION', '--action=ACTION', 'action to launch (status/export/list)') do |n|
         options[:action] = n
+      end
+      opts.on('-DDOCUMENT', '--document=DOCUMENT', 'document to list requirement') do |n|
+        options[:doc] = n
       end
       opts.on('-oOUTPUT_FOLDER', '--output-folder=OUTPUT_FOLDER', 'folder where stored result') do |n|
         options[:output_folder] = n
@@ -96,6 +99,11 @@ class Main
       failure = true
     end
 
+    if (options[:action] == 'list') && options[:doc].nil?
+      Log.error 'need to provide a doc for list requirement'
+      failure = true
+    end
+
     return unless failure
 
     exit EXIT_FAILURE
@@ -119,9 +127,7 @@ class Main
   # +options+ hash of option given in command line
   # +project+ Project class object
   def parse_and_launch_action(options)
-    action = options[:action]
-
-    case action
+    case options[:action]
     when 'export'
       check_export_output_arg(options)
       traca_report = generate_traceability(options)
@@ -129,6 +135,9 @@ class Main
     when 'status'
       traca_report = generate_traceability(options)
       display_status(traca_report) unless traca_report.nil?
+    when 'list'
+      doc_req = generate_doc_req(options)
+      display_doc_req(doc_req)
     else
       Log.error 'Unknown action'
     end
@@ -192,6 +201,11 @@ class Main
     end
   end
 
+  def generate_doc_req(options)
+    traca = TracaGenerator.new(@project)
+    traca.generate_doc_req_list(options[:doc], options[:plugins_path])
+  end
+
   def create_export(format)
     export_gen = nil
     case format
@@ -210,6 +224,10 @@ class Main
 
   def display_status(traca_report)
     DisplayStatusReq.display(traca_report)
+  end
+
+  def display_doc_req(doc_req)
+    doc_req.display
   end
 end
 

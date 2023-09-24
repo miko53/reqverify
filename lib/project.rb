@@ -51,6 +51,10 @@ class Project
     docs_req_list
   end
 
+  def doc_req(docname)
+    create_doc_req(docname)
+  end
+
   # search in project definition for req_id name
   # for derived requirement
   # +req_id+ String arg. to check

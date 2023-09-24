@@ -57,6 +57,13 @@ class DocReq
     r
   end
 
+  def display
+    Log.display("Requirement list of #{@doc_name}:")
+    @doc_file['reqs'].each do |req|
+      Log.display("  #{req['req_id']}: #{req['req_title']}")
+    end
+  end
+
   attr_accessor :doc_name
 
   private
