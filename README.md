@@ -48,4 +48,5 @@ Let's examine a common use case.
 - [ ] Add complete example with doc import
 - [ ] Add delete part in reqvp executable
 - [ ] create a GUI to explore requirement traceability
-- [ ] add customization output
+- [ ] add customization of output data
+- [ ] create test in ruby format (no bash)
