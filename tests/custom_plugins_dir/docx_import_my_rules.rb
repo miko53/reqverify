@@ -62,7 +62,7 @@ class DocxImportMyRules < ImportPlugin
     return if @docx.nil?
 
     parse_doc
-    pp @yaml_doc
+    #pp @yaml_doc
     save_output_file(output_file)
     true
   end

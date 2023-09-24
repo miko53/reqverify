@@ -172,6 +172,23 @@ ${DIFF} -r ${TESTS_PATH}/outputs/10_import_custom_plugin/req_srs.yaml ${TESTS_PA
 check_result $? "${TEST_NAME}"
 
 
+TEST_NAME="import and list requirement of docx document"
+r=`${REQV} -p ${TESTS_PATH}/inputs/09_import_docx/project.yaml --action=list --document=SRS | sed -r "s/\x1B\[([0-9]{1,3}(;[0-9]{1,2};?)?)?[mGK]//g"`
+EXPECTED_OUTPUT=$(cat <<-END
+Requirement list of SRS:
+  SRS_001.1: SRS 001 Title
+  SRS_002.1: SRS 002 Title
+  SRS_003.1: SRS 003 Title
+  SRS_004.1: SRS 004 Title
+  SRS_005.1: SRS 005 Title
+  SRS_006.1: SRS 006 Title
+  SRS_007.1: SRS 007 Title
+  SRS_008.1: SRS 008 Title
+  SRS_009.1: SRS 009 Title
+END
+)
+check_string_result "$r" "${EXPECTED_OUTPUT}" "${TEST_NAME}"
+
 # ../bin/reqv -p ./inputs/04_nominal_2.SSS_1.SRS/project.yaml -a status -r "SSS_all<->SRS" -d
 # ../bin/reqv -p ./inputs/05_nominal_1.SRS_2.STD/project.yaml -a status -r "SRS<->STD_all" -d
 
