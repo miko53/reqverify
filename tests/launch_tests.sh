@@ -185,6 +185,7 @@ Requirement list of SRS:
   SRS_007.1: SRS 007 Title
   SRS_008.1: SRS 008 Title
   SRS_009.1: SRS 009 Title
+Number of requirement: 9
 END
 )
 check_string_result "$r" "${EXPECTED_OUTPUT}" "${TEST_NAME}"

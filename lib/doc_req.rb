@@ -62,6 +62,7 @@ class DocReq
     @doc_file['reqs'].each do |req|
       Log.display("  #{req['req_id']}: #{req['req_title']}")
     end
+    Log.display("Number of requirement: #{@doc_file['reqs'].size}")
   end
 
   attr_accessor :doc_name
