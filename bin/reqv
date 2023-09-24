@@ -137,7 +137,7 @@ class Main
       display_status(traca_report) unless traca_report.nil?
     when 'list'
       doc_req = generate_doc_req(options)
-      display_doc_req(doc_req)
+      display_doc_req(doc_req) unless doc_req.nil?
     else
       Log.error 'Unknown action'
     end
@@ -203,7 +203,10 @@ class Main
 
   def generate_doc_req(options)
     traca = TracaGenerator.new(@project)
-    traca.generate_doc_req_list(options[:doc], options[:plugins_path])
+    doc_req = traca.generate_doc_req_list(options[:doc], options[:plugins_path])
+    Log.error "Document '#{options[:doc]}' doesn't exist" if doc_req.nil?
+
+    doc_req
   end
 
   def create_export(format)
