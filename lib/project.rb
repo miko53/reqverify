@@ -59,7 +59,11 @@ class Project
   # for derived requirement
   # +req_id+ String arg. to check
   def name_for_derived_req_id?(req_id)
-    @project_file['derived-name'].match(req_id)
+    if !@project_file['derived-name'].nil?
+      @project_file['derived-name'].match(req_id)
+    else
+      ''
+    end
   end
 
   def docs_of(relationship)

@@ -41,7 +41,55 @@ Here we are a schema with involved files.
 ## Example
 
 The *Tests* folder contains a lot of examples. 
-Let's examine a common use case.
+Let's examine a common use case, this one is stores in *example* folder
+
+### begin by create project
+
+../bin/reqvp help
+
+../bin/reqvp create_project example_project req_project req_project.reqprj
+
+### insert files
+../bin/reqvp add_doc req_project/req_project.reqprj import SSS handler DocxImport SSS_sample.docx
+
+../bin/reqvp add_plugin_rule req_project/req_project.reqprj SRS req_id_style_name REQ_ID
+../bin/reqvp add_plugin_rule req_project/req_project.reqprj SRS req_title_style_name REQ_TITLE
+../bin/reqvp add_plugin_rule req_project/req_project.reqprj SRS req_text_style_name REQ_TEXT
+../bin/reqvp add_plugin_rule req_project/req_project.reqprj SRS req_cov_style_name REQ_COV
+../bin/reqvp add_plugin_rule req_project/req_project.reqprj SRS req_attributes_style_name REQ_ATTRIBUTES
+
+### insert rules
+
+ ../bin/reqvp add_plugin_rule req_project/req_project.reqprj SSS req_id_style_name REQ_ID
+ ../bin/reqvp add_plugin_rule req_project/req_project.reqprj SSS req_title_style_name REQ_TITLE
+ ../bin/reqvp add_plugin_rule req_project/req_project.reqprj SSS req_text_style_name REQ_TEXT
+ ../bin/reqvp add_plugin_rule req_project/req_project.reqprj SSS req_cov_style_name REQ_COV
+ ../bin/reqvp add_plugin_rule req_project/req_project.reqprj SSS req_attributes_style_name REQ_ATTRIBUTES
+
+### derived rules
+
+../bin/reqvp add_derived_name req_project/req_project.reqprj "Derived"
+
+### create relationship
+../bin/reqvp add_relationships req_project/req_project.reqprj "SSS->SRS" SRS covered-by SSS
+
+
+### build requirement list
+../bin/reqv --project=req_project/req_project.yaml --action=status --relationship="SSS->SRS"
+document: SRS
+  coverage: 100%
+  number of requirement: 10
+  number of uncovered requirement: 0
+  derived requirement: 20%
+    SRS_004.1
+    SRS_008.1
+document: SSS
+  coverage: 100%
+  number of requirement: 10
+  number of uncovered requirement: 0
+
+### export requirement list
+../bin/reqv --project=req_project/req_project.yaml --action=export --relationship="SSS->SRS" --format=xlsx --output-folder=. --output-file=traceability.xlsx
 
 ## TODO
 

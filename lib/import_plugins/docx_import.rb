@@ -67,7 +67,7 @@ class DocxImport < ImportPlugin
     true
   end
 
-  def parse_doc  # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Metrics/CyclomaticComplexity
+  def parse_doc # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Metrics/CyclomaticComplexity
     @current_req = {}
     @current_req_attrs = {}
     @docx.each_paragraph do |p|
@@ -86,6 +86,11 @@ class DocxImport < ImportPlugin
         insert_req_end(p.text)
       end
     end
+
+    # add last if present
+    return if @current_req['req_id'].nil?
+
+    @yaml_doc['reqs'].append @current_req
   end
 
   def insert_req_id(text)
@@ -118,7 +123,7 @@ class DocxImport < ImportPlugin
 
   def insert_req_attributes(text)
     t = text.split(/[:\t]/)
-    @current_req_attrs[t[0].strip.downcase] = t[1].strip
+    @current_req_attrs[t[0].strip.downcase] = t[1].strip if !t[0].nil? && !t[1].nil?
   end
 
   def insert_req_end(text); end

@@ -15,11 +15,19 @@ class StatDownstreamReq
                 :nb_derived_req, :derived_req_list
 
   def coverage_percent
-    100 - @nb_uncovered_req * 100 / @nb_req
+    if @nb_req != 0
+      100 - @nb_uncovered_req * 100 / @nb_req
+    else
+      0
+    end
   end
 
   def nb_derived_percent
-    @nb_derived_req * 100 / @nb_req
+    if @nb_req != 0
+      @nb_derived_req * 100 / @nb_req
+    else
+      0
+    end
   end
 end
 
@@ -35,7 +43,11 @@ class StatUpstreamReq
   attr_accessor :nb_req, :nb_uncovered_req, :doc_name, :uncovered_req_list
 
   def coverage_percent
-    100 - nb_uncovered_req * 100 / nb_req
+    if nb_req != 0
+      100 - nb_uncovered_req * 100 / nb_req
+    else
+      0
+    end
   end
 end
 
