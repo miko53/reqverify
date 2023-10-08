@@ -70,3 +70,8 @@ reqs:
   req_text: SRS 009 Text\nText…
   req_attrs:
     rational: rational srs9
+- req_id: SRS_010.1
+  req_cov:
+  - SSS_010.1
+  req_title: SRS 010 Title
+  req_text: SRS 010 Text\nText…
