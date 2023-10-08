@@ -41,39 +41,101 @@ Here we are a schema with involved files.
 ## Example
 
 The *Tests* folder contains a lot of examples. 
-Let's examine a common use case, this one is stores in *example* folder
+Let's examine a common use case, this one is stored in *example* folder. It can be built from `example` folder
 
-### begin by create project
+We have two documents in docx, a system specification (SSS) and a software specification (SRS), and we have a 
+traceability between SSS and SRS.
 
-../bin/reqvp help
+Then starts by create a project.
 
+> [!NOTE]
+> reqverify is in fact two tools, `reqv` to check traceability and `reqvp` to manage project
+
+### create project
+
+So create the project with `reqvp`
+
+```
 ../bin/reqvp create_project example_project req_project req_project.reqprj
+```
+
+> [!NOTE]
+> `reqvp` contains a help command to see list of possibility
+
+```
+../bin/reqvp help
+reqvp commands:
+reqvp create_project <project_name> <folder> <filename> create a new project in the given folder with the given filename
+reqvp add_doc <project_file> raw <doc_name> <doc_filename>
+reqvp add_doc <project_file> import <doc_name> handler <import_plugin> <doc_filename> <doc_yaml_file,optional>
+reqvp add_plugin_rule <project_file> <doc_name> <rule_name> <rule_value> <rule_type, optional>
+reqvp add_relationships <project_file> <relation name> <doc_list> covered-by <doc_list>
+reqvp add_derived_name <project_file> <derived_regular exp>
+```
 
 ### insert files
-../bin/reqvp add_doc req_project/req_project.reqprj import SSS handler DocxImport SSS_sample.docx
 
+Now we need insert file (document) and indicate how to manage it. Here we indicates that it is docx file
+managed by DocxImport plugin.
+
+```
+../bin/reqvp add_doc req_project/req_project.reqprj import SSS handler DocxImport SSS_sample.docx
+../bin/reqvp add_doc req_project/req_project.reqprj import SRS handler DocxImport SRS_sample.docx
+```
+
+### insert rules
+
+The DocxImport plugin is configurable, it retrieves requirement and their characterics by style. These styles must be indicates.
+
+Each document can be configurable independantly and it is possible to use your own plugin.
+
+```
 ../bin/reqvp add_plugin_rule req_project/req_project.reqprj SRS req_id_style_name REQ_ID
 ../bin/reqvp add_plugin_rule req_project/req_project.reqprj SRS req_title_style_name REQ_TITLE
 ../bin/reqvp add_plugin_rule req_project/req_project.reqprj SRS req_text_style_name REQ_TEXT
 ../bin/reqvp add_plugin_rule req_project/req_project.reqprj SRS req_cov_style_name REQ_COV
 ../bin/reqvp add_plugin_rule req_project/req_project.reqprj SRS req_attributes_style_name REQ_ATTRIBUTES
+```
 
-### insert rules
-
+```
  ../bin/reqvp add_plugin_rule req_project/req_project.reqprj SSS req_id_style_name REQ_ID
  ../bin/reqvp add_plugin_rule req_project/req_project.reqprj SSS req_title_style_name REQ_TITLE
  ../bin/reqvp add_plugin_rule req_project/req_project.reqprj SSS req_text_style_name REQ_TEXT
  ../bin/reqvp add_plugin_rule req_project/req_project.reqprj SSS req_cov_style_name REQ_COV
  ../bin/reqvp add_plugin_rule req_project/req_project.reqprj SSS req_attributes_style_name REQ_ATTRIBUTES
+```
+
+> [!NOTE]
+> see plugin to have more information on how deal with them.
 
 ### derived rules
 
+To identify the derived requirement, the used rule in coverable must be given.
+
+The following command does that:
+
+```
 ../bin/reqvp add_derived_name req_project/req_project.reqprj "Derived"
+```
 
 ### create relationship
+
+Now to finish, we must give the relationship between the document.
+Here the SSS requirement must be covered by SRS.
+
+```
 ../bin/reqvp add_relationships req_project/req_project.reqprj "SSS->SRS" SRS covered-by SSS
+```
+
+> [!NOTE]
+> it is posssible to have more complex relationship (1->N N->1 etc.)
+
 
 ### build requirement list
+
+Now we can chech the traceabilty with the following command:
+
+```
 ../bin/reqv --project=req_project/req_project.reqprj --action=status --relationship="SSS->SRS"
 document: SRS
   coverage: 100%
@@ -86,9 +148,15 @@ document: SSS
   coverage: 100%
   number of requirement: 10
   number of uncovered requirement: 0
+```
 
 ### export requirement list
+
+We can also export the result into a file, here an excel sheet:
+
+```
 ../bin/reqv --project=req_project/req_project.reqprj --action=export --relationship="SSS->SRS" --format=xlsx --output-folder=. --output-file=traceability.xlsx
+```
 
 ## TODO
 
