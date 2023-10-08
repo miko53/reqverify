@@ -182,6 +182,23 @@ See *tests/custom_plugins_dir* folder for a complete example.
 Currently two formats are managed, xlsx and csv. xlsx export uses *caxlsx* gems.
 Configuration will by possible in the future.
 
+## installation
+
+build and install the gem: 
+
+```
+gem build reqverify.gemspec
+gem install reqverify-1.0.0.gem
+```
+
+## tests
+
+launch bash file into tests
+
+```
+./tests/launch_tests.sh
+```
+
 ## TODO
 
 - [ ] Add delete part in reqvp executable
@@ -190,4 +207,6 @@ Configuration will by possible in the future.
 - [ ] create test in ruby format (no bash script)
 
 
-[LICENSE](LICENSE)
+## License 
+
+[BSD-3 LICENSE](LICENSE)
