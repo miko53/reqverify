@@ -24,10 +24,10 @@ docs:
       req_text_style_name: REQ_TEXT
       req_cov_style_name: REQ_COV
       req_attributes_style_name: REQ_ATTRIBUTES
+derived-name: !ruby/regexp /Derived/
 relationships:
 - name: SSS->SRS
   doc:
   - SRS
   covered-by:
   - SSS
-derived-name: !ruby/regexp /Derived/

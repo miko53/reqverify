@@ -73,9 +73,8 @@ Let's examine a common use case, this one is stores in *example* folder
 ### create relationship
 ../bin/reqvp add_relationships req_project/req_project.reqprj "SSS->SRS" SRS covered-by SSS
 
-
 ### build requirement list
-../bin/reqv --project=req_project/req_project.yaml --action=status --relationship="SSS->SRS"
+../bin/reqv --project=req_project/req_project.reqprj --action=status --relationship="SSS->SRS"
 document: SRS
   coverage: 100%
   number of requirement: 10
@@ -89,11 +88,10 @@ document: SSS
   number of uncovered requirement: 0
 
 ### export requirement list
-../bin/reqv --project=req_project/req_project.yaml --action=export --relationship="SSS->SRS" --format=xlsx --output-folder=. --output-file=traceability.xlsx
+../bin/reqv --project=req_project/req_project.reqprj --action=export --relationship="SSS->SRS" --format=xlsx --output-folder=. --output-file=traceability.xlsx
 
 ## TODO
 
-- [ ] Add complete example with doc import
 - [ ] Add delete part in reqvp executable
 - [ ] create a GUI to explore requirement traceability
 - [ ] add customization of output data

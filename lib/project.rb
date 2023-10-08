@@ -298,7 +298,7 @@ class Project
   end
 
   def default_yaml_filename(filename)
-    "#{filename.chomp(File.extname(filename))}.yaml"
+    "#{File.basename(filename).chomp(File.extname(filename))}.yaml"
   end
 
   def doc_exist?(docname)

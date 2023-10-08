@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'pathname'
 require_relative '../misc'
 require_relative '../project'
 require_relative '../log'
@@ -110,7 +111,7 @@ class OperationAddDoc < Operation
   def exec_raw
     docname = @arg[2]
     filename = @arg[3]
-    b = @project.insert_doc_raw(docname, filename)
+    b = @project.insert_doc_raw(docname, relative_pathname(filename))
     if b
       @project.write
       Log.info("doc: '#{docname}' inserted")
@@ -124,13 +125,19 @@ class OperationAddDoc < Operation
     pluginname = @arg[4]
     filename = @arg[5]
     filename_yaml = @arg[6]
-    b = @project.insert_doc_with_plugin(docname, pluginname, filename, filename_yaml)
+
+    b = @project.insert_doc_with_plugin(docname, pluginname, relative_pathname(filename), filename_yaml)
     if b
       @project.write
       Log.info("doc: '#{docname}' inserted")
     else
       Log.warning('not inserted')
     end
+  end
+
+  def relative_pathname(filename)
+    project_dir = @project.working_dir
+    Pathname.new(filename).relative_path_from(Pathname.new(project_dir)).to_s
   end
 end
 
