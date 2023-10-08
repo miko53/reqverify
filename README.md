@@ -158,9 +158,36 @@ We can also export the result into a file, here an excel sheet:
 ../bin/reqv --project=req_project/req_project.reqprj --action=export --relationship="SSS->SRS" --format=xlsx --output-folder=. --output-file=traceability.xlsx
 ```
 
+## plugins
+
+Currently it exists two import plugins. For importing docx (or docm) document or important excel (xls) one.
+See in `lib/import_plugins` folder. 
+
+These plugin use *docx* and *roo-xls* gems.
+
+The base class is `ImportPlugin`. Each ones has a configuration part named *rules*.
+These rules are read in the project file.
+
+To see rules, see the function `set_rules` or each import plugins. Parameters given to function are directly taken from project file (`handler-rules:`)
+
+
+### build own plugin.
+
+It is in fact the same format that the build-in ones, but you can save them into another folder.
+See *tests/custom_plugins_dir* folder for a complete example.
+
+
+## exports
+
+Currently two formats are managed, xlsx and csv. xlsx export uses *caxlsx* gems.
+Configuration will by possible in the future.
+
 ## TODO
 
 - [ ] Add delete part in reqvp executable
 - [ ] create a GUI to explore requirement traceability
 - [ ] add customization of output data
-- [ ] create test in ruby format (no bash)
+- [ ] create test in ruby format (no bash script)
+
+
+[LICENSE](LICENSE)
