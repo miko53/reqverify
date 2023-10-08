@@ -1,5 +1,5 @@
 
-# requiremement verify - reqv
+# Requiremement verify tool - reqv
 
 This tool is a help to create, verify traceability matrix.
 
@@ -51,7 +51,7 @@ Then starts by create a project.
 > [!NOTE]
 > reqverify is in fact two tools, `reqv` to check traceability and `reqvp` to manage project
 
-### create project
+### Create project
 
 So create the project with `reqvp`
 
@@ -73,7 +73,7 @@ reqvp add_relationships <project_file> <relation name> <doc_list> covered-by <do
 reqvp add_derived_name <project_file> <derived_regular exp>
 ```
 
-### insert files
+### Insert files
 
 Now we need insert file (document) and indicate how to manage it. Here we indicates that it is docx file
 managed by DocxImport plugin.
@@ -83,7 +83,7 @@ managed by DocxImport plugin.
 ../bin/reqvp add_doc req_project/req_project.reqprj import SRS handler DocxImport SRS_sample.docx
 ```
 
-### insert rules
+### Insert rules
 
 The DocxImport plugin is configurable, it retrieves requirement and their characterics by style. These styles must be indicates.
 
@@ -108,7 +108,7 @@ Each document can be configurable independantly and it is possible to use your o
 > [!NOTE]
 > see plugin to have more information on how deal with them.
 
-### derived rules
+### Derived rules
 
 To identify the derived requirement, the used rule in coverable must be given.
 
@@ -118,7 +118,7 @@ The following command does that:
 ../bin/reqvp add_derived_name req_project/req_project.reqprj "Derived"
 ```
 
-### create relationship
+### Create relationship
 
 Now to finish, we must give the relationship between the document.
 Here the SSS requirement must be covered by SRS.
@@ -131,7 +131,7 @@ Here the SSS requirement must be covered by SRS.
 > it is posssible to have more complex relationship (1->N N->1 etc.)
 
 
-### build requirement list
+### Build requirement list
 
 Now we can chech the traceabilty with the following command:
 
@@ -150,7 +150,7 @@ document: SSS
   number of uncovered requirement: 0
 ```
 
-### export requirement list
+### Export requirement list
 
 We can also export the result into a file, here an excel sheet:
 
@@ -158,7 +158,7 @@ We can also export the result into a file, here an excel sheet:
 ../bin/reqv --project=req_project/req_project.reqprj --action=export --relationship="SSS->SRS" --format=xlsx --output-folder=. --output-file=traceability.xlsx
 ```
 
-## plugins
+## Plugins
 
 Currently it exists two import plugins. For importing docx (or docm) document or important excel (xls) one.
 See in `lib/import_plugins` folder. 
@@ -171,18 +171,17 @@ These rules are read in the project file.
 To see rules, see the function `set_rules` or each import plugins. Parameters given to function are directly taken from project file (`handler-rules:`)
 
 
-### build own plugin.
+### Build own plugin.
 
 It is in fact the same format that the build-in ones, but you can save them into another folder.
 See *tests/custom_plugins_dir* folder for a complete example.
 
-
-## exports
+## Exports
 
 Currently two formats are managed, xlsx and csv. xlsx export uses *caxlsx* gems.
 Configuration will by possible in the future.
 
-## installation
+## Installation
 
 build and install the gem: 
 
@@ -191,7 +190,7 @@ gem build reqverify.gemspec
 gem install reqverify-1.0.0.gem
 ```
 
-## tests
+## Tests
 
 launch bash file into tests
 
@@ -207,6 +206,6 @@ launch bash file into tests
 - [ ] create test in ruby format (no bash script)
 
 
-## License 
+## License 
 
 [BSD-3 LICENSE](LICENSE)
