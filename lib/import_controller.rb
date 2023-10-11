@@ -112,4 +112,17 @@ class ImportController
     end
     r
   end
+
+  def clean
+    doc_list = @project.doc_list
+    doc_list.each do |doc|
+      doc_path = @project.get_output_file(doc)
+      begin
+        File.delete(doc_path)
+      rescue StandardError
+        # do nothing
+      end
+      Log.info "#{doc_path} removed"
+    end
+  end
 end

@@ -29,6 +29,11 @@ class TracaGenerator
     @project.doc_req(doc)
   end
 
+  def clean
+    import_ctrl = ImportController.new(@project)
+    import_ctrl.clean
+  end
+
   private
 
   def generate_report(downstream_docs, upstream_docs)

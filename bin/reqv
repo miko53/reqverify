@@ -43,7 +43,7 @@ class Main
       opts.on('-rRELATIONSHIP', '--relationship=RELATIONSHIP', 'concerned traceability to check/export') do |n|
         options[:relationship] = n
       end
-      opts.on('-aACTION', '--action=ACTION', 'action to launch (status/export/list)') do |n|
+      opts.on('-aACTION', '--action=ACTION', 'action to launch (status/export/list/clean)') do |n|
         options[:action] = n
       end
       opts.on('-DDOCUMENT', '--document=DOCUMENT', 'document to list requirement') do |n|
@@ -66,6 +66,16 @@ class Main
       end
       opts.on('-v', '--[no-]verbose', 'Run with verbose info') do |n|
         options[:verbose] = n
+      end
+
+      opts.on('-h', '--help', 'Print this help') do |n|
+        puts opts
+        puts '  Possible actions are: '
+        puts '  - status, generate and display traceability status on output console'
+        puts '  - export, generate and display traceability on file/folder given in argument'
+        puts '  - list, list all requirement of a document'
+        puts '  - clean, remove all intermediate file, to build again yaml requirement file'
+        exit
       end
     end.parse!
     # pp options
@@ -138,6 +148,8 @@ class Main
     when 'list'
       doc_req = generate_doc_req(options)
       display_doc_req(doc_req) unless doc_req.nil?
+    when 'clean'
+      clean_intermediate_file
     else
       Log.error 'Unknown action'
     end
@@ -209,6 +221,11 @@ class Main
     doc_req
   end
 
+  def clean_intermediate_file
+    traca_ctrl = TracaGenerator.new(@project)
+    traca_ctrl.clean
+  end
+
   def create_export(format)
     export_gen = nil
     case format
@@ -232,6 +249,7 @@ class Main
   def display_doc_req(doc_req)
     doc_req.display
   end
+
 end
 
 app = Main.new

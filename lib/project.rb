@@ -51,6 +51,14 @@ class Project
     docs_req_list
   end
 
+  def doc_list
+    doclist = []
+    @project_file['docs'].each do |doc|
+      doclist.append doc['name']
+    end
+    doclist
+  end
+
   def doc_req(docname)
     create_doc_req(docname)
   end
