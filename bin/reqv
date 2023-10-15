@@ -28,6 +28,8 @@ class Main
     check_options(options)
     initialize_log_level(options)
     @project = load_project_check_working_dir(options)
+    return EXIT_FAILURE if @project.nil?
+
     parse_and_launch_action(options)
   end
 
@@ -123,12 +125,12 @@ class Main
   def load_project_check_working_dir(options)
     project = Project.new options[:project_file]
     project.read
-    if project.loaded? && Dir.exist?(project.working_dir)
+    if project.loaded? # && Dir.exist?(project.working_dir)
       @working_dir = project.working_dir
       Log.info "project file: #{options[:project_file]}"
     else
       Log.error "project file is not valid or working dir doesn't exist"
-      exit EXIT_FAILURE
+      project = nil
     end
     project
   end
@@ -249,8 +251,9 @@ class Main
   def display_doc_req(doc_req)
     doc_req.display
   end
-
 end
 
-app = Main.new
-app.main
+if $PROGRAM_NAME == __FILE__
+  app = Main.new
+  app.main
+end
