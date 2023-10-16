@@ -9,6 +9,7 @@ class Log
 
   def self.initialize
     @@verbose_level = LOG_LEVEL_NONE # rubocop:disable Style/ClassVars
+    @@colorize_msg = false
   end
 
   def self.error(msg)
@@ -51,7 +52,17 @@ class Log
     @@verbose_level
   end
 
+  def self.colorize_msg=(lvl)
+    @@colorize_msg = lvl # rubocop:disable Style/ClassVars
+  end
+
+  def self.colorize_msg
+    @@colorize_msg
+  end
+
   def self.colorize(color)
+    return if @@colorize_msg == false
+
     case color
     when :red
       print "\e[31m"
@@ -63,6 +74,8 @@ class Log
   end
 
   def self.uncolorize
+    return if @@colorize_msg == false
+
     print "\e[0m"
   end
 

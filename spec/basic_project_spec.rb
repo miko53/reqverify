@@ -1,12 +1,9 @@
 # frozen_string_literal: true
 
 require 'spec_helper'
-require 'optparse'
-require 'byebug'
+require_relative '../lib/reqv_main'
 
-load 'bin/reqv'
-
-describe 'check reqverify' do
+describe 'check project' do
   before(:all) do
     @fixtures_path = 'spec/fixtures'
     @inputs_path = "#{@fixtures_path}/inputs"
@@ -16,7 +13,7 @@ describe 'check reqverify' do
 
   describe 'load_project_successfully' do
     before do
-      app = Main.new
+      app = ReqvMain.new
       options = {}
       options[:project_file] = "#{@inputs_path}/01_basic_1.SSS_1.SRS/project.yaml"
       options[:verbose] = 'y'
@@ -31,7 +28,7 @@ describe 'check reqverify' do
 
   describe 'load_project_unsuccessfully' do
     before do
-      app = Main.new
+      app = ReqvMain.new
       options = {}
       options[:project_file] = "#{@inputs_path}/01_basic_1.SSS_1.SRS/no_project.yaml"
       options[:verbose] = 'y'
