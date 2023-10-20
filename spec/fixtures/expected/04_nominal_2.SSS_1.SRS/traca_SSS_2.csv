@@ -1,0 +1,14 @@
+name;SSS_2
+up;down;
+SSS_2_REQ_001.1;SRS_REQ_005.1;
+SSS_2_REQ_002.1;SRS_REQ_006.1;
+SSS_2_REQ_003.1;SRS_REQ_001.1;
+SSS_2_REQ_004.1;SRS_REQ_002.1;
+SSS_2_REQ_005.1;SRS_REQ_003.1;
+SSS_2_REQ_006.1;SRS_REQ_004.1;
+;
+statistic;
+;
+coverage;100%;
+"number of requirement";6;
+"number of uncovered requirement";0;

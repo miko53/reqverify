@@ -124,4 +124,33 @@ describe 'check traceability' do # rubocop:disable Metrics/BlockLength
       FileUtils.rm_rf("#{@outputs_path}/03_basic_1.SSS_1.SRS", secure: true)
     end
   end
+
+  describe 'nominal 1 downstream, 2 upstream - output csv' do
+    before do
+      app = ReqvMain.new
+      options = {}
+      options[:project_file] = "#{@inputs_path}/04_nominal_2.SSS_1.SRS/project.yaml"
+      options[:action] = 'export'
+      options[:export_format] = 'csv'
+      options[:relationship] = 'SSS_all<->SRS'
+      options[:verbose] = 'y'
+      options[:output_folder] = "#{@outputs_path}/04_nominal_2.SSS_1.SRS"
+      app.initialize_log_level(options)
+      app.load_project_check_working_dir(options)
+      app.parse_and_launch_action(options)
+    end
+
+    it 'generates csv and give traceability' do
+      expect(FileUtils.compare_file("#{@outputs_path}/04_nominal_2.SSS_1.SRS/traca_SRS.csv",
+                                    "#{@expected_path}/04_nominal_2.SSS_1.SRS/traca_SRS.csv")).to eq(true)
+      expect(FileUtils.compare_file("#{@outputs_path}/04_nominal_2.SSS_1.SRS/traca_SSS_1.csv",
+                                    "#{@expected_path}/04_nominal_2.SSS_1.SRS/traca_SSS_1.csv")).to eq(true)
+      expect(FileUtils.compare_file("#{@outputs_path}/04_nominal_2.SSS_1.SRS/traca_SSS_2.csv",
+                                    "#{@expected_path}/04_nominal_2.SSS_1.SRS/traca_SSS_2.csv")).to eq(true)
+    end
+
+    after do
+      FileUtils.rm_rf("#{@outputs_path}/04_nominal_2.SSS_1.SRS", secure: true)
+    end
+  end
 end
