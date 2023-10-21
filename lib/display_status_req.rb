@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require_relative 'stat_req'
-require_relative 'log'
+require 'stat_req'
+require 'log'
 
 # class DisplayStatusReq
 class DisplayStatusReq

@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 require 'yaml'
-require_relative 'doc_req'
-require_relative 'misc'
+require 'doc_req'
+require 'misc'
 
 # read and parsing project
 class Project

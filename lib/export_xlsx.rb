@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-require_relative 'export'
-require_relative 'stat_req'
+require 'reqv/export'
+require 'stat_req'
 require 'caxlsx'
 
 # class ExportXlsx
-class ExportXlsx
+class ExportXlsx < Export
   CELL_HEIGHT = 15
 
   def export_traca_report(report:, output_folder:, output_file:)

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'spec_helper'
-require_relative '../lib/reqv_main'
+require 'reqv_main'
 
 describe 'check project' do
   before(:all) do

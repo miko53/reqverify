@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require_relative 'export'
-require_relative 'stat_req'
+require 'reqv/export'
+require 'stat_req'
 
 # class for exporting data to file
 class ExportCsv < Export

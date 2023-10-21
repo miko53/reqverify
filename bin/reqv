@@ -2,7 +2,7 @@
 # frozen_string_literal: true
 
 require 'optparse'
-require_relative '../lib/reqv_main'
+require 'reqv_main'
 
 # main application class
 class Main
@@ -19,11 +19,10 @@ class Main
   # check them
   # and execute requested action
   def main
-    options = read_args
-    check_options(options)
-
     reqv = ReqvMain.new
+    options = read_args
     reqv.initialize_log_level(options)
+    check_options(options)
     p = reqv.load_project_check_working_dir(options)
     reqv.parse_and_launch_action(options) unless p.nil?
   end

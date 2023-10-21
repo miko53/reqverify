@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require_relative 'project'
-require_relative 'traca_report'
-require_relative 'import_controller'
+require 'project'
+require 'traca_report'
+require 'import_controller'
 
 # class TracaGenerator
 class TracaGenerator
