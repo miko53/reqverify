@@ -1,8 +1,8 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-require 'reqv/reqvp_main'
-require 'reqv/project_helper/operation'
+require 'reqvp/reqvp_main'
+require 'reqvp/operation'
 
 # Main
 class Main
