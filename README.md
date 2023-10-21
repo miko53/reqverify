@@ -203,7 +203,8 @@ launch bash file into tests
 - [ ] Add delete part in reqvp executable
 - [ ] create a GUI to explore requirement traceability
 - [ ] add customization of output data
-- [ ] create test in ruby format (no bash script)
+- [ ] add test on reqvp
+- [ ] require for plugin custom path
 
 
 ## License 
