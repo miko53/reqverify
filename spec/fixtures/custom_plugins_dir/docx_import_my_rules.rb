@@ -2,7 +2,7 @@
 
 require 'docx'
 require 'yaml'
-require 'reqv/import_plugin'
+require 'reqv/plugins/import_plugin'
 
 # clasx DocStyleRules
 class DocxStyleRules

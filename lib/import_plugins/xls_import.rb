@@ -2,7 +2,7 @@
 
 require 'roo-xls'
 require 'yaml'
-require 'reqv/import_plugin'
+require 'reqv/plugins/import_plugin'
 
 # class XlsImportRules
 class XlsImportRules

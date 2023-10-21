@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'reqv/export'
+require 'reqv/plugins/export'
 require 'stat_req'
 
 # class for exporting data to file
