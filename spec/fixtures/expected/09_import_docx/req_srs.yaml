@@ -75,3 +75,5 @@ reqs:
   - SSS_010.1
   req_title: SRS 010 Title
   req_text: SRS 010 Text\nText…
+  req_attrs:
+    rational: rational srs10

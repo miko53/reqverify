@@ -90,6 +90,7 @@ class DocxImport < ImportPlugin
     # add last if present
     return if @current_req['req_id'].nil?
 
+    @current_req['req_attrs'] = @current_req_attrs
     @yaml_doc['reqs'].append @current_req
   end
 
