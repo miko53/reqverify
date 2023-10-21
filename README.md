@@ -203,8 +203,6 @@ rake
 - [ ] Add delete part in reqvp executable
 - [ ] create a GUI to explore requirement traceability
 - [ ] add customization of export data
-- [ ] add test on reqvp
-
 
 ## License 
 
