@@ -2,7 +2,7 @@
 # frozen_string_literal: true
 
 require 'optparse'
-require 'reqv_main'
+require 'reqv/reqv_main'
 
 # main application class
 class Main

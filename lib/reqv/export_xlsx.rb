@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'reqv/plugins/export'
-require 'stat_req'
+require 'reqv/stat_req'
 require 'caxlsx'
 
 # class ExportXlsx

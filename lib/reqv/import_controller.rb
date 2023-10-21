@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require 'misc'
-require 'log'
+require 'reqv/misc'
+require 'reqv/log'
 
 # module Import
 module Import

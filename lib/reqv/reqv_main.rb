@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
 require 'optparse'
-require 'project'
-require 'traca_gen'
-require 'export_csv'
-require 'export_xlsx'
-require 'log'
-require 'display_status_req'
+require 'reqv/project'
+require 'reqv/traca_gen'
+require 'reqv/export_csv'
+require 'reqv/export_xlsx'
+require 'reqv/log'
+require 'reqv/display_status_req'
 
 # main application class ReqvMain
 class ReqvMain

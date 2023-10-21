@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'yaml'
-require 'log'
+require 'reqv/log'
 
 # class DocReq
 class DocReq

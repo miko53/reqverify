@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require 'project'
-require 'traca_report'
-require 'import_controller'
+require 'reqv/project'
+require 'reqv/traca_report'
+require 'reqv/import_controller'
 
 # class TracaGenerator
 class TracaGenerator

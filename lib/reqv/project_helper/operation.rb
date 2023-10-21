@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 require 'pathname'
-require 'misc'
-require 'project'
-require 'log'
+require 'reqv/misc'
+require 'reqv/project'
+require 'reqv/log'
 
 def exe_name
   File.basename($PROGRAM_NAME)
