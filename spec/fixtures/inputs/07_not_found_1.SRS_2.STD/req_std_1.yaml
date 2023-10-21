@@ -1,0 +1,73 @@
+---
+reqs:
+  - req_id: STD_1_REQ_001.1
+    req_title: Requirement title
+    req_text: |
+          text req
+    req_attrs:
+        - category: functional
+        - context: nominal
+        - security: '-'
+        - verif: test
+        - rational: bla ..
+    req_cov: 
+        - SRS_REQ_010.1
+        - SRS_REQ_020.1
+  - req_id: STD_1_REQ_002.1
+    req_title: Requirement title
+    req_text: |
+          text req
+    req_attrs:
+        - category: functional
+        - context: nominal
+        - security: '-'
+        - verif: test
+        - rational: bla ..
+    req_cov: 
+        - SRS_REQ_101.1
+        - SRT_REQ_002.1
+  - req_id: STD_1_REQ_003.1
+    req_title: Requirement title
+    req_text: |
+          this req ... isdf sdfsdfklskdfmsdf sdfsdmf
+          sdf sdfk sdf sdf sdfm dfk sdm f
+          sdfkfms
+    req_attrs:
+        - category: functional
+        - context: nominal
+        - security: '-'
+        - verif: test
+        - rational: bla ..
+    req_cov: 
+        - SRS_REQ_003.1
+        - SRS_REQ_002.1
+  - req_id: STD_1_REQ_004.1
+    req_title: Requirement title
+    req_text: |
+          this req ... isdf sdfsdfklskdfmsdf sdfsdmf
+          sdf sdfk sdf sdf sdfm dfk sdm f
+          sdfkfms
+    req_attrs:
+        - category: functional
+        - context: nominal
+        - security: '-'
+        - verif: test
+        - rational: bla ..
+    req_cov: 
+        - SRS_REQ_003.1
+        - SRS_REQ_002.1
+  - req_id: STD_1_REQ_005.1
+    req_title: Requirement title
+    req_text: |
+          this req ... isdf sdfsdfklskdfmsdf sdfsdmf
+          sdf sdfk sdf sdf sdfm dfk sdm f
+          sdfkfms
+    req_attrs:
+        - category: functional
+        - context: nominal
+        - security: '-'
+        - verif: test
+        - rational: bla ..
+    req_cov: 
+        - SRS_REQ_03.1
+        - SRS_REQ_02.1
