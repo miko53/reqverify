@@ -287,7 +287,7 @@ describe 'check traceability' do # rubocop:disable Metrics/BlockLength
     end
   end
 
-  describe 'import docx test - check output yaml file' do
+  describe 'import docx test - check output yaml file' do # rubocop:disable Metrics/BlockLength
     before do
       app = ReqvMain.new
       options = {}
@@ -304,6 +304,22 @@ describe 'check traceability' do # rubocop:disable Metrics/BlockLength
     it 'generates yaml file if docx imported with requirement rules' do
       expect(FileUtils.compare_file("#{@outputs_path}/09_import_docx/req_srs.yaml",
                                     "#{@expected_path}/09_import_docx/req_srs.yaml")).to eq(true)
+    end
+
+    it 'clean intermediate file' do
+      app = ReqvMain.new
+      options = {}
+      options[:project_file] = "#{@inputs_path}/09_import_docx/project.yaml"
+      options[:action] = 'clean'
+      options[:relationship] = 'SSS<->SRS'
+      options[:verbose] = 'y'
+      options[:output_folder] = "#{@outputs_path}/09_import_docx"
+      app.initialize_log_level(options)
+      app.load_project_check_working_dir(options)
+      app.parse_and_launch_action(options)
+
+      expect(File.exist?("#{@outputs_path}/09_import_docx/req_srs.yaml")).to eq(false)
+      expect(File.exist?("#{@inputs_path}/09_import_docx/req_sss.yaml")).to eq(true)
     end
 
     after do

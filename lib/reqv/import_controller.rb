@@ -116,6 +116,8 @@ class ImportController
   def clean
     doc_list = @project.doc_list
     doc_list.each do |doc|
+      next unless @project.import?(doc)
+
       doc_path = @project.get_output_file(doc)
       begin
         File.delete(doc_path)
