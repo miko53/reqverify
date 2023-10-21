@@ -1,0 +1,80 @@
+---
+reqs:
+- req_id: SSS_APP_002
+  req_title: Title Req SSS_02
+  req_text: Description
+  req_attrs:
+    category: Functional
+    rational: rational sss
+- req_id: SSS_APP_004
+  req_title: Title Req SSS_04
+  req_text: Description
+  req_attrs:
+    category: Functional
+    rational: rational sss
+- req_id: SSS_APP_006
+  req_title: Title Req SSS_06
+  req_text: Description
+  req_attrs:
+    category: Functional
+    rational: rational sss
+- req_id: SSS_APP_008
+  req_title: Title Req SSS_08
+  req_text: Description
+  req_attrs:
+    category: Functional
+    rational: rational sss
+- req_id: SSS_APP_010
+  req_title: Title Req SSS_10
+  req_text: Description
+  req_attrs:
+    category: Functional
+    rational: rational sss
+- req_id: SSS_APP_012
+  req_title: Title Req SSS_12
+  req_text: Description
+  req_attrs:
+    category: Functional
+    rational: rational sss
+- req_id: SSS_APP_014
+  req_title: Title Req SSS_14
+  req_text: Description
+  req_attrs:
+    category: Functional
+    rational: rational sss
+- req_id: SSS_APP_016
+  req_title: Title Req SSS_16
+  req_text: Description
+  req_attrs:
+    category: Functional
+    rational: rational sss
+- req_id: SSS_APP_018
+  req_title: Title Req SSS_18
+  req_text: Description
+  req_attrs:
+    category: Functional
+    rational: rational sss
+- req_id: SSS_APP_020
+  req_title: Title Req SSS_20
+  req_text: Description
+  req_attrs:
+    category: Functional
+    rational: rational sss
+- req_id: SSS_APP_022
+  req_title: Title Req SSS_22
+  req_text: Description
+  req_attrs:
+    category: Functional
+    rational: rational sss
+- req_id: SSS_APP_024
+  req_title: Title Req SSS_24
+  req_text: Description
+  req_attrs:
+    category: Functional
+    rational: rational sss
+- req_id: SSS_APP_026
+  req_title: Title Req SSS_26
+  req_text: Description
+  req_attrs:
+    category: Functional
+    rational: rational sss

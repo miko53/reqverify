@@ -1,0 +1,39 @@
+---
+name: test_project
+version: 1.0
+docs:
+  - name: SRS
+    path: '../../outputs/11_import_xls_allocated_matrix/req_srs.yaml'
+    imported-from:
+      input: 'req_srs.xls'
+      handler: 'XlsImport'
+      handler-rules:
+        req_id_regexp: !ruby/regexp /SRS_*/
+        req_id_column: 0
+        req_title_column: 1
+        req_text_column: 2
+        req_category_column: 6
+        req_rational_column: 3
+        req_allocated_column: 10
+  - name: SSS
+    path: '../../outputs/11_import_xls_allocated_matrix/req_sss.yaml'
+    imported-from:
+      input: 'req_sss.xls'
+      handler: 'XlsImport'
+      handler-rules:
+        req_id_regexp: !ruby/regexp /SSS_*/
+        req_id_column: 0
+        req_title_column: 1
+        req_text_column: 2
+        req_category_column: 6
+        req_rational_column: 3
+        req_allocated_column: 10
+relationships:
+  - name: 'SSS<->SRS'
+    doc:
+      - SRS
+    covered-by:
+      - SSS
+derived-name: !ruby/regexp /[D|d]erived/
+
+

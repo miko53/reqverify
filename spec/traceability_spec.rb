@@ -371,4 +371,30 @@ describe 'check traceability' do # rubocop:disable Metrics/BlockLength
       FileUtils.rm_rf("#{@outputs_path}/09_import_docx", secure: true)
     end
   end
+
+  describe 'import xls test - check compliance column' do
+    before do
+      app = ReqvMain.new
+      options = {}
+      options[:project_file] = "#{@inputs_path}/11_import_xls_allocated_matrix/project.yaml"
+      options[:action] = 'status'
+      options[:relationship] = 'SSS<->SRS'
+      options[:verbose] = 'y'
+      options[:output_folder] = "#{@outputs_path}/11_import_xls_allocated_matrix"
+      app.initialize_log_level(options)
+      app.load_project_check_working_dir(options)
+      app.parse_and_launch_action(options)
+    end
+
+    it 'generates yaml file if xls imported with requirement rules' do
+      expect(FileUtils.compare_file("#{@outputs_path}/11_import_xls_allocated_matrix/req_srs.yaml",
+                                    "#{@expected_path}/11_import_xls_allocated_matrix/req_srs.yaml")).to eq(true)
+      expect(FileUtils.compare_file("#{@outputs_path}/11_import_xls_allocated_matrix/req_sss.yaml",
+                                    "#{@expected_path}/11_import_xls_allocated_matrix/req_sss.yaml")).to eq(true)
+    end
+
+    after do
+      FileUtils.rm_rf("#{@outputs_path}/11_import_xls_allocated_matrix", secure: true)
+    end
+  end
 end

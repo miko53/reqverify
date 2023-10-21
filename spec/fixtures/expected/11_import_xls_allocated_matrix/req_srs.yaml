@@ -1,0 +1,80 @@
+---
+reqs:
+- req_id: SRS_APP_001
+  req_title: Req SRS_01
+  req_text: Description
+  req_attrs:
+    category: Functional
+    rational: rational
+- req_id: SRS_APP_003
+  req_title: Req SRS_03
+  req_text: Description
+  req_attrs:
+    category: Functional
+    rational: rational
+- req_id: SRS_APP_005
+  req_title: Req SRS_05
+  req_text: Description
+  req_attrs:
+    category: Functional
+    rational: rational
+- req_id: SRS_APP_007
+  req_title: Req SRS_07
+  req_text: Description
+  req_attrs:
+    category: Functional
+    rational: rational
+- req_id: SRS_APP_009
+  req_title: Req SRS_09
+  req_text: Description
+  req_attrs:
+    category: Functional
+    rational: rational
+- req_id: SRS_APP_011
+  req_title: Req SRS_11
+  req_text: Description
+  req_attrs:
+    category: Functional
+    rational: rational
+- req_id: SRS_APP_013
+  req_title: Req SRS_13
+  req_text: Description
+  req_attrs:
+    category: Functional
+    rational: rational
+- req_id: SRS_APP_015
+  req_title: Req SRS_15
+  req_text: Description
+  req_attrs:
+    category: Functional
+    rational: rational
+- req_id: SRS_APP_017
+  req_title: Req SRS_17
+  req_text: Description
+  req_attrs:
+    category: Functional
+    rational: rational
+- req_id: SRS_APP_019
+  req_title: Req SRS_19
+  req_text: Description
+  req_attrs:
+    category: Functional
+    rational: rational
+- req_id: SRS_APP_021
+  req_title: Req SRS_21
+  req_text: Description
+  req_attrs:
+    category: Functional
+    rational: rational
+- req_id: SRS_APP_023
+  req_title: Req SRS_23
+  req_text: Description
+  req_attrs:
+    category: Functional
+    rational: rational
+- req_id: SRS_APP_025
+  req_title: Req SRS_25
+  req_text: Description
+  req_attrs:
+    category: Functional
+    rational: rational

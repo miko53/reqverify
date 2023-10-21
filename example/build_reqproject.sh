@@ -1,7 +1,7 @@
 #!/bin/bash
 
-REQV=../bin/reqv
-REQVP=../bin/reqvp
+REQV="ruby -I../lib ../bin/reqv"
+REQVP="ruby -I../lib ../bin/reqvp"
 
 ${REQVP} create_project example_project req_project req_project.reqprj
 
