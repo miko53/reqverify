@@ -1,0 +1,27 @@
+---
+name: test_project
+version: 1.0
+docs:
+  - name: SRS
+    path: '../../outputs/09_import_docx/req_srs.yaml'
+    imported-from:
+      input: 'SRS_sample.docx'
+      handler: 'DocxImport'
+      handler-rules:
+        req_id_style_name: 'REQ_ID'
+        req_title_style_name: 'REQ_TITLE'
+        req_text_style_name: 'REQ_TEXT'
+        req_cov_style_name: 'REQ_COV'
+        req_attributes_style_name: 'REQ_ATTRIBUTES'
+#        req_end_style_name: 'REQ_END'
+  - name: SSS
+    path: 'req_sss.yaml'
+relationships:
+  - name: 'SSS<->SRS'
+    doc:
+      - SRS
+    covered-by:
+      - SSS
+derived-name: !ruby/regexp /[D|d]erived/
+
+

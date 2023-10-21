@@ -261,4 +261,114 @@ describe 'check traceability' do # rubocop:disable Metrics/BlockLength
     end
   end
 
+  describe 'import xls test - check output yaml file' do
+    before do
+      app = ReqvMain.new
+      options = {}
+      options[:project_file] = "#{@inputs_path}/08_import_xls/project.yaml"
+      options[:action] = 'status'
+      options[:relationship] = 'SSS<->SRS'
+      options[:verbose] = 'y'
+      options[:output_folder] = "#{@outputs_path}/08_import_xls"
+      app.initialize_log_level(options)
+      app.load_project_check_working_dir(options)
+      app.parse_and_launch_action(options)
+    end
+
+    it 'generates yaml file if xls imported with requirement rules' do
+      expect(FileUtils.compare_file("#{@outputs_path}/08_import_xls/req_srs.yaml",
+                                    "#{@expected_path}/08_import_xls/req_srs.yaml")).to eq(true)
+      expect(FileUtils.compare_file("#{@outputs_path}/08_import_xls/req_sss.yaml",
+                                    "#{@expected_path}/08_import_xls/req_sss.yaml")).to eq(true)
+    end
+
+    after do
+      FileUtils.rm_rf("#{@outputs_path}/08_import_xls", secure: true)
+    end
+  end
+
+  describe 'import docx test - check output yaml file' do
+    before do
+      app = ReqvMain.new
+      options = {}
+      options[:project_file] = "#{@inputs_path}/09_import_docx/project.yaml"
+      options[:action] = 'status'
+      options[:relationship] = 'SSS<->SRS'
+      options[:verbose] = 'y'
+      options[:output_folder] = "#{@outputs_path}/09_import_docx"
+      app.initialize_log_level(options)
+      app.load_project_check_working_dir(options)
+      app.parse_and_launch_action(options)
+    end
+
+    it 'generates yaml file if docx imported with requirement rules' do
+      expect(FileUtils.compare_file("#{@outputs_path}/09_import_docx/req_srs.yaml",
+                                    "#{@expected_path}/09_import_docx/req_srs.yaml")).to eq(true)
+    end
+
+    after do
+      FileUtils.rm_rf("#{@outputs_path}/09_import_docx", secure: true)
+    end
+  end
+
+  describe 'import custom plugin with docx - check output yaml file' do
+    before do
+      app = ReqvMain.new
+      options = {}
+      options[:project_file] = "#{@inputs_path}/10_import_custom_plugin/project.yaml"
+      options[:action] = 'status'
+      options[:relationship] = 'SSS<->SRS'
+      options[:verbose] = 'y'
+      options[:output_folder] = "#{@outputs_path}/10_import_custom_plugin"
+      options[:plugins_path] = "#{@fixtures_path}/custom_plugins_dir"
+      app.initialize_log_level(options)
+      app.load_project_check_working_dir(options)
+      app.parse_and_launch_action(options)
+    end
+
+    it 'generates yaml file of docx imported with a custom plugin' do
+      expect(FileUtils.compare_file("#{@outputs_path}/10_import_custom_plugin/req_srs.yaml",
+                                    "#{@expected_path}/10_import_custom_plugin/req_srs.yaml")).to eq(true)
+    end
+
+    after do
+      FileUtils.rm_rf("#{@outputs_path}/10_import_custom_plugin", secure: true)
+    end
+  end
+
+  describe 'import and list requirement of docx document' do # rubocop:disable Metrics/BlockLength
+    before do
+      @app = ReqvMain.new
+      @options = {}
+      @options[:project_file] = "#{@inputs_path}/09_import_docx/project.yaml"
+      @options[:action] = 'list'
+      @options[:doc] = 'SRS'
+      # @options[:colorize] = 'y'
+      @app.initialize_log_level(@options)
+      @app.load_project_check_working_dir(@options)
+    end
+
+    it 'displays list of requirement of a docx imported document' do
+      expected_stdio = <<~EXPECTED
+        Requirement list of SRS:
+          SRS_001.1: SRS 001 Title
+          SRS_002.1: SRS 002 Title
+          SRS_003.1: SRS 003 Title
+          SRS_004.1: SRS 004 Title
+          SRS_005.1: SRS 005 Title
+          SRS_006.1: SRS 006 Title
+          SRS_007.1: SRS 007 Title
+          SRS_008.1: SRS 008 Title
+          SRS_009.1: SRS 009 Title
+          SRS_010.1: SRS 010 Title
+        Number of requirement: 10
+      EXPECTED
+
+      expect { @app.parse_and_launch_action(@options) }.to output(expected_stdio).to_stdout
+    end
+
+    after do
+      FileUtils.rm_rf("#{@outputs_path}/09_import_docx", secure: true)
+    end
+  end
 end
