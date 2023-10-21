@@ -1,8 +1,10 @@
 # frozen_string_literal: true
 
+require 'reqvp/operation'
+
 # main application class ReqvpMain
 class ReqvpMain
-  def analyse_args(argv) # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Metrics/CyclomaticComplexity
+  def analyse_args(argv) # rubocop:disable Metrics/MethodLength, Metrics/CyclomaticComplexity
     return nil if argv.empty?
 
     case argv[0].downcase
@@ -19,7 +21,7 @@ class ReqvpMain
     when 'add_derived_name'
       action = OperationAddDerivedName.new(argv.drop(1))
     else
-      print_error_and_exit
+      return nil
     end
     action
   end

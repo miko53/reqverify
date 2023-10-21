@@ -1,0 +1,10 @@
+---
+version: 1.0
+name: example_project
+docs:
+- name: SSS
+  path: SSS_sample.yaml
+  imported-from:
+    handler: DocxImport
+    input: "../../inputs/reqvp/SSS_sample.docx"
+    handler-rules: {}
