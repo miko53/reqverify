@@ -1,0 +1,33 @@
+---
+version: 1.0
+name: example_project
+docs:
+- name: SSS
+  path: SSS_sample.yaml
+  imported-from:
+    handler: DocxImport
+    input: "../../inputs/reqvp/SSS_sample.docx"
+    handler-rules:
+      req_id_style_name: REQ_ID
+      req_title_style_name: REQ_TITLE
+      req_text_style_name: REQ_TEXT
+      req_cov_style_name: REQ_COV
+      req_attributes_style_name: REQ_ATTRIBUTES
+- name: SRS
+  path: SRS_sample.yaml
+  imported-from:
+    handler: DocxImport
+    input: "../../inputs/reqvp/SRS_sample.docx"
+    handler-rules:
+      req_id_style_name: REQ_ID
+      req_title_style_name: REQ_TITLE
+      req_text_style_name: REQ_TEXT
+      req_cov_style_name: REQ_COV
+      req_attributes_style_name: REQ_ATTRIBUTES
+derived-name: !ruby/regexp /[D|d]erived/
+relationships:
+- name: SSS->SRS
+  doc:
+  - SRS
+  covered-by:
+  - SSS
