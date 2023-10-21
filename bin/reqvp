@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+require_relative '../lib/reqvp_main'
 require_relative '../lib/project_helper/operation'
 
 # Main
@@ -8,8 +9,9 @@ class Main
   EXIT_FAILURE = 1
 
   def main
-    Log.verbose_level = Log::LOG_LEVEL_INFO
-    operation = analyse_args(ARGV)
+    reqvp = ReqvpMain.new
+    reqvp.initialize_log_level
+    operation = reqvp.analyse_args(ARGV)
     print_error_and_exit if operation.nil?
 
     b = operation.check_args
@@ -18,28 +20,6 @@ class Main
     else
       puts('wrong param, try help')
     end
-  end
-
-  def analyse_args(argv) # rubocop:disable Metrics/MethodLength
-    return nil if argv.empty?
-
-    case argv[0].downcase
-    when 'help'
-      action = OperationHelp.new
-    when 'create_project'
-      action = OperationCreateProject.new(argv.drop(1))
-    when 'add_doc'
-      action = OperationAddDoc.new(argv.drop(1))
-    when 'add_plugin_rule'
-      action = OperationAddPluginRule.new(argv.drop(1))
-    when 'add_relationships'
-      action = OperationAddRelationships.new(argv.drop(1))
-    when 'add_derived_name'
-      action = OperationAddDerivedName.new(argv.drop(1))
-    else
-      print_error_and_exit
-    end
-    action
   end
 
   def print_error_and_exit
