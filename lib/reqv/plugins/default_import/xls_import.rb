@@ -2,7 +2,7 @@
 
 require 'roo-xls'
 require 'yaml'
-require 'reqv/plugins/import_plugin'
+require 'reqv/plugins/import'
 
 # class XlsImportRules
 class XlsImportRules
@@ -31,7 +31,7 @@ class XlsImportRules
 end
 
 # class XlsImport
-class XlsImport < ImportPlugin
+class XlsImport < Import
   def rules=(rule_set = {})
     @import_rules = XlsImportRules.new
     @import_rules.set_rules(rule_set)

@@ -3,8 +3,8 @@
 require 'reqv/misc'
 require 'reqv/log'
 
-# module Import
-module Import
+# module ImportPlugin
+module ImportPlugin
 end
 
 # class ImportController
@@ -13,7 +13,7 @@ class ImportController
   NEED_IMPORT = 2
   IMPORT_DONE = 3
 
-  IMPORT_PATH = 'import_plugins'
+  DEFAULT_IMPORT_PATH = 'plugins/default_import'
 
   def initialize(project)
     @project = project
@@ -66,7 +66,7 @@ class ImportController
   end
 
   def launch_import(handler_class, doc_name)
-    t = Import.const_get(handler_class).new
+    t = ImportPlugin.const_get(handler_class).new
     t.rules = @project.get_handler_options(doc_name)
     status = t.import(@project.get_input_file(doc_name), @project.get_output_file(doc_name))
     if status == true
@@ -79,7 +79,7 @@ class ImportController
   def build_plugins_path(class_name, custom_plugins_path)
     mod_path_try_list = []
     mod_file = "#{class_name.underscore}.rb"
-    mod_path = File.join(File.dirname(__FILE__), IMPORT_PATH)
+    mod_path = File.join(File.dirname(__FILE__), DEFAULT_IMPORT_PATH)
     mod_path = File.join(mod_path, mod_file)
     mod_path_try_list.append(mod_path)
 
@@ -103,7 +103,7 @@ class ImportController
     r = false
     mod_path_list.each do |mod_path|
       begin
-        r = load mod_path, Import
+        r = load mod_path, ImportPlugin
         Log.info "loading #{mod_path} successfull" if r == true
       rescue LoadError
         Log.warning "loading #{mod_path} failed"

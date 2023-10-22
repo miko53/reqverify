@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-# class ImportPlugin
-class ImportPlugin
+# class Import
+class Import
   def initialize
     @yaml_doc = {}
     @yaml_doc['reqs'] = []

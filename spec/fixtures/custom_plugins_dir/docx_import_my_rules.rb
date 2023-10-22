@@ -2,7 +2,7 @@
 
 require 'docx'
 require 'yaml'
-require 'reqv/plugins/import_plugin'
+require 'reqv/plugins/import'
 
 # clasx DocStyleRules
 class DocxStyleRules
@@ -51,7 +51,7 @@ class DocxImportRules
 end
 
 # class DocxImport
-class DocxImportMyRules < ImportPlugin
+class DocxImportMyRules < Import
   def rules=(rule_set = {})
     @import_rules = DocxImportRules.new
     @import_rules.set_rules(rule_set)
