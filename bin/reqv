@@ -19,7 +19,7 @@ class Main
   # check them
   # and execute requested action
   def main
-    reqv = ReqvMain.new
+    reqv = Reqv::ReqvMain.new
     options = read_args
     reqv.initialize_log_level(options)
     check_options(options)
@@ -89,22 +89,22 @@ class Main
     failure = false
 
     if options[:action].nil?
-      Log.error 'need to provide action, see help'
+      Reqv::Log.error 'need to provide action, see help'
       failure = true
     end
 
     if (options[:action] == 'export') && options[:export_format].nil?
-      Log.error 'format not provided'
+      Reqv::Log.error 'format not provided'
       failure = true
     end
 
     if options[:project_file].nil?
-      Log.error 'need to provide project file, see help'
+      Reqv::Log.error 'need to provide project file, see help'
       failure = true
     end
 
     if (options[:action] == 'list') && options[:doc].nil?
-      Log.error 'need to provide a doc for list requirement'
+      Reqv::Log.error 'need to provide a doc for list requirement'
       failure = true
     end
 

@@ -20,7 +20,7 @@ describe 'create a project' do # rubocop:disable Metrics/BlockLength
       argv.append "#{@outputs_path}/req_project_folder"
       argv.append 'req_project.reqprj'
 
-      reqvp = ReqvpMain.new
+      reqvp = Reqv::ReqvpMain.new
       reqvp.initialize_log_level
       @operation = reqvp.analyse_args(argv)
     end
@@ -46,7 +46,7 @@ describe 'create a project' do # rubocop:disable Metrics/BlockLength
       argv.append 'DocxImport'
       argv.append "#{@inputs_path}/SSS_sample.docx"
 
-      reqvp = ReqvpMain.new
+      reqvp = Reqv::ReqvpMain.new
       reqvp.initialize_log_level
       @operation = reqvp.analyse_args(argv)
     end
@@ -71,7 +71,7 @@ describe 'create a project' do # rubocop:disable Metrics/BlockLength
       argv.append 'DocxImport'
       argv.append "#{@inputs_path}/SRS_sample.docx"
 
-      reqvp = ReqvpMain.new
+      reqvp = Reqv::ReqvpMain.new
       reqvp.initialize_log_level
       @operation = reqvp.analyse_args(argv)
     end
@@ -94,7 +94,7 @@ describe 'create a project' do # rubocop:disable Metrics/BlockLength
       @argv.append 'req_id_style_name'
       @argv.append 'REQ_ID'
 
-      @reqvp = ReqvpMain.new
+      @reqvp = Reqv::ReqvpMain.new
       @reqvp.initialize_log_level
       @operation = @reqvp.analyse_args(@argv)
     end
@@ -146,7 +146,7 @@ describe 'create a project' do # rubocop:disable Metrics/BlockLength
       @argv.append 'req_id_style_name'
       @argv.append 'REQ_ID'
 
-      @reqvp = ReqvpMain.new
+      @reqvp = Reqv::ReqvpMain.new
       @reqvp.initialize_log_level
       @operation = @reqvp.analyse_args(@argv)
     end
@@ -196,7 +196,7 @@ describe 'create a project' do # rubocop:disable Metrics/BlockLength
       @argv.append "#{@outputs_path}/req_project_folder/req_project.reqprj"
       @argv.append '[D|d]erived'
 
-      @reqvp = ReqvpMain.new
+      @reqvp = Reqv::ReqvpMain.new
       @reqvp.initialize_log_level
       @operation = @reqvp.analyse_args(@argv)
     end
@@ -221,7 +221,7 @@ describe 'create a project' do # rubocop:disable Metrics/BlockLength
       @argv.append 'covered-by'
       @argv.append 'SSS'
 
-      @reqvp = ReqvpMain.new
+      @reqvp = Reqv::ReqvpMain.new
       @reqvp.initialize_log_level
       @operation = @reqvp.analyse_args(@argv)
     end

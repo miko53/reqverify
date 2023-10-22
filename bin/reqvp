@@ -9,7 +9,7 @@ class Main
   EXIT_FAILURE = 1
 
   def main
-    reqvp = ReqvpMain.new
+    reqvp = Reqv::ReqvpMain.new
     reqvp.initialize_log_level
     operation = reqvp.analyse_args(ARGV)
     print_error_and_exit if operation.nil?
@@ -24,7 +24,7 @@ class Main
 
   def print_error_and_exit
     puts('error, unknown operation, try')
-    puts("#{exe_name} help")
+    puts("#{Reqv.exe_name} help")
     exit EXIT_FAILURE
   end
 end

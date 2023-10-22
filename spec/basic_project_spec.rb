@@ -13,7 +13,7 @@ describe 'check project' do
 
   describe 'load_project_successfully' do
     before do
-      app = ReqvMain.new
+      app = Reqv::ReqvMain.new
       options = {}
       options[:project_file] = "#{@inputs_path}/01_basic_1.SSS_1.SRS/project.yaml"
       options[:verbose] = 'y'
@@ -22,13 +22,13 @@ describe 'check project' do
     end
 
     it 'project file exists' do
-      expect(@project).to be_an_instance_of(Project)
+      expect(@project).to be_an_instance_of(Reqv::Project)
     end
   end
 
   describe 'load_project_unsuccessfully' do
     before do
-      app = ReqvMain.new
+      app = Reqv::ReqvMain.new
       options = {}
       options[:project_file] = "#{@inputs_path}/01_basic_1.SSS_1.SRS/no_project.yaml"
       options[:verbose] = 'y'

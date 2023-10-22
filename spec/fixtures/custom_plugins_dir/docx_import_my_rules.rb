@@ -51,7 +51,7 @@ class DocxImportRules
 end
 
 # class DocxImport
-class DocxImportMyRules < Import
+class DocxImportMyRules < Reqv::Import
   def rules=(rule_set = {})
     @import_rules = DocxImportRules.new
     @import_rules.set_rules(rule_set)

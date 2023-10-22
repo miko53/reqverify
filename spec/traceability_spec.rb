@@ -13,7 +13,7 @@ describe 'check traceability' do # rubocop:disable Metrics/BlockLength
 
   describe 'traca 1 SSS, 1 SRS, export csv format' do
     before do
-      app = ReqvMain.new
+      app = Reqv::ReqvMain.new
       options = {}
       options[:project_file] = "#{@inputs_path}/01_basic_1.SSS_1.SRS/project.yaml"
       options[:action] = 'export'
@@ -40,7 +40,7 @@ describe 'check traceability' do # rubocop:disable Metrics/BlockLength
 
   describe 'basic test - missing requirement' do
     before do
-      app = ReqvMain.new
+      app = Reqv::ReqvMain.new
       options = {}
       options[:project_file] = "#{@inputs_path}/02_basic_missing_req_1.SSS_1.SRS/project.yaml"
       options[:action] = 'export'
@@ -67,7 +67,7 @@ describe 'check traceability' do # rubocop:disable Metrics/BlockLength
 
   describe 'basic test - missing requirement - display in console' do # rubocop:disable Metrics/BlockLength
     before do
-      @app = ReqvMain.new
+      @app = Reqv::ReqvMain.new
       @options = {}
       @options[:project_file] = "#{@inputs_path}/02_basic_missing_req_1.SSS_1.SRS/project.yaml"
       @options[:action] = 'status'
@@ -102,7 +102,7 @@ describe 'check traceability' do # rubocop:disable Metrics/BlockLength
 
   describe 'basic test - output xlsx' do
     before do
-      app = ReqvMain.new
+      app = Reqv::ReqvMain.new
       options = {}
       options[:project_file] = "#{@inputs_path}/01_basic_1.SSS_1.SRS/project.yaml"
       options[:action] = 'export'
@@ -127,7 +127,7 @@ describe 'check traceability' do # rubocop:disable Metrics/BlockLength
 
   describe 'nominal 1 downstream, 2 upstream - output csv' do
     before do
-      app = ReqvMain.new
+      app = Reqv::ReqvMain.new
       options = {}
       options[:project_file] = "#{@inputs_path}/04_nominal_2.SSS_1.SRS/project.yaml"
       options[:action] = 'export'
@@ -156,7 +156,7 @@ describe 'check traceability' do # rubocop:disable Metrics/BlockLength
 
   describe 'nominal 2 downstream, 1 upstream' do
     before do
-      app = ReqvMain.new
+      app = Reqv::ReqvMain.new
       options = {}
       options[:project_file] = "#{@inputs_path}/05_nominal_1.SRS_2.STD/project.yaml"
       options[:action] = 'export'
@@ -185,7 +185,7 @@ describe 'check traceability' do # rubocop:disable Metrics/BlockLength
 
   describe 'not found requirement 1 - check status ouput' do # rubocop:disable Metrics/BlockLength
     before do
-      @app = ReqvMain.new
+      @app = Reqv::ReqvMain.new
       @options = {}
       @options[:project_file] = "#{@inputs_path}/06_not_found_1.SSS_1.SRS/project.yaml"
       @options[:action] = 'status'
@@ -220,7 +220,7 @@ describe 'check traceability' do # rubocop:disable Metrics/BlockLength
 
   describe 'not found requirement 2 - check status ouput' do # rubocop:disable Metrics/BlockLength
     before do
-      @app = ReqvMain.new
+      @app = Reqv::ReqvMain.new
       @options = {}
       @options[:project_file] = "#{@inputs_path}/07_not_found_1.SRS_2.STD/project.yaml"
       @options[:action] = 'status'
@@ -263,7 +263,7 @@ describe 'check traceability' do # rubocop:disable Metrics/BlockLength
 
   describe 'import xls test - check output yaml file' do
     before do
-      app = ReqvMain.new
+      app = Reqv::ReqvMain.new
       options = {}
       options[:project_file] = "#{@inputs_path}/08_import_xls/project.yaml"
       options[:action] = 'status'
@@ -289,7 +289,7 @@ describe 'check traceability' do # rubocop:disable Metrics/BlockLength
 
   describe 'import docx test - check output yaml file' do # rubocop:disable Metrics/BlockLength
     before do
-      app = ReqvMain.new
+      app = Reqv::ReqvMain.new
       options = {}
       options[:project_file] = "#{@inputs_path}/09_import_docx/project.yaml"
       options[:action] = 'status'
@@ -307,7 +307,7 @@ describe 'check traceability' do # rubocop:disable Metrics/BlockLength
     end
 
     it 'clean intermediate file' do
-      app = ReqvMain.new
+      app = Reqv::ReqvMain.new
       options = {}
       options[:project_file] = "#{@inputs_path}/09_import_docx/project.yaml"
       options[:action] = 'clean'
@@ -329,7 +329,7 @@ describe 'check traceability' do # rubocop:disable Metrics/BlockLength
 
   describe 'import custom plugin with docx - check output yaml file' do
     before do
-      app = ReqvMain.new
+      app = Reqv::ReqvMain.new
       options = {}
       options[:project_file] = "#{@inputs_path}/10_import_custom_plugin/project.yaml"
       options[:action] = 'status'
@@ -354,7 +354,7 @@ describe 'check traceability' do # rubocop:disable Metrics/BlockLength
 
   describe 'import and list requirement of docx document' do # rubocop:disable Metrics/BlockLength
     before do
-      @app = ReqvMain.new
+      @app = Reqv::ReqvMain.new
       @options = {}
       @options[:project_file] = "#{@inputs_path}/09_import_docx/project.yaml"
       @options[:action] = 'list'
@@ -390,7 +390,7 @@ describe 'check traceability' do # rubocop:disable Metrics/BlockLength
 
   describe 'import xls test - check compliance column' do
     before do
-      app = ReqvMain.new
+      app = Reqv::ReqvMain.new
       options = {}
       options[:project_file] = "#{@inputs_path}/11_import_xls_allocated_matrix/project.yaml"
       options[:action] = 'status'
