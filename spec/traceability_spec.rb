@@ -413,4 +413,40 @@ describe 'check traceability' do # rubocop:disable Metrics/BlockLength
       FileUtils.rm_rf("#{@outputs_path}/11_import_xls_allocated_matrix", secure: true)
     end
   end
+
+  describe 'check requirement status indicates when requirement has not a unique ID' do
+    before do
+      @app = Reqv::ReqvMain.new
+      @options = {}
+      @options[:project_file] = "#{@inputs_path}/12_check_multiple_req_id/project.yaml"
+      @options[:action] = 'list'
+      @options[:doc] = 'SRS'
+      @app.initialize_log_level(@options)
+      @app.load_project_check_working_dir(@options)
+    end
+
+    it 'displays list of requirement of a docx imported document' do
+      expected_stdio = <<~EXPECTED
+        Requirement list of SRS:
+          SRS_REQ_001.1: Requirement title
+          SRS_REQ_002.1: Requirement title
+          SRS_REQ_002.1: Requirement title
+          SRS_REQ_003.1: Requirement title
+          SRS_REQ_004.1: Requirement title
+          SRS_REQ_005.1: Requirement title
+          SRS_REQ_004.1: Requirement title
+          SRS_REQ_010.1: Requirement title
+          SRS_REQ_005.1: Requirement title
+          SRS_REQ_010.1: Requirement title
+          SRS_REQ_005.1: Requirement title
+        Number of requirement: 11
+        warning: SRS_REQ_002.1 is duplicated !
+        warning: SRS_REQ_004.1 is duplicated !
+        warning: SRS_REQ_005.1 is duplicated !
+        warning: SRS_REQ_010.1 is duplicated !
+      EXPECTED
+
+      expect { @app.parse_and_launch_action(@options) }.to output(expected_stdio).to_stdout
+    end
+  end
 end

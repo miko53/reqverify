@@ -161,11 +161,11 @@ reqv --project=req_project/req_project.reqprj --action=export --relationship="SS
 ## Plugins
 
 Currently it exists two import plugins. For importing docx (or docm) document or important excel (xls) one.
-See in `lib/import_plugins` folder. 
+See in `lib/plugins/` folder. 
 
 These plugin use *docx* and *roo-xls* gems.
 
-The base class is `ImportPlugin`. Each ones has a configuration part named *rules*.
+The base class is `Reqv::Import`. Each ones has a configuration part named *rules*.
 These rules are read in the project file.
 
 To see rules, see the function `set_rules` or each import plugins. Parameters given to function are directly taken from project file (`handler-rules:`)
@@ -187,7 +187,7 @@ build and install the gem:
 
 ```
 gem build reqverify.gemspec
-gem install reqverify-1.0.0.gem
+gem install reqverify-1.0.1.gem
 ```
 
 ## Tests
@@ -202,7 +202,7 @@ rake
 
 - [ ] Add delete part in reqvp executable
 - [ ] create a GUI to explore requirement traceability
-- [ ] add customization of export data
+- [ ] add customization of export data (create export plugin)
 
 ## License 
 

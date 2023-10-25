@@ -64,11 +64,25 @@ module Reqv
         Log.display("  #{req['req_id']}: #{req['req_title']}")
       end
       Log.display("Number of requirement: #{@doc_file['reqs'].size}")
+      duplicated.each do |req_id|
+        Log.warning("#{req_id} is duplicated !")
+      end
     end
 
     attr_accessor :doc_name
 
     private
+
+    def duplicated
+      temp = {}
+      duplicate = []
+      @doc_file['reqs'].each do |req|
+        # set map item to 1 if not exist, otherwise add one to it
+        temp[req['req_id']] = (temp[req['req_id']] || 0) + 1
+        duplicate.append req['req_id'] if temp[req['req_id']] > 1
+      end
+      duplicate.uniq
+    end
 
     def read
       f = read_file
