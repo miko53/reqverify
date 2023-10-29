@@ -3,8 +3,7 @@
 require 'optparse'
 require 'reqv/project'
 require 'reqv/traca_gen'
-require 'reqv/export_csv'
-require 'reqv/export_xlsx'
+require 'reqv/export_controller'
 require 'reqv/log'
 require 'reqv/display_status_req'
 
@@ -116,8 +115,12 @@ module Reqv
       if traca_report.nil?
         Log.error 'Unable to create traceability data'
       else
-        export = create_export(options[:export_format])
-        export.export_traca_report report: traca_report, output_folder: @output_folder, output_file: @output_file
+        export_controller = ExportController.new(@project)
+        export_controller.export(plugin_name: options[:export_format],
+                                 plugins_path: options[:plugins_path],
+                                 report: traca_report,
+                                 output_folder: @output_folder,
+                                 output_file: @output_file)
       end
     end
 
@@ -132,22 +135,6 @@ module Reqv
     def clean_intermediate_file
       traca_ctrl = TracaGenerator.new(@project)
       traca_ctrl.clean
-    end
-
-    def create_export(format)
-      export_gen = nil
-      case format
-      when 'xlsx'
-        Log.info 'xlsx format'
-        export_gen = ExportXlsx.new
-      when 'csv'
-        Log.info 'csv format'
-        export_gen = ExportCsv.new
-      else
-        Log.error "unknown format #{format}"
-        exit EXIT_FAILURE
-      end
-      export_gen
     end
 
     def display_status(traca_report)
