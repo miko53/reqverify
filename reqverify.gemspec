@@ -14,6 +14,8 @@ Gem::Specification.new do |s|
   s.homepage = 'https://github.com/miko53/reqverify'
   s.licenses = ['BSD-3-Clause']
   s.add_runtime_dependency('caxlsx', '~> 3.4.1')
-  s.add_runtime_dependency('docx', '~> 0.8.1')
+  s.add_runtime_dependency('docx', '~> 0.8.0')
   s.add_runtime_dependency('roo-xls', '~> 1.2.0')
+  s.add_development_dependency 'rake', '~> 13.0'
+  s.add_development_dependency 'rspec', '~> 3.7'
 end
