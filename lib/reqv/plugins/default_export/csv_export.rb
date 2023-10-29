@@ -5,7 +5,7 @@ require 'reqv/stat_req'
 
 module Reqv
   # class for exporting data to file
-  class ExportCsv < Export
+  class CsvExport < Export
     def export_traca_report(report:, output_folder:, output_file:)
       @output_folder = output_folder
       @output_file = output_file

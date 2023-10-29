@@ -17,7 +17,7 @@ describe 'check traceability' do # rubocop:disable Metrics/BlockLength
       options = {}
       options[:project_file] = "#{@inputs_path}/01_basic_1.SSS_1.SRS/project.yaml"
       options[:action] = 'export'
-      options[:export_format] = 'csv'
+      options[:export_format] = 'CsvExport'
       options[:relationship] = 'SSS<->SRS'
       options[:output_folder] = "#{@outputs_path}/01_basic_1.SSS_1.SRS"
       options[:verbose] = 'y'
@@ -44,7 +44,7 @@ describe 'check traceability' do # rubocop:disable Metrics/BlockLength
       options = {}
       options[:project_file] = "#{@inputs_path}/02_basic_missing_req_1.SSS_1.SRS/project.yaml"
       options[:action] = 'export'
-      options[:export_format] = 'csv'
+      options[:export_format] = 'CsvExport'
       options[:relationship] = 'SSS<->SRS'
       options[:output_folder] = "#{@outputs_path}/02_basic_missing_req_1.SSS_1.SRS"
       options[:verbose] = 'y'
@@ -106,7 +106,7 @@ describe 'check traceability' do # rubocop:disable Metrics/BlockLength
       options = {}
       options[:project_file] = "#{@inputs_path}/01_basic_1.SSS_1.SRS/project.yaml"
       options[:action] = 'export'
-      options[:export_format] = 'xlsx'
+      options[:export_format] = 'XlsxExport'
       options[:relationship] = 'SSS<->SRS'
       options[:output_file] = '03.xlsx'
       options[:verbose] = 'y'
@@ -131,7 +131,7 @@ describe 'check traceability' do # rubocop:disable Metrics/BlockLength
       options = {}
       options[:project_file] = "#{@inputs_path}/04_nominal_2.SSS_1.SRS/project.yaml"
       options[:action] = 'export'
-      options[:export_format] = 'csv'
+      options[:export_format] = 'CsvExport'
       options[:relationship] = 'SSS_all<->SRS'
       options[:verbose] = 'y'
       options[:output_folder] = "#{@outputs_path}/04_nominal_2.SSS_1.SRS"
@@ -160,7 +160,7 @@ describe 'check traceability' do # rubocop:disable Metrics/BlockLength
       options = {}
       options[:project_file] = "#{@inputs_path}/05_nominal_1.SRS_2.STD/project.yaml"
       options[:action] = 'export'
-      options[:export_format] = 'csv'
+      options[:export_format] = 'CsvExport'
       options[:relationship] = 'SRS<->STD_all'
       options[:verbose] = 'y'
       options[:output_folder] = "#{@outputs_path}/05_nominal_1.SRS_2.STD"

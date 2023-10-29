@@ -5,8 +5,8 @@ require 'reqv/stat_req'
 require 'caxlsx'
 
 module Reqv
-  # class ExportXlsx
-  class ExportXlsx < Export
+  # class XlsxExport
+  class XlsxExport < Export
     CELL_HEIGHT = 15
 
     def export_traca_report(report:, output_folder:, output_file:)
