@@ -155,10 +155,10 @@ document: SSS
 We can also export the result into a file, here an excel sheet:
 
 ```
-reqv --project=req_project/req_project.reqprj --action=export --relationship="SSS->SRS" --format=xlsx --output-folder=. --output-file=traceability.xlsx
+reqv --project=req_project/req_project.reqprj --action=export --relationship="SSS->SRS" --format=XlsxExport --output-folder=. --output-file=traceability.xlsx
 ```
 
-## Plugins
+## Plugins (for importing or exporting)
 
 Currently it exists two import plugins. For importing docx (or docm) document or important excel (xls) one.
 See in `lib/plugins/` folder. 
@@ -202,7 +202,6 @@ rake
 
 - [ ] Add delete part in reqvp executable
 - [ ] create a GUI to explore requirement traceability
-- [ ] add customization of export data (create export plugin)
 
 ## License 
 
