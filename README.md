@@ -195,6 +195,7 @@ gem install reqverify-1.0.1.gem
 launch the test suite by typing
 
 ```
+bundle install
 rake
 ```
 
