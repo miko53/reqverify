@@ -17,8 +17,12 @@ module Reqv
       end
     end
 
-    def rules=(rule_set = {}); end
+    def rules=(rule_set = {})
+      raise NotImplementedError
+    end
 
-    def import(input_file, output_file); end
+    def import(input_file, output_file)
+      raise NotImplementedError
+    end
   end
 end
