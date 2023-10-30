@@ -33,7 +33,7 @@ module Reqv
       mod_path = File.join(mod_path, mod_file)
       mod_path_try_list.append(mod_path)
 
-      mod_path_try_list.append(build_custom_plugins_path(mod_file, custom_plugins_path)) unless custom_plugins_path.nil?
+      mod_path_try_list.append(Reqv.build_custom_plugins_path(mod_file, custom_plugins_path)) unless custom_plugins_path.nil?
       mod_path = File.join(Dir.getwd, mod_file)
       mod_path_try_list.append(mod_path)
       mod_path_try_list

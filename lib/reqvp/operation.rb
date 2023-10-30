@@ -4,12 +4,9 @@ require 'pathname'
 require 'reqv/misc'
 require 'reqv/project'
 require 'reqv/log'
+require 'reqv/common'
 
 module Reqv
-  def self.exe_name
-    File.basename($PROGRAM_NAME)
-  end
-
   # Operation
   class Operation
     def initialize(arg = nil)
