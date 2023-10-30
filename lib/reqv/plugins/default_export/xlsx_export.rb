@@ -9,7 +9,7 @@ module Reqv
   class XlsxExport < Export
     CELL_HEIGHT = 15
 
-    def export_traca_report(report:, output_folder:, output_file:)
+    def export_traca_report(project:, report:, output_folder:, output_file:)
       @output_folder = output_folder
       @output_file = output_file
       @traca_report = report

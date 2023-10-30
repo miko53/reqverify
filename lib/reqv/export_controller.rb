@@ -55,11 +55,14 @@ module Reqv
 
     def launch_export(plugin_name, traca_report, output_folder, output_file)
       t = ExportPlugin.const_get(plugin_name).new
-      status = t.export_traca_report(report: traca_report, output_folder: output_folder, output_file: output_file)
+      status = t.export_traca_report(project: @project,
+                                     report: traca_report,
+                                     output_folder: output_folder,
+                                     output_file: output_file)
       if status == true
-        Log.info "export successfull..."
+        Log.info 'export successfull...'
       else
-        Log.error "export failed..."
+        Log.error 'export failed...'
       end
     end
   end
