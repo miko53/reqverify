@@ -17,8 +17,9 @@ module Reqv
       @stat_req.build
 
       p = Axlsx::Package.new
+      p.use_shared_strings = true
       @workbook = p.workbook
-
+      @wrap_text = @workbook.styles.add_style({ alignment: { vertical: :center, wrap_text: true } })
       write_downstream_report
       write_upstream_report
 
@@ -35,9 +36,10 @@ module Reqv
           coverage = traca_line.covers_req_list
           next if coverage.empty?
 
-          sheet.add_row [traca_line.req_id, coverage.join("\n")], height: CELL_HEIGHT * coverage.size
+          sheet.add_row [traca_line.req_id, coverage.join("\n")], style: @wrap_text, height: CELL_HEIGHT * coverage.size
         end
         write_downstream_statistics(sheet, traca_downstream_doc.name)
+        sheet.to_xml_string
       end
     end
 
@@ -63,9 +65,10 @@ module Reqv
           coverage = traca_line.covered_by_list
           next if coverage.empty?
 
-          sheet.add_row [traca_line.req_id, coverage.join("\n")], height: CELL_HEIGHT * coverage.size
+          sheet.add_row [traca_line.req_id, coverage.join("\n")], style: @wrap_text, height: CELL_HEIGHT * coverage.size
         end
         write_upstream_statistics(sheet, traca_upstream_doc.name)
+        sheet.to_xml_string
       end
     end
 
