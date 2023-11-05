@@ -56,10 +56,9 @@ module Reqv
 
     def display_requirement(req_data)
       Log.display("requirement: #{req_data['req_id']} - #{req_data['req_title']}")
-      Log.display('BEGIN')
-      req_text = space(2) + req_data['req_text'].gsub('\\n', "\n  ")
-      Log.display(req_text)
-      Log.display('END')
+      Log.display('  BEGIN')
+      display_requirement_text(req_data['req_text'], 2)
+      Log.display('  END')
     end
 
     def display_linked_requirement(doc_array, coverage)
@@ -67,9 +66,16 @@ module Reqv
         req_data = get_requirement_characteristics(doc_array, req_id)
         Log.display("--> covers requirement: #{req_data['req_id']} - #{req_data['req_title']}")
         Log.display('    BEGIN')
-        req_text = space(4) + req_data['req_text'].gsub('\\n', "\n    ")
-        Log.display(req_text)
+        display_requirement_text(req_data['req_text'], 4)
         Log.display('    END')
+      end
+    end
+
+    def display_requirement_text(req_text, nb_space)
+      req_text_formatted = req_text.gsub('\\n', "\n")
+      req_text_formatted.each_line do |line|
+        text = space(nb_space) + line
+        Log.display(text)
       end
     end
 
