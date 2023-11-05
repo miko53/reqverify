@@ -125,6 +125,7 @@ module Reqv
         export_controller = ExportController.new(@project)
         export_controller.export(plugin_name: options[:export_format],
                                  plugins_path: options[:plugins_path],
+                                 relationship: options[:relationship],
                                  report: traca_report,
                                  output_folder: @output_folder,
                                  output_file: @output_file)

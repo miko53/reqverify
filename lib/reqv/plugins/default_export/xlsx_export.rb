@@ -9,12 +9,17 @@ module Reqv
   class XlsxExport < Export
     CELL_HEIGHT = 15
 
-    def export_traca_report(project:, report:, output_folder:, output_file:)
+    def export_traca_report(project:, relationship:, report:, output_folder:, output_file:)
       @output_folder = output_folder
       @output_file = output_file
       @traca_report = report
       @stat_req = StatReq.new(@traca_report)
       @stat_req.build
+
+      @project = project
+      @relationship = relationship
+      @upstream_docs = @project.upstream_docs(@relationship)
+      @downstream_docs = @project.downstream_docs(@relationship)
 
       p = Axlsx::Package.new
       p.use_shared_strings = true
@@ -36,11 +41,23 @@ module Reqv
           coverage = traca_line.covers_req_list
           next if coverage.empty?
 
-          sheet.add_row [traca_line.req_id, coverage.join("\n")], style: @wrap_text, height: CELL_HEIGHT * coverage.size
+          req_data = get_requirement_characteristics(@downstream_docs, traca_line.req_id)
+          req_line = "#{traca_line.req_id} - #{req_data['req_title']}"
+          coverage_line = build_coverage_req_line(@upstream_docs, coverage)
+          sheet.add_row [req_line, coverage_line.join("\n")], style: @wrap_text, height: CELL_HEIGHT * coverage.size
         end
         write_downstream_statistics(sheet, traca_downstream_doc.name)
         sheet.to_xml_string
       end
+    end
+
+    def build_coverage_req_line(doc_array, coverage_array)
+      coverage_line = []
+      coverage_array.each do |req|
+        req_data = get_requirement_characteristics(doc_array, req)
+        coverage_line.push "#{req} - #{req_data['req_title']}"
+      end
+      coverage_line
     end
 
     def write_downstream_statistics(sheet, doc_name)
@@ -65,7 +82,10 @@ module Reqv
           coverage = traca_line.covered_by_list
           next if coverage.empty?
 
-          sheet.add_row [traca_line.req_id, coverage.join("\n")], style: @wrap_text, height: CELL_HEIGHT * coverage.size
+          req_data = get_requirement_characteristics(@upstream_docs, traca_line.req_id)
+          req_line = "#{traca_line.req_id} - #{req_data['req_title']}"
+          coverage_line = build_coverage_req_line(@downstream_docs, coverage)
+          sheet.add_row [req_line, coverage_line.join("\n")], style: @wrap_text, height: CELL_HEIGHT * coverage.size
         end
         write_upstream_statistics(sheet, traca_upstream_doc.name)
         sheet.to_xml_string
@@ -82,6 +102,14 @@ module Reqv
       sheet.add_row ['coverage', "#{req_stat.coverage_percent}%"]
       sheet.add_row ['number of requirement', req_stat.nb_req]
       sheet.add_row ['number of uncovered requirement', req_stat.nb_uncovered_req]
+    end
+
+    def get_requirement_characteristics(doc_array, req_id)
+      doc_array.each do |doc|
+        req_data = doc.get_req_characteristics(req_id)
+        return req_data unless req_data.nil?
+      end
+      nil
     end
   end
 end
