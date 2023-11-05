@@ -42,6 +42,13 @@ module Reqv
       false
     end
 
+    def get_req_characteristics(req_id)
+      @doc_file['reqs'].each do |req|
+        return req if req['req_id'] == req_id
+      end
+      nil
+    end
+
     def req_list_of_covered_id(cov_id)
       r = []
       @doc_file['reqs'].each do |req|

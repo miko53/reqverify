@@ -39,7 +39,7 @@ class Main
       opts.on('-rRELATIONSHIP', '--relationship=RELATIONSHIP', 'concerned traceability to check/export') do |n|
         options[:relationship] = n
       end
-      opts.on('-aACTION', '--action=ACTION', 'action to launch (status/export/list/clean)') do |n|
+      opts.on('-aACTION', '--action=ACTION', 'action to launch (status/export/list/clean/review_up/review_down)') do |n|
         options[:action] = n
       end
       opts.on('-DDOCUMENT', '--document=DOCUMENT', 'document to list requirement') do |n|

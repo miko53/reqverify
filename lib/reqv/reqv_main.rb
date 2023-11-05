@@ -6,6 +6,7 @@ require 'reqv/traca_gen'
 require 'reqv/export_controller'
 require 'reqv/log'
 require 'reqv/display_status_req'
+require 'reqv/review'
 
 module Reqv
   # main application class ReqvMain
@@ -55,6 +56,12 @@ module Reqv
       when 'list'
         doc_req = generate_doc_req(options)
         display_doc_req(doc_req) unless doc_req.nil?
+      when 'review_down'
+        traca_report = generate_traceability(options)
+        display_review_down_req(traca_report, options) unless traca_report.nil?
+      when 'review_up'
+        traca_report = generate_traceability(options)
+        display_review_up_req(traca_report, options) unless traca_report.nil?
       when 'clean'
         clean_intermediate_file
       else
@@ -143,6 +150,14 @@ module Reqv
 
     def display_doc_req(doc_req)
       doc_req.display
+    end
+
+    def display_review_down_req(traca_report, options)
+      Review.new(@project, traca_report, options[:relationship]).review_down_req
+    end
+
+    def display_review_up_req(traca_report, options)
+      Review.new(@project, traca_report, options[:relationship]).review_up_req
     end
   end
 end
