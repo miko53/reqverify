@@ -7,6 +7,8 @@ require 'reqv/misc'
 module Reqv
   # read and parsing project
   class Project
+    PROJECT_VERSION = 1.0
+
     def initialize(filename)
       @filename = filename
       @project_file = nil
@@ -190,7 +192,7 @@ module Reqv
     # TODO: temporary to modify with loaded and initialize function
     def build
       @project_file = {}
-      @project_file['version'] = 1.0
+      @project_file['version'] = PROJECT_VERSION
     end
 
     def project_name=(arg)
@@ -338,6 +340,7 @@ module Reqv
     # +@project_file+ => set to nil if not correctly decoded
     def decode_yaml_file(file)
       @project_file = YAML.safe_load file, permitted_classes: [Regexp]
+      @project_file = nil if @project_file['version'].nil? || @project_file['version'] != PROJECT_VERSION
     rescue StandardError => e
       @project_file = nil
       puts "wrong file format, #{e}"
