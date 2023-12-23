@@ -72,6 +72,8 @@ module Reqv
       @current_req = {}
       @current_req_attrs = {}
       @docx.each_paragraph do |p|
+        next if p.text.empty?
+
         case p.style
         when @import_rules.req_id_style.name
           insert_req_id(p.text)
