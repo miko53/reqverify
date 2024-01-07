@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.0.3
+
+- fix error in docx import, when docx contains revisions deleted requirements was displayed as blank 
+- add derived list of requirements in export
+
 ## v1.0.2
 
 - add a verification if requirement has same name in a doc
