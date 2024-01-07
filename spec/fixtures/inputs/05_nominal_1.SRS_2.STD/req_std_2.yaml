@@ -5,11 +5,11 @@ reqs:
     req_text: |
           text req
     req_attrs:
-        - category: functional
-        - context: nominal
-        - security: '-'
-        - verif: test
-        - rational: bla ..
+        category: functional
+        context: nominal
+        security: '-'
+        verif: test
+        rational: bla ..
     req_cov: 
         - SRS_REQ_001.1
   - req_id: STD_2_REQ_002.1
@@ -17,11 +17,11 @@ reqs:
     req_text: |
           text req
     req_attrs:
-        - category: functional
-        - context: nominal
-        - security: '-'
-        - verif: test
-        - rational: bla ..
+        category: functional
+        context: nominal
+        security: '-'
+        verif: test
+        rational: bla ..
     req_cov: 
         - SRS_REQ_004.1
         - SRS_REQ_005.1
@@ -32,11 +32,11 @@ reqs:
           sdf sdfk sdf sdf sdfm dfk sdm f
           sdfkfms
     req_attrs:
-        - category: functional
-        - context: nominal
-        - security: '-'
-        - verif: test
-        - rational: bla ..
+        category: functional
+        context: nominal
+        security: '-'
+        verif: test
+        rational: bla ..
     req_cov: 
         - SRS_REQ_004.1
         - SRS_REQ_005.1
@@ -47,11 +47,11 @@ reqs:
           sdf sdfk sdf sdf sdfm dfk sdm f
           sdfkfms
     req_attrs:
-        - category: functional
-        - context: nominal
-        - security: '-'
-        - verif: test
-        - rational: bla ..
+        category: functional
+        context: nominal
+        security: '-'
+        verif: test
+        rational: bla ..
     req_cov:
         - SRS_REQ_006.1
         - SRS_REQ_005.1
@@ -62,11 +62,11 @@ reqs:
           sdf sdfk sdf sdf sdfm dfk sdm f
           sdfkfms
     req_attrs:
-        - category: functional
-        - context: nominal
-        - security: '-'
-        - verif: test
-        - rational: bla ..
+        category: functional
+        context: nominal
+        security: '-'
+        verif: test
+        rational: bla ..
     req_cov:
         - SRS_REQ_006.1
         - SRS_REQ_005.1
@@ -77,11 +77,11 @@ reqs:
           sdf sdfk sdf sdf sdfm dfk sdm f
           sdfkfms
     req_attrs:
-        - category: functional
-        - context: nominal
-        - security: '-'
-        - verif: test
-        - rational: bla ..
+        category: functional
+        context: nominal
+        security: '-'
+        verif: test
+        rational: bla ..
     req_cov:
         - SRS_REQ_006.1
         - SRS_REQ_005.1

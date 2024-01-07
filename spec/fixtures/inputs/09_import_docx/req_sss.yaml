@@ -7,11 +7,11 @@ reqs:
           sdf sdfk sdf sdf sdfm dfk sdm f
           sdfkfms
     req_attrs:
-        - category: functional
-        - context: nominal
-        - security: '-'
-        - verif: test
-        - rational: bla ..
+        category: functional
+        context: nominal
+        security: '-'
+        verif: test
+        rational: bla ..
   - req_id: SSS_002.1
     req_title: Requirement title
     req_text: |
@@ -19,11 +19,11 @@ reqs:
           sdf sdfk sdf sdf sdfm dfk sdm f
           sdfkfms
     req_attrs:
-        - category: functional
-        - context: nominal
-        - security: '-'
-        - verif: test
-        - rational: bla ..
+        category: functional
+        context: nominal
+        security: '-'
+        verif: test
+        rational: bla ..
   - req_id: SSS_003.1
     req_title: Requirement title
     req_text: |
@@ -31,11 +31,11 @@ reqs:
           sdf sdfk sdf sdf sdfm dfk sdm f
           sdfkfms
     req_attrs:
-        - category: functional
-        - context: nominal
-        - security: '-'
-        - verif: test
-        - rational: bla ..
+        category: functional
+        context: nominal
+        security: '-'
+        verif: test
+        rational: bla ..
   - req_id: SSS_004.2
     req_title: Requirement title
     req_text: |
@@ -43,11 +43,11 @@ reqs:
           sdf sdfk sdf sdf sdfm dfk sdm f
           sdfkfms
     req_attrs:
-        - category: functional
-        - context: nominal
-        - security: '-'
-        - verif: test
-        - rational: bla ..
+        category: functional
+        context: nominal
+        security: '-'
+        verif: test
+        rational: bla ..
   - req_id: SSS_005.1
     req_title: Requirement title
     req_text: |
@@ -55,11 +55,11 @@ reqs:
           sdf sdfk sdf sdf sdfm dfk sdm f
           sdfkfms
     req_attrs:
-        - category: functional
-        - context: nominal
-        - security: '-'
-        - verif: test
-        - rational: bla ..
+        category: functional
+        context: nominal
+        security: '-'
+        verif: test
+        rational: bla ..
   - req_id: SSS_006.1
     req_title: Requirement title
     req_text: |
@@ -67,11 +67,11 @@ reqs:
           sdf sdfk sdf sdf sdfm dfk sdm f
           sdfkfms
     req_attrs:
-        - category: functional
-        - context: nominal
-        - security: '-'
-        - verif: test
-        - rational: bla ..
+        category: functional
+        context: nominal
+        security: '-'
+        verif: test
+        rational: bla ..
   - req_id: SSS_007.1
     req_title: Requirement title
     req_text: |
@@ -79,11 +79,11 @@ reqs:
           sdf sdfk sdf sdf sdfm dfk sdm f
           sdfkfms
     req_attrs:
-        - category: functional
-        - context: nominal
-        - security: '-'
-        - verif: test
-        - rational: bla ..
+        category: functional
+        context: nominal
+        security: '-'
+        verif: test
+        rational: bla ..
   - req_id: SSS_008.2
     req_title: Requirement title
     req_text: |
@@ -91,11 +91,11 @@ reqs:
           sdf sdfk sdf sdf sdfm dfk sdm f
           sdfkfms
     req_attrs:
-        - category: functional
-        - context: nominal
-        - security: '-'
-        - verif: test
-        - rational: bla ..
+        category: functional
+        context: nominal
+        security: '-'
+        verif: test
+        rational: bla ..
   - req_id: SSS_009.1
     req_title: Requirement title
     req_text: |
@@ -103,11 +103,11 @@ reqs:
           sdf sdfk sdf sdf sdfm dfk sdm f
           sdfkfms
     req_attrs:
-        - category: functional
-        - context: nominal
-        - security: '-'
-        - verif: test
-        - rational: bla ..
+        category: functional
+        context: nominal
+        security: '-'
+        verif: test
+        rational: bla ..
   - req_id: SSS_010.1
     req_title: Requirement title
     req_text: |
@@ -115,8 +115,8 @@ reqs:
           sdf sdfk sdf sdf sdfm dfk sdm f
           sdfkfms
     req_attrs:
-        - category: functional
-        - context: nominal
-        - security: '-'
-        - verif: test
-        - rational: bla ..
+        category: functional
+        context: nominal
+        security: '-'
+        verif: test
+        rational: bla ..

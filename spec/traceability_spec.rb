@@ -477,4 +477,30 @@ describe 'check traceability' do # rubocop:disable Metrics/BlockLength
       FileUtils.rm_rf("#{@outputs_path}/13_basic_1.SSS_1.SRS", secure: true)
     end
   end
+
+  describe 'check derived list' do
+    before do
+      app = Reqv::ReqvMain.new
+      options = {}
+      options[:project_file] = "#{@inputs_path}/01_basic_1.SSS_1.SRS/project.yaml"
+      options[:action] = 'export'
+      options[:export_format] = 'CsvExport'
+      options[:relationship] = 'SSS<->SRS'
+      options[:output_folder] = "#{@outputs_path}/14_basic_1.SSS_1.SRS"
+      options[:verbose] = 'y'
+      app.initialize_log_level(options)
+      app.load_project_check_working_dir(options)
+      app.parse_and_launch_action(options)
+    end
+
+    it 'generates traceability csv file' do
+      expect(FileUtils.compare_file("#{@outputs_path}/14_basic_1.SSS_1.SRS/traca_SRS.csv",
+                                    "#{@expected_path}/14_basic_1.SSS_1.SRS/traca_SRS.csv")).to eq(true)
+      expect(FileUtils.compare_file("#{@outputs_path}/14_basic_1.SSS_1.SRS/traca_SSS.csv",
+                                    "#{@expected_path}/14_basic_1.SSS_1.SRS/traca_SSS.csv")).to eq(true)
+      expect(FileUtils.compare_file("#{@outputs_path}/14_basic_1.SSS_1.SRS/traca_derived_report.csv",
+                                    "#{@expected_path}/14_basic_1.SSS_1.SRS/traca_derived_report.csv")).to eq(true)
+    end
+
+  end
 end

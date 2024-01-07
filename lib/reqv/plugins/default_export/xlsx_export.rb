@@ -27,6 +27,7 @@ module Reqv
       @wrap_text = @workbook.styles.add_style({ alignment: { vertical: :center, wrap_text: true } })
       write_downstream_report
       write_upstream_report
+      write_derived_report
 
       p.serialize(File.join(@output_folder, @output_file))
     end
@@ -74,6 +75,22 @@ module Reqv
       sheet.add_row ['derived requirement', "#{req_stat.nb_derived_percent}%"]
     end
 
+    def write_derived_report
+      sheet = @workbook.add_worksheet(name: 'derived report')
+      sheet.add_row %w[requirement rational]
+      @traca_report.each_downstream_doc do |traca_downstream_doc|
+        traca_downstream_doc.each_req_line do |traca_line|
+          next if traca_line.derived? == false
+
+          req_data = get_requirement_characteristics(@downstream_docs, traca_line.req_id)
+          rational = get_rational(req_data)
+          req_line = "#{traca_line.req_id} - #{req_data['req_title']}"
+          sheet.add_row [req_line, rational]
+        end
+      end
+      sheet.to_xml_string
+    end
+
     def write_upstream_report
       @traca_report.each_upstream_doc do |traca_upstream_doc|
         sheet = @workbook.add_worksheet(name: traca_upstream_doc.name)
@@ -110,6 +127,13 @@ module Reqv
         return req_data unless req_data.nil?
       end
       nil
+    end
+
+    def get_rational(req_data)
+      h = req_data['req_attrs']
+      return h['rational'] unless h['rational'].nil?
+
+      ''
     end
   end
 end

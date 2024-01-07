@@ -12,8 +12,16 @@ module Reqv
       @traca_report = report
       @stat_req = StatReq.new(@traca_report)
       @stat_req.build
+
+      @project = project
+      @relationship = relationship
+      # @upstream_docs = @project.upstream_docs(@relationship)
+      @downstream_docs = @project.downstream_docs(@relationship)
+
       write_downstream_report
       write_upstream_report
+      write_derived_report
+      true
     end
 
     private
@@ -62,6 +70,23 @@ module Reqv
       file.write("\"derived requirement\";#{req_stat.nb_derived_percent}%;\n")
     end
 
+    def write_derived_report
+      filename = File.join(@output_folder, 'traca_derived_report.csv')
+      f = File.open(filename, 'w')
+      f.write("requirement;rational;\n")
+      @traca_report.each_downstream_doc do |traca_downstream_doc|
+        traca_downstream_doc.each_req_line do |traca_line|
+          next if traca_line.derived? == false
+
+          req_data = get_requirement_characteristics(@downstream_docs, traca_line.req_id)
+          rational = get_rational(req_data)
+          req_line = "#{traca_line.req_id} - #{req_data['req_title']}"
+          f.write("#{req_line};\"#{rational}\";\n")
+        end
+      end
+      f.close
+    end
+
     def write_upstream_report
       @traca_report.each_upstream_doc do |traca_upstream_doc|
         filename = File.join(@output_folder, "traca_#{traca_upstream_doc.name}.csv")
@@ -104,6 +129,21 @@ module Reqv
       file.write("coverage;#{req_stat.coverage_percent}%;\n")
       file.write("\"number of requirement\";#{req_stat.nb_req};\n")
       file.write("\"number of uncovered requirement\";#{req_stat.nb_uncovered_req};\n")
+    end
+
+    def get_requirement_characteristics(doc_array, req_id)
+      doc_array.each do |doc|
+        req_data = doc.get_req_characteristics(req_id)
+        return req_data unless req_data.nil?
+      end
+      nil
+    end
+
+    def get_rational(req_data)
+      h = req_data['req_attrs']
+      return h['rational'] unless h['rational'].nil?
+
+      ''
     end
   end
 end
