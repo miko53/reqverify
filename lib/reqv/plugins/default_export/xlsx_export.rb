@@ -77,7 +77,7 @@ module Reqv
 
     def write_derived_report
       sheet = @workbook.add_worksheet(name: 'derived report')
-      sheet.add_row %w[requirement rational]
+      sheet.add_row %w[requirement rationale]
       @traca_report.each_downstream_doc do |traca_downstream_doc|
         traca_downstream_doc.each_req_line do |traca_line|
           next if traca_line.derived? == false
@@ -131,7 +131,7 @@ module Reqv
 
     def get_rational(req_data)
       h = req_data['req_attrs']
-      return h['rational'] unless h['rational'].nil?
+      return h['rationale'] unless h['rationale'].nil?
 
       ''
     end

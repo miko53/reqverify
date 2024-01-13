@@ -11,7 +11,7 @@ reqs:
         context: nominal
         security: '-'
         verif: test
-        rational: bla ..
+        rationale: bla ..
   - req_id: SSS_REQ_002.1
     req_title: Requirement title
     req_text: |
@@ -23,7 +23,7 @@ reqs:
         context: nominal
         security: '-'
         verif: test
-        rational: bla ..
+        rationale: bla ..
   - req_id: SSS_REQ_003.1
     req_title: Requirement title
     req_text: |
@@ -35,7 +35,7 @@ reqs:
         context: nominal
         security: '-'
         verif: test
-        rational: bla ..
+        rationale: bla ..
   - req_id: SSS_REQ_004.1
     req_title: Requirement title
     req_text: |
@@ -47,4 +47,4 @@ reqs:
         context: nominal
         security: '-'
         verif: test
-        rational: bla ..
+        rationale: bla ..
