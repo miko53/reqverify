@@ -6,7 +6,7 @@ require 'reqv/plugins/import'
 
 module Reqv
   # class XlsImportRules
-  class XlsImportRules
+  class XlsxImportRules
     def initialize
       @req_id_regexp = nil
       @req_id_column = 0
@@ -15,6 +15,7 @@ module Reqv
       @req_category_column = 0
       @req_rational_column = 0
       @req_allocated_column = nil
+      @req_cov_column = nil
     end
 
     def set_rules(rules = {})
@@ -25,16 +26,17 @@ module Reqv
       @req_category_column = rules['req_category_column']
       @req_rational_column = rules['req_rational_column']
       @req_allocated_column = rules['req_allocated_column']
+      @req_cov_column = rules['req_cov_column']
     end
 
     attr_accessor :req_id_regexp, :req_id_column, :req_title_column, :req_text_column, :req_category_column,
-                  :req_rational_column, :req_allocated_column
+                  :req_rational_column, :req_allocated_column, :req_cov_column
   end
 
-  # class XlsImport
-  class XlsImport < Reqv::Import
+  # class XlsxSTDImport
+  class XlsxSTDImport < Reqv::Import
     def rules=(rule_set = {})
-      @import_rules = XlsImportRules.new
+      @import_rules = XlsxImportRules.new
       @import_rules.set_rules(rule_set)
     end
 
@@ -50,14 +52,17 @@ module Reqv
     private
 
     def parse_xls_file
-      sheets = @xls_doc.worksheets
-      sheets.each do |sheet|
+      sheets = @xls_doc.sheets
+      sheets.each do |sheet_name|
+        p sheet_name
+        sheet = @xls_doc.sheet(sheet_name)
         parse_sheet(sheet)
       end
     end
 
     def parse_sheet(sheet)
       sheet.each do |row|
+        p row
         if !@import_rules.req_allocated_column.nil?
           check_if_req_has_to_be_taken(row)
         elsif @import_rules.req_id_regexp.match(row[@import_rules.req_id_column].to_s)
@@ -77,6 +82,10 @@ module Reqv
       req['req_id'] = row[@import_rules.req_id_column].strip
       req['req_title'] = row[@import_rules.req_title_column]
       req['req_text'] = row[@import_rules.req_text_column]
+      text = row[@import_rules.req_cov_column]
+      t = text.split(',')
+      t.map(&:strip!)
+      req['req_cov'] = t
       insert_req_attrs(req, row)
       @yaml_doc['reqs'].append req
     end
