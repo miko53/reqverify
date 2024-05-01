@@ -502,5 +502,8 @@ describe 'check traceability' do # rubocop:disable Metrics/BlockLength
                                     "#{@expected_path}/14_basic_1.SSS_1.SRS/traca_derived_report.csv")).to eq(true)
     end
 
+    after do
+      FileUtils.rm_rf("#{@outputs_path}/14_basic_1.SSS_1.SRS", secure: true)
+    end
   end
 end
