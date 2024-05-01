@@ -13,21 +13,21 @@ module Reqv
     end
 
     # @param relationship[String]
-    def generate_traceability(relationship, custom_plugins_path)
+    def generate_traceability(relationship, custom_plugins_path, filter)
       import_ctrl = ImportController.new(@project)
       import_ctrl.check_and_import(@project.docs_of(relationship), custom_plugins_path)
 
-      upstream_docs = @project.upstream_docs(relationship)
-      downstream_docs = @project.downstream_docs(relationship)
+      upstream_docs = @project.upstream_docs(relationship, filter)
+      downstream_docs = @project.downstream_docs(relationship, filter)
       return if check_if_loaded(upstream_docs + downstream_docs) == false
 
       generate_report(downstream_docs, upstream_docs)
     end
 
-    def generate_doc_req_list(doc, custom_plugins_path)
+    def generate_doc_req_list(doc, custom_plugins_path, filter)
       import_ctrl = ImportController.new(@project)
       import_ctrl.check_and_import(Array(doc), custom_plugins_path)
-      @project.doc_req(doc)
+      @project.doc_req(doc, filter)
     end
 
     def clean

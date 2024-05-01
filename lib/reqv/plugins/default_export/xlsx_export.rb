@@ -9,7 +9,7 @@ module Reqv
   class XlsxExport < Export
     CELL_HEIGHT = 15
 
-    def export_traca_report(project:, relationship:, report:, output_folder:, output_file:)
+    def export_traca_report(project:, relationship:, report:, filter:, output_folder:, output_file:)
       @output_folder = output_folder
       @output_file = output_file
       @traca_report = report
@@ -18,8 +18,8 @@ module Reqv
 
       @project = project
       @relationship = relationship
-      @upstream_docs = @project.upstream_docs(@relationship)
-      @downstream_docs = @project.downstream_docs(@relationship)
+      @upstream_docs = @project.upstream_docs(@relationship, filter)
+      @downstream_docs = @project.downstream_docs(@relationship, filter)
 
       p = Axlsx::Package.new
       p.use_shared_strings = true

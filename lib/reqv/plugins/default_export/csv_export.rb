@@ -6,7 +6,7 @@ require 'reqv/stat_req'
 module Reqv
   # class for exporting data to file
   class CsvExport < Export
-    def export_traca_report(project:, relationship:, report:, output_folder:, output_file:)
+    def export_traca_report(project:, relationship:, report:, filter:, output_folder:, output_file:)
       @output_folder = output_folder
       @output_file = output_file
       @traca_report = report
@@ -16,7 +16,7 @@ module Reqv
       @project = project
       @relationship = relationship
       # @upstream_docs = @project.upstream_docs(@relationship)
-      @downstream_docs = @project.downstream_docs(@relationship)
+      @downstream_docs = @project.downstream_docs(@relationship, filter)
 
       write_downstream_report
       write_upstream_report

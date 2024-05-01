@@ -17,13 +17,13 @@ module Reqv
       @project = project
     end
 
-    def export(plugin_name:, plugins_path:, relationship:, report:, output_folder:, output_file:)
+    def export(plugin_name:, plugins_path:, relationship:, filter:, report:, output_folder:, output_file:)
       mod_path_list = build_plugins_path(plugin_name, plugins_path)
 
       r = load_export_class(mod_path_list)
       return if r == false
 
-      launch_export(plugin_name, report, relationship, output_folder, output_file)
+      launch_export(plugin_name, report, relationship, output_folder, output_file, filter)
     end
 
     def build_plugins_path(class_name, custom_plugins_path)
@@ -53,11 +53,12 @@ module Reqv
       r
     end
 
-    def launch_export(plugin_name, traca_report, relationship, output_folder, output_file)
+    def launch_export(plugin_name, traca_report, relationship, output_folder, output_file, filter)
       t = ExportPlugin.const_get(plugin_name).new
       status = t.export_traca_report(project: @project,
                                      relationship: relationship,
                                      report: traca_report,
+                                     filter: filter,
                                      output_folder: output_folder,
                                      output_file: output_file)
       if status == true

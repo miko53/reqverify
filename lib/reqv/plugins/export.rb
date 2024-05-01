@@ -3,7 +3,7 @@
 module Reqv
   # class Export
   class Export
-    def export_traca_report(project:, relationship:, report:, output_folder:, output_file:)
+    def export_traca_report(project:, relationship:, report:, filter:, output_folder:, output_file:)
       raise NotImplementedError
     end
   end

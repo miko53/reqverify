@@ -7,6 +7,7 @@ require 'reqv/export_controller'
 require 'reqv/log'
 require 'reqv/display_status_req'
 require 'reqv/review'
+require 'reqv/filter'
 
 module Reqv
   # main application class ReqvMain
@@ -17,6 +18,7 @@ module Reqv
       @working_dir = ''
       @output_folder = ''
       @project = nil
+      @filter = nil
     end
 
     def initialize_log_level(options)
@@ -45,6 +47,8 @@ module Reqv
     # +options+ hash of option given in command line
     # +project+ Project class object
     def parse_and_launch_action(options)
+      check_filtering(options)
+
       case options[:action]
       when 'export'
         check_export_output_arg(options)
@@ -55,7 +59,7 @@ module Reqv
         display_status(traca_report) unless traca_report.nil?
       when 'list'
         doc_req = generate_doc_req(options)
-        display_doc_req(doc_req) unless doc_req.nil?
+        doc_req&.display
       when 'review_down'
         traca_report = generate_traceability(options)
         display_review_down_req(traca_report, options) unless traca_report.nil?
@@ -67,6 +71,16 @@ module Reqv
       else
         Log.error 'Unknown action'
       end
+    end
+
+    def check_filtering(options)
+      return if options[:filter_exprs].nil?
+
+      @filter = Filter.new(options[:filter_exprs])
+      return unless @filter.compile == false
+
+      Log.error 'invalid filter expression, see help'
+      exit EXIT_FAILURE
     end
 
     # check if output is given
@@ -108,7 +122,7 @@ module Reqv
       if !options[:relationship].nil?
         Log.info "Generate traceability #{options[:relationship]}"
         traca = TracaGenerator.new(@project)
-        traca_report = traca.generate_traceability(options[:relationship], options[:plugins_path])
+        traca_report = traca.generate_traceability(options[:relationship], options[:plugins_path], @filter)
         Log.debug_pp traca_report unless traca_report.nil?
       else
         Log.error 'Error, no relationship given'
@@ -127,6 +141,7 @@ module Reqv
                                  plugins_path: options[:plugins_path],
                                  relationship: options[:relationship],
                                  report: traca_report,
+                                 filter: @filter,
                                  output_folder: @output_folder,
                                  output_file: @output_file)
       end
@@ -134,7 +149,7 @@ module Reqv
 
     def generate_doc_req(options)
       traca = TracaGenerator.new(@project)
-      doc_req = traca.generate_doc_req_list(options[:doc], options[:plugins_path])
+      doc_req = traca.generate_doc_req_list(options[:doc], options[:plugins_path], @filter)
       Log.error "Document '#{options[:doc]}' doesn't exist" if doc_req.nil?
 
       doc_req
@@ -149,16 +164,12 @@ module Reqv
       DisplayStatusReq.display(traca_report)
     end
 
-    def display_doc_req(doc_req)
-      doc_req.display
-    end
-
     def display_review_down_req(traca_report, options)
-      Review.new(@project, traca_report, options[:relationship]).review_down_req
+      Review.new(@project, traca_report, options[:relationship], @filter).review_down_req
     end
 
     def display_review_up_req(traca_report, options)
-      Review.new(@project, traca_report, options[:relationship]).review_up_req
+      Review.new(@project, traca_report, options[:relationship], @filter).review_up_req
     end
   end
 end

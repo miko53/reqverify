@@ -29,13 +29,13 @@ module Reqv
     # between document
     # @param relationship[String]
     # @return [Array(DocReq)]
-    def upstream_docs(relationship)
+    def upstream_docs(relationship, filter)
       docname_list = search_upstream_docs(relationship)
       return nil if docname_list.nil?
 
       docs_req_list = []
       docname_list.each do |docname|
-        docs_req_list.append(create_doc_req(docname))
+        docs_req_list.append(create_doc_req(docname, filter))
       end
       docs_req_list
     end
@@ -43,13 +43,13 @@ module Reqv
     # provide the downstream documents (+docs_req_list+ DocReq object)
     # according to +relationship+ String object which names the link
     # between document
-    def downstream_docs(relationship)
+    def downstream_docs(relationship, filter)
       docname_list = search_downstream_docs(relationship)
       return nil if docname_list.nil?
 
       docs_req_list = []
       docname_list.each do |docname|
-        docs_req_list.append create_doc_req(docname)
+        docs_req_list.append(create_doc_req(docname, filter))
       end
       docs_req_list
     end
@@ -62,8 +62,8 @@ module Reqv
       doclist
     end
 
-    def doc_req(docname)
-      create_doc_req(docname)
+    def doc_req(docname, filter)
+      create_doc_req(docname, filter)
     end
 
     # search in project definition for req_id name
@@ -367,9 +367,9 @@ module Reqv
     # create and return DocReq object  according to +docname+ (String)
     # DocReq read and load YAML document
     # @return [DocReq]
-    def create_doc_req(docname)
+    def create_doc_req(docname, filter)
       @project_file['docs'].each do |item|
-        return DocReq.new(self, item['name'], item['path']) if item['name'] == docname
+        return DocReq.new(self, item['name'], item['path'], filter) if item['name'] == docname
       end
       nil
     end

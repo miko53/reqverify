@@ -5,12 +5,12 @@ require 'reqv/log'
 module Reqv
   # Review class display req with its coverage
   class Review
-    def initialize(project, traca_report, relationship)
+    def initialize(project, traca_report, relationship, filter)
       @project = project
       @traca_report = traca_report
       @relationship = relationship
-      @upstream_docs = @project.upstream_docs(@relationship)
-      @downstream_docs = @project.downstream_docs(@relationship)
+      @upstream_docs = @project.upstream_docs(@relationship, filter)
+      @downstream_docs = @project.downstream_docs(@relationship, filter)
     end
 
     def review_down_req
