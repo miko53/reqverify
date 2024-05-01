@@ -57,6 +57,9 @@ class Main
       opts.on('-LPLUGINS_PATH', '--plugins-path=PLUGINS_PATH', 'custom path of import plugins') do |n|
         options[:plugins_path] = n
       end
+      opts.on('-HFILTER_EXPRS', '--filter=FILTER_EXPRS', 'requirement filtering') do |n|
+        options[:filter_exprs] = n
+      end
       opts.on('-d', '--[no-]debug', 'Run with debug info') do |n|
         options[:debug] = n
       end
@@ -70,11 +73,16 @@ class Main
 
       opts.on('-h', '--help', 'Print this help') do |n|
         puts opts
+        puts
         puts '  Possible actions are: '
         puts '  - status, generate and display traceability status on output console'
         puts '  - export, generate and display traceability on file/folder given in argument'
         puts '  - list, list all requirement of a document'
         puts '  - clean, remove all intermediate file, to build again yaml requirement file'
+        puts
+        puts '  Filtering expression format: '
+        puts '  - {req_attrs/planification}//S2//'
+
         exit
       end
     end.parse!

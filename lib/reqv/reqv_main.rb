@@ -7,6 +7,7 @@ require 'reqv/export_controller'
 require 'reqv/log'
 require 'reqv/display_status_req'
 require 'reqv/review'
+require 'reqv/filter'
 
 module Reqv
   # main application class ReqvMain
@@ -55,7 +56,7 @@ module Reqv
         display_status(traca_report) unless traca_report.nil?
       when 'list'
         doc_req = generate_doc_req(options)
-        display_doc_req(doc_req) unless doc_req.nil?
+        doc_req&.display
       when 'review_down'
         traca_report = generate_traceability(options)
         display_review_down_req(traca_report, options) unless traca_report.nil?
@@ -132,9 +133,20 @@ module Reqv
       end
     end
 
+    def check_filtering(options)
+      return nil if options[:filter_exprs].nil?
+
+      filter = Filter.new(options[:filter_exprs])
+      return filter if filter.compile
+
+      Log.error 'invalid filter expression, see help'
+      exit EXIT_FAILURE
+    end
+
     def generate_doc_req(options)
+      filter = check_filtering(options)
       traca = TracaGenerator.new(@project)
-      doc_req = traca.generate_doc_req_list(options[:doc], options[:plugins_path])
+      doc_req = traca.generate_doc_req_list(options[:doc], options[:plugins_path], filter)
       Log.error "Document '#{options[:doc]}' doesn't exist" if doc_req.nil?
 
       doc_req

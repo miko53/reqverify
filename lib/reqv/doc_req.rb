@@ -6,11 +6,12 @@ require 'reqv/log'
 module Reqv
   # class DocReq
   class DocReq
-    def initialize(project, doc_name, doc_path)
+    def initialize(project, doc_name, doc_path, filter = nil)
       @project = project
       @path = doc_path
       @doc_name = doc_name
       @doc_file = nil
+      @filter = filter
       read
     end
 
@@ -22,7 +23,7 @@ module Reqv
     def req_id_list
       r = []
       @doc_file['reqs'].each do |req|
-        r.append req['req_id']
+        r.append req['req_id'] if selected?(req)
       end
       r
     end
@@ -37,7 +38,7 @@ module Reqv
 
     def req_id_exist?(req_id)
       @doc_file['reqs'].each do |req|
-        return true if req['req_id'] == req_id
+        return true if req['req_id'] == req_id && selected?(req)
       end
       false
     end
@@ -67,10 +68,14 @@ module Reqv
 
     def display
       Log.display("Requirement list of #{@doc_name}:")
+      nb_req = 0
       @doc_file['reqs'].each do |req|
-        Log.display("  #{req['req_id']}: #{req['req_title']}")
+        if selected?(req)
+          Log.display("  #{req['req_id']}: #{req['req_title']}")
+          nb_req += 1
+        end
       end
-      Log.display("Number of requirement: #{@doc_file['reqs'].size}")
+      Log.display("Number of requirement: #{nb_req}")
       duplicated.each do |req_id|
         Log.warning("#{req_id} is duplicated !")
       end
@@ -79,6 +84,14 @@ module Reqv
     attr_accessor :doc_name
 
     private
+
+    def selected?(req)
+      if @filter.nil? || @filter.match(req)
+        true
+      else
+        false
+      end
+    end
 
     def duplicated
       temp = {}

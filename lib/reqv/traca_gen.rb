@@ -24,10 +24,10 @@ module Reqv
       generate_report(downstream_docs, upstream_docs)
     end
 
-    def generate_doc_req_list(doc, custom_plugins_path)
+    def generate_doc_req_list(doc, custom_plugins_path, filter = nil)
       import_ctrl = ImportController.new(@project)
       import_ctrl.check_and_import(Array(doc), custom_plugins_path)
-      @project.doc_req(doc)
+      @project.doc_req(doc, filter)
     end
 
     def clean

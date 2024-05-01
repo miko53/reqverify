@@ -62,8 +62,8 @@ module Reqv
       doclist
     end
 
-    def doc_req(docname)
-      create_doc_req(docname)
+    def doc_req(docname, filter)
+      create_doc_req(docname, filter)
     end
 
     # search in project definition for req_id name
@@ -367,9 +367,9 @@ module Reqv
     # create and return DocReq object  according to +docname+ (String)
     # DocReq read and load YAML document
     # @return [DocReq]
-    def create_doc_req(docname)
+    def create_doc_req(docname, filter = nil)
       @project_file['docs'].each do |item|
-        return DocReq.new(self, item['name'], item['path']) if item['name'] == docname
+        return DocReq.new(self, item['name'], item['path'], filter) if item['name'] == docname
       end
       nil
     end
