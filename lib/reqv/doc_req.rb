@@ -31,7 +31,7 @@ module Reqv
     def cov_reqs_list(req_id)
       r = []
       @doc_file['reqs'].each do |req|
-        r = req['req_cov'] if req['req_id'] == req_id
+        r = req['req_cov'] if req['req_id'] == req_id && selected?(req)
       end
       r
     end
@@ -55,7 +55,7 @@ module Reqv
       @doc_file['reqs'].each do |req|
         req_cov_list = req['req_cov']
         req_cov_list&.each do |req_cov|
-          if cov_id == req_cov
+          if cov_id == req_cov && selected?(req)
             r.append req['req_id']
             # break
           end

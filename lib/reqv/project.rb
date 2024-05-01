@@ -35,9 +35,23 @@ module Reqv
 
       docs_req_list = []
       docname_list.each do |docname|
-        docs_req_list.append(create_doc_req(docname))
+        filter = get_filter(relationship, docname)
+        docs_req_list.append(create_doc_req(docname, filter))
       end
       docs_req_list
+    end
+
+    def get_filter(relationship, docname)
+      filter_str = get_filter_docs(relationship, docname)
+      return nil if filter_str.nil?
+
+      filter = Filter.new(filter_str)
+      b = filter.compile
+      if b == false
+        Log.error("wrong syntax for filter expression #{filter_str} for doc #{docname} - not applied")
+        filter = nil
+      end
+      filter
     end
 
     # provide the downstream documents (+docs_req_list+ DocReq object)
@@ -49,7 +63,8 @@ module Reqv
 
       docs_req_list = []
       docname_list.each do |docname|
-        docs_req_list.append create_doc_req(docname)
+        filter = get_filter(relationship, docname)
+        docs_req_list.append create_doc_req(docname, filter)
       end
       docs_req_list
     end
@@ -362,6 +377,22 @@ module Reqv
         return item['doc'] if item['name'] == relationship
       end
       nil
+    end
+
+    def get_filter_docs(relationship, doc_name)
+      r = nil
+      @project_file['relationships'].each do |item|
+        r = item if item['name'] == relationship
+      end
+
+      return nil if r.nil?
+
+      s = nil
+      filtering = r['filter']
+      filtering&.each do |i|
+        s = i['exp'] if i['name'] == doc_name
+      end
+      s
     end
 
     # create and return DocReq object  according to +docname+ (String)

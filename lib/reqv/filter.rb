@@ -100,8 +100,8 @@ module Reqv
 
     def check_level1(attr)
       rc = true
-      p attr
-      p @attributes[0]
+      # p attr
+      # p @attributes[0]
       if @attributes[0] == 'req_attrs'
         @attributes[1] = attr
       else
