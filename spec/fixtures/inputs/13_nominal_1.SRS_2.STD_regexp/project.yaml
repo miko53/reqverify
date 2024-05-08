@@ -10,11 +10,21 @@ docs:
     path: 'req_std_2.yaml'
 relationships:
   - name: 'SRS<->STD_all'
-    doc: 
+    doc:
       - STD_1
       - STD_2
     covered-by:
       - SRS
+  - name: 'SRS<->STD_all_S1'
+    doc:
+      - STD_1
+      - STD_2
+    covered-by:
+      - SRS
+    filter:
+      - name: SRS
+        exp: "{req_attrs/planification} //S1//"
+
 derived-name: !ruby/regexp /[D|d]erived/
 
 

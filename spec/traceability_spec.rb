@@ -559,4 +559,40 @@ describe 'check traceability' do # rubocop:disable Metrics/BlockLength
     end
   end
 
+  describe 'traceabillity requirements status filter by reqexp - req_attribute' do
+    before do
+      @app = Reqv::ReqvMain.new
+      @options = {}
+      @options[:project_file] = "#{@inputs_path}/13_nominal_1.SRS_2.STD_regexp/project.yaml"
+      @options[:action] = 'status'
+      @options[:output_folder] = "#{@outputs_path}/14_basic_1.SSS_1.SRS"
+      @options[:verbose] = 'y'
+      @options[:relationship] = 'SRS<->STD_all_S1'
+      @app.initialize_log_level(@options)
+      @app.load_project_check_working_dir(@options)
+    end
+
+    it 'displays list of requirement filtered by custom attributes' do
+      expected_stdio = <<~EXPECTED
+        info   : Generate traceability SRS<->STD_all_S1
+        warning: 'SRS_REQ_003.1' doesn't exist !
+        document: STD_1
+          coverage: 100%
+          number of requirement: 2
+          number of uncovered requirement: 0
+          derived requirement: 0%
+        document: STD_2
+          coverage: 100%
+          number of requirement: 1
+          number of uncovered requirement: 0
+          derived requirement: 0%
+        document: SRS
+          coverage: 100%
+          number of requirement: 3
+          number of uncovered requirement: 0
+      EXPECTED
+
+      expect { @app.parse_and_launch_action(@options) }.to output(expected_stdio).to_stdout
+    end
+  end  
 end
