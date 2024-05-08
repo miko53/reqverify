@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.required_ruby_version = '>= 3.0.0'
   s.name = 'reqverify'
   s.version = Reqv::VERSION
-  s.date = '2023-10-22'
+  s.date = '2024-05-08'
   s.summary = 'creation of traceability matrices'
   s.description = 'set of tools to create traceability matrices'
   s.authors = ['miko53']
