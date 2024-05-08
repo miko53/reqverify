@@ -180,9 +180,11 @@ See *tests/custom_plugins_dir* folder for a complete example.
 ## Exports
 
 Currently two formats are managed, xlsx and csv. xlsx export uses *caxlsx* gems.
+
 Configuration will by possible in the future.
 
-## Requirement filtering
+
+## Requirement filtering
 
 Sometimes it can necessary to filter only a group of requirements.
 For example for a first standard etc.
