@@ -1,5 +1,12 @@
 # Changelog
 
+## v1.0.4
+
+- fix typo on rationale
+- add import of STD docx document
+- add selection of requirement wil filtering by regular expression the requirement list
+- add generation of traceability with filtering by regular expression 
+
 ## v1.0.3
 
 - fix error in docx import, when docx contains revisions deleted requirements was displayed as blank 

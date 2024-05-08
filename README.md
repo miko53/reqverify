@@ -171,6 +171,14 @@ These rules are taken from the project file.
 
 To see rules, see the function `set_rules` of each import plugins. Parameters given to function are directly taken from project file (field `handler-rules:`)
 
+### Plugin list
+
+Currently available plugin are:
+- CsvExport: for exporting traceability into csv file
+- XlsxExport: for exporting traceability into xlsx file
+- DocxImport: for importing requirement from docx file
+- XlsImport: for importing requirement from xls file (no coverage)
+- XlsxStdImport: for importing requirement from xlsx file (with covering)
 
 ### Build own plugin.
 
