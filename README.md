@@ -182,7 +182,7 @@ See *tests/custom_plugins_dir* folder for a complete example.
 Currently two formats are managed, xlsx and csv. xlsx export uses *caxlsx* gems.
 Configuration will by possible in the future.
 
-## requirement filtering
+## Requirement filtering
 
 Sometimes it can necessary to filter only a group of requirements.
 For example for a first standard etc.
@@ -193,16 +193,24 @@ Theses rules will be used to generate the traceability matrix.
 It is possible to filter the requirement display with the action `display` with the `-H` option.
 The regular expression format is the same.
 
-### regulation expression format
+### Regulation expression format
 
 Format of regulation expression are:
 - `{ fields } // regular expression on field //`
+
+Regular expressions are the same syntax that ruby one.
 
 Fields are the requirement ones, i.e. `req_id` `req_attrs` `req_title` `req_text`
 For attributes which are complety customs
 - `{ req_attrs/*attributes_name* } // regular expression on field //`
 
+### Examples
 
+Take only requirements which begin by `SRS_REQ_`
+- `'{req_id}//^SRS_REQ_//'`
+
+Take only requirements which planification attributes to S1
+- `'{req_attrs/planification}//S1//'`
 
 ## Installation
 
