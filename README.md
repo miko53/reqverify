@@ -206,10 +206,10 @@ For attributes which are complety customs
 
 ### Examples
 
-Take only requirements which begin by `SRS_REQ_`
+Take only requirements that start with `SRS_REQ_`
 - `'{req_id}//^SRS_REQ_//'`
 
-Take only requirements which planification attributes to S1
+Take only requirements whose planification attribute field is `S1`
 - `'{req_attrs/planification}//S1//'`
 
 ## Installation
