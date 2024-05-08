@@ -19,6 +19,11 @@ module Reqv
 
       upstream_docs = @project.upstream_docs(relationship)
       downstream_docs = @project.downstream_docs(relationship)
+      if upstream_docs.nil? || downstream_docs.nil?
+        Log.error("no upstream or downstream document in this relationship '#{relationship}'")
+        return
+      end
+
       return if check_if_loaded(upstream_docs + downstream_docs) == false
 
       generate_report(downstream_docs, upstream_docs)

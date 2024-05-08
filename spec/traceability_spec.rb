@@ -506,4 +506,57 @@ describe 'check traceability' do # rubocop:disable Metrics/BlockLength
       FileUtils.rm_rf("#{@outputs_path}/14_basic_1.SSS_1.SRS", secure: true)
     end
   end
+
+  describe 'list requirement filter by reqexp - req_id' do
+    before do
+      @app = Reqv::ReqvMain.new
+      @options = {}
+      @options[:project_file] = "#{@inputs_path}/13_nominal_1.SRS_2.STD_regexp/project.yaml"
+      @options[:action] = 'list'
+      @options[:doc] = 'SRS'
+      @options[:output_folder] = "#{@outputs_path}/14_basic_1.SSS_1.SRS"
+      @options[:verbose] = 'y'
+      @options[:filter_exprs] = '{req_id}//^SRS_REQ_001//'
+      @app.initialize_log_level(@options)
+      @app.load_project_check_working_dir(@options)
+    end
+
+    it 'displays list of requirement filtered by req_id' do
+      expected_stdio = <<~EXPECTED
+        Requirement list of SRS:
+          SRS_REQ_001.1: SRS_REQ_001 title
+        Number of requirement: 1
+      EXPECTED
+
+      expect { @app.parse_and_launch_action(@options) }.to output(expected_stdio).to_stdout
+    end
+  end
+
+  describe 'list requirement filter by reqexp - req_attribute' do
+    before do
+      @app = Reqv::ReqvMain.new
+      @options = {}
+      @options[:project_file] = "#{@inputs_path}/13_nominal_1.SRS_2.STD_regexp/project.yaml"
+      @options[:action] = 'list'
+      @options[:doc] = 'SRS'
+      @options[:output_folder] = "#{@outputs_path}/14_basic_1.SSS_1.SRS"
+      @options[:verbose] = 'y'
+      @options[:filter_exprs] = '{req_attrs/planification}//S1//'
+      @app.initialize_log_level(@options)
+      @app.load_project_check_working_dir(@options)
+    end
+
+    it 'displays list of requirement filtered by custom attributes' do
+      expected_stdio = <<~EXPECTED
+        Requirement list of SRS:
+          SRS_REQ_001.1: SRS_REQ_001 title
+          SRS_REQ_002.1: SRS_REQ_002 title
+          SRS_REQ_004.1: SRS_REQ_004 title
+        Number of requirement: 3
+      EXPECTED
+
+      expect { @app.parse_and_launch_action(@options) }.to output(expected_stdio).to_stdout
+    end
+  end
+
 end

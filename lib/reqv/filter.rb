@@ -45,8 +45,17 @@ module Reqv
         level += 1
       end
 
-      if !f.nil?
-        r = @regexp.match(f)
+      check_expression(f)
+    rescue TypeError
+      Log.error('filter expression syntax Error')
+      false
+    end
+
+    private
+
+    def check_expression(field)
+      if !field.nil?
+        r = @regexp.match(field)
         r = if r.nil?
               false
             else
@@ -57,8 +66,6 @@ module Reqv
       end
       r
     end
-
-    private
 
     def verify_attribut(list_attr)
       level = 0
