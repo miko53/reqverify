@@ -8,6 +8,7 @@ require 'reqv/log'
 require 'reqv/display_status_req'
 require 'reqv/review'
 require 'reqv/filter'
+require 'reqv/xlsx_doc_export'
 
 module Reqv
   # main application class ReqvMain
@@ -48,9 +49,7 @@ module Reqv
     def parse_and_launch_action(options)
       case options[:action]
       when 'export'
-        check_export_output_arg(options)
-        traca_report = generate_traceability(options)
-        generate_export(options, traca_report) unless traca_report.nil?
+        parse_export_action(options)
       when 'status'
         traca_report = generate_traceability(options)
         display_status(traca_report) unless traca_report.nil?
@@ -67,6 +66,16 @@ module Reqv
         clean_intermediate_file
       else
         Log.error 'Unknown action'
+      end
+    end
+
+    def parse_export_action(options)
+      if options[:doc].nil?
+        check_export_output_arg(options)
+        traca_report = generate_traceability(options)
+        generate_export(options, traca_report) unless traca_report.nil?
+      else
+        generate_doc_export(options)
       end
     end
 
@@ -130,6 +139,19 @@ module Reqv
                                  report: traca_report,
                                  output_folder: @output_folder,
                                  output_file: @output_file)
+      end
+    end
+
+    def generate_doc_export(options)
+      check_export_output_arg(options)
+      doc_req = generate_doc_req(options)
+      if !doc_req.nil?
+        xlsx_doc_export = XlsxDocExport.new(doc_req)
+        # pp xlsx_doc_export
+        xlsx_doc_export.generate(output_folder:  @output_folder, output_file: @output_file)
+        Log.display 'Done!'
+      else
+        Log.error 'unable to read doc requirement'
       end
     end
 

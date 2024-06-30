@@ -594,5 +594,30 @@ describe 'check traceability' do # rubocop:disable Metrics/BlockLength
 
       expect { @app.parse_and_launch_action(@options) }.to output(expected_stdio).to_stdout
     end
-  end  
+  end
+
+  describe 'export document into xlsx' do
+    before do
+      @app = Reqv::ReqvMain.new
+      @options = {}
+      @options[:project_file] = "#{@inputs_path}/01_basic_1.SSS_1.SRS/project.yaml"
+      @options[:action] = 'export'
+      @options[:export_format] = 'XlsxExport'
+      @options[:output_folder] = "#{@outputs_path}/01_basic_1.SSS_1.SRS"
+      @options[:output_file] = "export_srs.xlsx"
+      @options[:verbose] = 'y'
+      @options[:doc] = 'SRS'
+      @app.initialize_log_level(@options)
+      @app.load_project_check_working_dir(@options)
+      @app.parse_and_launch_action(@options)
+    end
+
+    it 'generates xlsx output export of doc' do
+      expect(File.exist?("#{@outputs_path}/01_basic_1.SSS_1.SRS/export_srs.xlsx")).to eq(true)
+    end
+
+    after do
+      FileUtils.rm_rf("#{@outputs_path}/01_basic_1.SSS_1.SRS", secure: true)
+    end
+  end
 end

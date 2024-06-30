@@ -43,6 +43,10 @@ module Reqv
       false
     end
 
+    def attribute_list
+      @doc_file['reqs'][0]['req_attrs'].keys unless @doc_file['reqs'].empty?
+    end
+
     def get_req_characteristics(req_id)
       @doc_file['reqs'].each do |req|
         return req if req['req_id'] == req_id
@@ -79,6 +83,10 @@ module Reqv
       duplicated.each do |req_id|
         Log.warning("#{req_id} is duplicated !")
       end
+    end
+
+    def each_req(&block)
+      @doc_file['reqs'].each(&block)
     end
 
     attr_accessor :doc_name
