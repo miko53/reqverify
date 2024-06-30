@@ -1,5 +1,5 @@
 
-# Requiremement verify tool - reqv
+# Requirement verify tool - reqv
 
 This tool is a helper to create, verify traceability matrix.
 
