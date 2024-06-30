@@ -76,13 +76,16 @@ class Main
         puts
         puts '  Possible actions are: '
         puts '  - status, generate and display traceability status on output console'
-        puts '  - export, generate and display traceability on file/folder given in argument'
+        puts '  - export, generate and display traceability on file/folder given in argument, export document requirement (xlsx only)'
         puts '  - list, list all requirement of a document'
         puts '  - clean, remove all intermediate file, to build again yaml requirement file'
         puts
         puts '  Filtering expression format: '
         puts '  - {req_attrs/planification}//S2//'
 
+        puts '  Example:'
+        puts '  - export document:'
+        puts '      reqv -p {project_file} -D {document name in project} -a export -F xlsx -o {folder} -f {filename}'
         exit
       end
     end.parse!
