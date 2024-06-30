@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.0.5
+
+- add capability to export requirements of one document (xlsx format only)
+
 ## v1.0.4
 
 - fix typo on rationale

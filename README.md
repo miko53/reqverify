@@ -228,7 +228,7 @@ build and install the gem:
 
 ```
 gem build reqverify.gemspec
-gem install reqverify-1.0.1.gem
+gem install reqverify-1.0.5
 ```
 
 ## Tests
