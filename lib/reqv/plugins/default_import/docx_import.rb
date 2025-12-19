@@ -126,8 +126,8 @@ module Reqv
     end
 
     def insert_req_attributes(text)
-      t = text.split(/[:\t]/)
-      @current_req_attrs[t[0].strip.downcase] = t[1].strip if !t[0].nil? && !t[1].nil?
+      t = text.partition(/[:\t]/)
+      @current_req_attrs[t[0].strip.downcase] = t[2].strip if !t[0].nil? && !t[2].nil?
     end
 
     def insert_req_end(text); end
